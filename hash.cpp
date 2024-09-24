@@ -1,84 +1,141 @@
-#include<iostream>
-#include<fstream>
-#include<cmath>
+#include <iostream>
+#include <iomanip>
+#include <bitset>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <ctime>
+
 using namespace std;
-void wypisywanie(char H[],int x){
-    x=0;
-for(int j=0;j<4;j++){
-for(int i=0;i<16;i++)
-{
-    cout<<H[x]<<" ";x++;
-}
-cout<<endl;
-}
-}
-void robienie64(char H[],char b[],int x){
-for(int j=0;j<4;j++){
-for(int i=0;i<16;i++)
-{
-    H[x]=b[i];x++;
-}
-}
-}
 
-int main()
-{
-int x=0,y,laikinas;
-int z;//z od bituw
-string h,c,p;
-char b[16]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-char H[64];
-char L[64];
-char F[99];
-robienie64(H,b,x);
-
-
-int q;
-for(int i=0;i<64;i++){
-    L[i]=H[i];
-}
-cin>>h;
-int Skaicius=h.size();
-cout<<Skaicius;
-for(int i=0;i<Skaicius;i++){
-q = (int)h[i];
-cout<<q<<endl;
-}
-
-y=q%16;//y do bituw ^2
-x=0;
-z=q*2%16;
-for(int i=0;i<64;i+=z){
-    H[i]=b[(i*z)%16];
-    cout<<H[i];
-}
-cout<<endl;
-//laikinas = (((y^2)-1)%16);
-for(int i=0;i<64;i+=(((y^2)-1)%16)){// jei y^2-1>=16
-    H[i]=b[(i*3)%16];
-    cout<<H[i];
-}
-cout<<endl;
-cout<<"Y:"<<" "<<y<<endl;
-y=(y^2)+1;
-for(int i=y;i<64;i+=y+y){
-    for(int j=0;j<y;j++){
-    H[i+j+y]=L[i+j];
-    cout<<H[i];
+string failoskaitytuvas(string failopav) {
+    ifstream failas(failopav);
+    if (!failas.is_open()) {
+        cout << "Nepavyko atidaryti failo: " << failopav << endl;
+        return "";
     }
-}
-cout<<endl;
-for(int i=0;i<64;i+=y){
-    H[i]=b[((i*y)%16)];
-    cout<<H[i];
-}
-cout<<endl;
-for(int i=4;i<64;i+=((y+y)/2)%16){
-    for(int j=0;j<3;j++){
-    H[i+j]=L[i+j-y];
-    cout<<H[i];
+
+    string eil;
+    stringstream ss;
+    while (getline(failas, eil)){
+        ss << eil;
     }
+
+    failas.close();
+    return ss.str();
 }
-cout<<endl;
-wypisywanie(H,x);
-return 0;}
+
+void failogeneratorius(string failopav, int simboliukiek) {
+    ofstream F(failopav);
+    if (!F.is_open()) {
+        cout << "Nepavyko sukurti failo: " << failopav << endl;
+        return;
+    }
+
+    srand(time(0));
+    for (int i = 0; i < simboliukiek; i++) {
+        char randsimb = rand() ;
+        F << randsimb;
+    }
+
+    F.close();
+    cout << "Sugeneruotas failas: " << failopav << endl;
+}
+
+void failai1simbdiff(string failas1, string failas2, int simboliukiek) {
+    ofstream F1(failas1);
+    ofstream F2(failas2);
+    if (!F1.is_open() || !F2.is_open()) {
+        cout << "Ivyko klaida." << endl;
+        return;
+    }
+
+    srand(time(0));
+
+    for (int i = 0; i < simboliukiek; i++) {
+        char randsimb = rand() % ;
+        F1 << randsimb;
+        F2 << randsimb;
+    }
+// nwm jak zmienic
+
+    F1.close();
+    F2.close();
+    cout << "Failai su vienu simbolio skirtumu: " << failas1 << ", " << failas2 << endl;
+}
+
+int main() {
+    int variantas;
+    cout << "Pasirinkite norima veiksma: " << endl;
+    cout << "1. Ivesti ranka." << endl;
+    cout << "2. Tikrinti failus, sudarytus tik is vieno simbolio." << endl;
+    cout << "3. Tikrinti failus, kuriuose yra > 1000 simboliu." << endl;
+    cout << "4. Tikrinti failus su 1000 simboliais, kurie skiriasi tik 1 simboliu." << endl;
+    cout << "5. Atidaryti faila 'tuscias.txt'." << endl;
+    cout << "6. Skaiciuoti faila 'konstitucija.txt'." << endl;
+    cout << "7. Baigti darba." << endl;
+    cout << "Jusu pasirinkimas: "; cin >> variantas;
+
+    switch (variantas) {
+        case 1: {
+            string ivestis;
+            cout << "Iveskite simboliu seka, kuria noretumete uzkoduoti: ";
+            cin>>ivestis;
+            break;
+        }
+
+        case 2: {
+            cout << "Nuskaitomi failai su vienu simboliu." << endl;
+            string simbolis1 = failoskaitytuvas("simbolis1.txt");
+            string simbolis2 = failoskaitytuvas("simbolis2.txt");
+            break;
+        }
+
+        case 3: {
+            int pasirinkimas;
+            cout << "Ar norite sugeneruoti du naujus failus? Spauskite 1, jei taip. Bet koks kitas skaicius - ne." << endl;
+            cin >> pasirinkimas;
+            if (pasirinkimas == 1) {
+                failogeneratorius("1random1000.txt", 1050);
+                failogeneratorius("2random1000.txt", 1050);
+            }
+
+            string failas1 = failoskaitytuvas("1random1000.txt");
+            string failas2 = failoskaitytuvas("2random1000.txt");
+            break;
+        }
+
+        case 4: {
+            cout << "Generuojami du failai, kurie skiriasi tik vienu simboliu." << endl;
+            failai1simbdiff("1000.txt", "1000skirtumas.txt", 1000);
+
+            string tekstas1 = failoskaitytuvas("1000.txt");
+            string tekstas2 = failoskaitytuvas("1000skirtumas.txt");
+            break;
+        }
+
+        case 5: {
+            cout << "Nuskaitomas tuscias failas." << endl;
+            ofstream tuscias("tuscias.txt");
+            tuscias.close();
+            string tuscias_failas = failoskaitytuvas("tuscias.txt");
+            break;
+        }
+
+        case 6: {
+
+        break;
+        }
+
+        case 7: {
+            cout << "Darbas baigtas." << endl;
+            break;
+        }
+
+        default: {
+            cout << "Ivedete neteisinga skaiciu. Bandykite dar karta." << endl;
+            break;
+        }
+    }
+
+    return 0;
