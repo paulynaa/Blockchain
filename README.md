@@ -46,10 +46,23 @@ pvz.: (asdfg, bsdfg). Įvertinkite Jūsų gautų hash'ų procentinį "skirtingum
 Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu būdu
 įsitikinti, kaip gerai hash funkcija tenkina lavinos efektą.
 
-# Rezultatai
+# Darbo rezultatai
 ## Naudojimosi instrukcija
 1. 
 Faile hash.cpp aprašyta hash funkciją, kuri....
+
+## Pseudokodas
+1. Input(char) -> X;
+2. X transform ASCII koduotės decimal numerį -> naujas X;
+3. X transform į 64 simbolius (string) iš Hex kuodotės
+(if X>64 priduodam simbolius 2 kartus) -> naujas X
+5. X yra laikinas "raktas".
+4-6. szamanim z haszinimasam
+7. Gaunamas X1 simbolis
+8. X1 transform ASCII koduotės decimal numerį - naujas Xą;
+9. Naudojam X "raktą" 4-6... X1
+10. repat 4-6.
+
 
 ![image](https://github.com/user-attachments/assets/3a138a6f-f76c-47fb-b697-45f527bfe11e)
 1 var, pirma ideja
