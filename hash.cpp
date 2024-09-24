@@ -68,6 +68,7 @@ void konstitucija(){
 
 }
 
+
 void wypisywanie(char H[]){
     int x=0;
 for(int j=0;j<4;j++){
@@ -234,14 +235,28 @@ for(int i=0;i<Skaicius;i++){
 q =(int)h[i];
 cout<<q<<endl;
 if(i==0){robienie64Key(H,b,q);}
-if(i>0){
-Laikinas[i]=h[i];
-HASZHASZ(i,N,H,Laikinas,b,L);
+/*if(i==1){
+//Laikinas[i]=h[i];
+//HASZHASZ(i,N,H,Laikinas,b,L);
 Haszinimas1(H,b,q);
 Haszinimas2(H,b,q);
 cope(H,L);
 Haszinimas3(H,b,q,L);
 
+}*/
+if(i>1){
+        cope(H,N);
+//Laikinas[i]=h[i];
+//HASZHASZ(i,N,H,Laikinas,b,L);
+Haszinimas1(H,N,q);
+Haszinimas2(H,N,q);
+cope(H,L);
+Haszinimas3(H,N,q,L);
 }
+}
+
+
+
+wypisywanie(H);
 
     return 0;
