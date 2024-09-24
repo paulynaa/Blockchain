@@ -22,6 +22,8 @@ nurodyti per Command Line Argument'ą.
 6. Atlikite eksperimentinę analizę, kurios metu įsitikinti, kad hash funkcija-generatorius iš tiesų pasižymi aukščiau aprašytais hash funkcijoms keliamais reikalavimais.
 7. Atliktą tyrimą ir gautuosius rezultatus išsamiai aprašyti README.md faile.
 
+### Versijai 0.1 pavyko realizuoti 1, 2, 4, 5, dalinai 6 ir 7 reikalavimus.
+
 ## Eksperimentinis tyrimas ir rezultatų analizė
 1. Susikurti testinių įvedimo failų pavyzdžių, tokių kad:
 + Bent du failai būtų sudaryti tik iš vieno, tačiau skirtingo, simbolio.
@@ -48,7 +50,16 @@ Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu b�
 
 # Darbo rezultatai
 ## Naudojimosi instrukcija
-1. 
+1. Paleidus programą, galime pasirinkti vieną iš 7 norimų veiksmų: 1. Įvesti ranka, 2. Tikrinti failus, sudarytus tik iš vieno simbolio, 3. Tikrinti failus, kuriuose yra daugiau nei 1000 simbolių, 4. Tikrinti failus su 1000 simbolių, kurie skiriasi tik vienu simboliu, 5. Atidaryti failą 'tuscias.txt', 6. Skaičiuoti failą 'konstitucija.txt', 7. Baigti programą.
+2. Paspaudus 1, turime galimybę suvesti norimą tekstą ranka, kuris bus užhashintas.
+3. Paspaudus 2, matysime 2 eilutes skirtingo hash'o, nes bus apdoroti du failai su skirtingais simboliais juose.
+4. Paspaudus 3, taip pat matysime 2 eilutes skirtingo hasho, nes bus apdoroti du failai su daugiau nei 1000 surandomintų simbolių.
+5. Paspaudus 4, matysime 2 eilutes skirtingo hash'o, nes bus apdoroti du failai su daugiau nei 1000 simbolių, kurie skirsis tik vienu simboliu.
+6. Paspaudus 5, bus atidarytas tuščias failas, ....
+7. Paspaudus 6, matysime kiek laiko užtruko skirtingo eilučių kiekio hashinimas.
+8. Paspaudus 7, programa bus baigta ir uždaryta.
+
+
 Faile hash.cpp aprašyta hash funkciją, kuri....
 
 ## Pseudokodas
@@ -59,10 +70,24 @@ Faile hash.cpp aprašyta hash funkciją, kuri....
 5. X yra laikinas "raktas".
 4-6. szamanim z haszinimasam
 7. Gaunamas X1 simbolis
-8. X1 transform ASCII koduotės decimal numerį - naujas Xą;
+8. X1 transform ASCII koduotės decimal numerį - naujas X1;
 9. Naudojam X "raktą" 4-6... X1
-10. repat 4-6.
+10. repeat 4-6.
 
+## Programos greitis dirbant su failu "konstitucija.txt"
 
-![image](https://github.com/user-attachments/assets/3a138a6f-f76c-47fb-b697-45f527bfe11e)
-1 var, pirma ideja
+Lentelėje vaizduojama kiek vidutiniškai laiko programa hash'ina atitinkamai vieną, 2, 4, 8 ir t.t. eilutes.
+
+|Eilučių skaičius|Vidurkis (sek.)|
+|---|-----|
+|1 |  s.| 
+|2|  s.| 
+|4|  s.| 
+|8|  s.| 
+|16|  s.| 
+|32|  s.| 
+|64|  s.| 
+|128|  s.| 
+|256|  s.| 
+|612|  s.| 
+
