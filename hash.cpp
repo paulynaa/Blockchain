@@ -53,7 +53,7 @@ void failai1simbdiff(string failas1, string failas2, int simboliukiek) {
     srand(time(0));
 
     for (int i = 0; i < simboliukiek; i++) {
-        char randsimb = rand() % ;
+        char randsimb = rand() ;
         F1 << randsimb;
         F2 << randsimb;
     }
@@ -64,6 +64,45 @@ void failai1simbdiff(string failas1, string failas2, int simboliukiek) {
     cout << "Failai su vienu simbolio skirtumu: " << failas1 << ", " << failas2 << endl;
 }
 
+void konstitucija(){
+
+}
+
+void wypisywanie(char H[]){
+    int x=0;
+for(int j=0;j<4;j++){
+for(int i=0;i<16;i++)
+{
+    cout<<H[x]<<" ";x++;
+}
+cout<<endl;
+}
+}//israsimas
+void robienie64Key(char H[],char b[],int q){
+int x=0,qq=q;
+for(int j=0;j<4;j++){
+for(int i=0;i<16;i++)
+{
+    H[x]=b[(i+qq)%16];x++;
+}
+qq+=qq;
+}
+if(q>64){
+q=q-64;
+qq=q;
+x=0;
+for(int j=0;j<q/16;j++){
+for(int i=0;i<q/4;i+=q/16)
+{
+    H[x]=b[(qq^2)%16];x++;
+}
+qq+=qq;
+}
+}
+
+}//nadajim znaczenia dla H
+void cope(char H[],char L[]){
+}
 int main() {
     int variantas;
     cout << "Pasirinkite norima veiksma: " << endl;
