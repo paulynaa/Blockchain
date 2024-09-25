@@ -161,7 +161,8 @@ int main() {
         }
 
         case 6: {
-            //string konsti = konstitucija("konstitucija.txt");
+            string konst = "konstitucija.txt"; // The filename to pass to the function
+            konstitucija(konst);
 
         break;
         }
