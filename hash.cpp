@@ -18,9 +18,9 @@ void wypisywanie(char H[]){
         }
         cout<<endl;
     }
-}//israsimas
+}
 
-void robienie64Key(char H[],char b[],int q){
+void darom64Key(char H[],char b[],int q){
     int x=0,qq=q;
     for(int j=0;j<4;j++){
         for(int i=0;i<16;i++)
@@ -43,9 +43,9 @@ void robienie64Key(char H[],char b[],int q){
     q=q+64;
     }
 
-}//nadajim znaczenia dla H
+}
 
-void cope(char H[],char L[]){
+void kopijuojam(char H[],char L[]){
     for(int i=0;i<64;i++){
         L[i]=H[i];
     }
@@ -139,13 +139,13 @@ void skaiciavimas(string h, int q, char H[], char b[], char N[], char L[]){
     int Skaicius=h.size();
     for(int i=0;i<Skaicius;i++){
         q =(int)h[i];
-        if(i==0){robienie64Key(H,b,q);}
+        if(i==0){darom64Key(H,b,q);}
 
         if(i>1){
-            cope(H,N);
+            kopijuojam(H,N);
             Haszinimas1(H,N,q);
             Haszinimas2(H,N,q);
-            cope(H,L);
+            kopijuojam(H,L);
             Haszinimas3(H,N,q,L);
         }
     }
@@ -158,13 +158,13 @@ void skaiciavimas2(string h, int q, char H[], char b[], char N[], char L[]){
     int Skaicius=h.size();
     for(int i=0;i<Skaicius;i++){
         q =(int)h[i];
-        if(i==0){robienie64Key(H,b,q);}
+        if(i==0){darom64Key(H,b,q);}
 
         if(i>1){
-            cope(H,N);
+            kopijuojam(H,N);
             Haszinimas1(H,b,q);
             Haszinimas2(H,b,q);
-            cope(H,L);
+            kopijuojam(H,L);
             Haszinimas3(H,N,q,L);
         }
     }
