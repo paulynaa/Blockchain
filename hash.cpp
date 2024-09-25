@@ -75,7 +75,7 @@ void Haszinimas3(char H[],char b[],int q,char L[]){
     }
 }
 
-void HASZHASZ(int f,char N[],char H[],char h[],char b[],char L[]){
+/*void HASZHASZ(int f,char N[],char H[],char h[],char b[],char L[]){
     for(int i=0;i<64;i++){
         N[i]=H[i];
     }
@@ -94,7 +94,7 @@ void HASZHASZ(int f,char N[],char H[],char h[],char b[],char L[]){
     Haszinimas3(H,b,q,L);
 }
 
-
+*/
 string failoskaitytuvas(string failopav) {
     ifstream failas(failopav);
     if (!failas.is_open()) {
@@ -188,46 +188,36 @@ void konstitucija(string konst) {
     kons.close();
 }
 
+void skaiciavimas(string h, int q, char H[], char b[], char N[], char L[]){
+
+    int Skaicius=h.size();
+    cout<<Skaicius<<" ";
+    for(int i=0;i<Skaicius;i++){
+        q =(int)h[i];
+        cout<<q<<endl;
+        if(i==0){robienie64Key(H,b,q);}
+
+        if(i>1){
+            cope(H,N);
+            Haszinimas1(H,N,q);
+            Haszinimas2(H,N,q);
+            cope(H,L);
+            Haszinimas3(H,N,q,L);
+        }
+    }
+    wypisywanie(H);
+
+}
 
 int main() {
 
     int q,y,laikinas,z;
-string h,c,p;
-char b[17]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-char H[64];
-char L[64];
-char N[1200];
-char Laikinas[1200];
-cin>>h;
-int Skaicius=h.size();
-cout<<Skaicius<<" ";
-for(int i=0;i<Skaicius;i++){
-q =(int)h[i];
-cout<<q<<endl;
-if(i==0){robienie64Key(H,b,q);}
-/*if(i==1){
-//Laikinas[i]=h[i];
-//HASZHASZ(i,N,H,Laikinas,b,L);
-Haszinimas1(H,b,q);
-Haszinimas2(H,b,q);
-cope(H,L);
-Haszinimas3(H,b,q,L);
-
-}*/
-if(i>1){
-        cope(H,N);
-//Laikinas[i]=h[i];
-//HASZHASZ(i,N,H,Laikinas,b,L);
-Haszinimas1(H,N,q);
-Haszinimas2(H,N,q);
-cope(H,L);
-Haszinimas3(H,N,q,L);
-}
-}
-
-
-
-wypisywanie(H);
+    string h,c,p;
+    char b[17]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+    char H[64];
+    char L[64];
+    char N[1200];
+    char Laikinas[1200];
     int variantas;
     cout << "Pasirinkite norima veiksma: " << endl;
     cout << "1. Ivesti ranka." << endl;
@@ -243,7 +233,8 @@ wypisywanie(H);
         case 1: {
             string ivestis;
             cout << "Iveskite simboliu seka, kuria noretumete uzkoduoti: ";
-            cin>>ivestis;
+            cin>>h;
+            skaiciavimas(h, q, H, b , N, L);
             break;
         }
 
