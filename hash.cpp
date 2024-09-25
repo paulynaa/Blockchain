@@ -59,6 +59,7 @@ void Haszinimas1(char H[],char b[],int q){
         H[i]=b[i%16];
     }
 }
+
 void Haszinimas2(char H[],char b[],int q){
     int qq=q%16;
     for(int i=0;i<64;i+=qq+1){
@@ -107,7 +108,7 @@ string failoskaitytuvas(string failopav) {
     while (getline(failas, eil)){
         ss << eil;
     }
-
+    //cout<< eil <<endl;
     failas.close();
     return ss.str();
 }
@@ -121,7 +122,7 @@ void failogeneratorius(string failopav, int simboliukiek) {
 
     srand(time(0));
     for (int i = 0; i < simboliukiek; i++) {
-        char randsimb = rand() ;
+        char randsimb = rand()%93+33;
         F << randsimb;
     }
 
@@ -140,12 +141,14 @@ void failai1simbdiff(string failas1, string failas2, int simboliukiek) {
     srand(time(0));
 
     for (int i = 0; i < simboliukiek; i++) {
-        char randsimb = rand() ;
+        char randsimb = rand()%93+33;
         F1 << randsimb;
         F2 << randsimb;
     }
-// nwm jak zmienic
-
+    int r= rand()%92+33;
+    char randsimb = r;
+    F1<<randsimb;
+    F2<<"~";
     F1.close();
     F2.close();
     cout << "Failai su vienu simbolio skirtumu: " << failas1 << ", " << failas2 << endl;
@@ -191,16 +194,33 @@ void konstitucija(string konst) {
 void skaiciavimas(string h, int q, char H[], char b[], char N[], char L[]){
 
     int Skaicius=h.size();
-    cout<<Skaicius<<" ";
     for(int i=0;i<Skaicius;i++){
         q =(int)h[i];
-        cout<<q<<endl;
         if(i==0){robienie64Key(H,b,q);}
 
         if(i>1){
             cope(H,N);
             Haszinimas1(H,N,q);
             Haszinimas2(H,N,q);
+            cope(H,L);
+            Haszinimas3(H,N,q,L);
+        }
+    }
+    wypisywanie(H);
+
+}
+
+void skaiciavimas2(string h, int q, char H[], char b[], char N[], char L[]){
+
+    int Skaicius=h.size();
+    for(int i=0;i<Skaicius;i++){
+        q =(int)h[i];
+        if(i==0){robienie64Key(H,b,q);}
+
+        if(i>1){
+            cope(H,N);
+            Haszinimas1(H,b,q);
+            Haszinimas2(H,b,q);
             cope(H,L);
             Haszinimas3(H,N,q,L);
         }
@@ -241,7 +261,12 @@ int main() {
         case 2: {
             cout << "Nuskaitomi failai su vienu simboliu." << endl;
             string simbolis1 = failoskaitytuvas("simbolis1.txt");
+            cout << "Failo simbolis1.txt hashas: "  << endl;
+            skaiciavimas(simbolis1, q,H,b,N,L);
             string simbolis2 = failoskaitytuvas("simbolis2.txt");
+            cout<< endl;
+            cout << "Failo simbolis2.txt hashas: "  << endl;
+            skaiciavimas(simbolis2, q,H,b,N,L);
             break;
         }
 
@@ -253,18 +278,26 @@ int main() {
                 failogeneratorius("1random1000.txt", 1050);
                 failogeneratorius("2random1000.txt", 1050);
             }
-
             string failas1 = failoskaitytuvas("1random1000.txt");
             string failas2 = failoskaitytuvas("2random1000.txt");
+            cout << "Failo 1random1000.txt hashas: "  << endl;
+            skaiciavimas2(failas1, q,H,b,N,L);
+            cout<< endl;
+            cout << "Failo 2random1000.txt hashas: "  << endl;
+            skaiciavimas2(failas2, q,H,b,N,L);
             break;
         }
 
         case 4: {
             cout << "Generuojami du failai, kurie skiriasi tik vienu simboliu." << endl;
             failai1simbdiff("1000.txt", "1000skirtumas.txt", 1000);
-
             string tekstas1 = failoskaitytuvas("1000.txt");
             string tekstas2 = failoskaitytuvas("1000skirtumas.txt");
+            cout << "Failo 1000.txt hashas: "  << endl;
+            skaiciavimas2(tekstas1, q,H,b,N,L);
+            cout<< endl;
+            cout << "Failo 1000skirtumas.txt hashas: "  << endl;
+            skaiciavimas2(tekstas2, q,H,b,N,L);
             break;
         }
 
