@@ -76,26 +76,6 @@ void Haszinimas3(char H[],char b[],int q,char L[]){
     }
 }
 
-/*void HASZHASZ(int f,char N[],char H[],char h[],char b[],char L[]){
-    for(int i=0;i<64;i++){
-        N[i]=H[i];
-    }
-    int q;
-    for(int i=0;i<64;i++){
-        q =(int)N[i];
-    Haszinimas1(H,b,q);
-    Haszinimas2(H,b,q);
-    cope(H,L);
-    Haszinimas3(H,b,q,L);
-    }
-    q=(int)h[f];
-    Haszinimas1(H,b,q);
-    Haszinimas2(H,b,q);
-    cope(H,L);
-    Haszinimas3(H,b,q,L);
-}
-
-*/
 string failoskaitytuvas(string failopav) {
     ifstream failas(failopav);
     if (!failas.is_open()) {
@@ -154,43 +134,6 @@ void failai1simbdiff(string failas1, string failas2, int simboliukiek) {
     cout << "Failai su vienu simbolio skirtumu: " << failas1 << ", " << failas2 << endl;
 }
 
-void konstitucija(string konst) {
-    ifstream kons(konst);
-    if (!kons.is_open()) {
-        cout << "Ivyko klaida. " << endl;
-        return;
-    }
-
-    string eilut;
-    int eilkiek = 1;
-    int visoeil = 0;
-
-    while (!kons.eof()) {
-        int eilnuskaityta = 0;
-
-        auto start = chrono::high_resolution_clock::now();
-
-        while (eilnuskaityta < eilkiek && getline(kons, eilut)) {
-            eilnuskaityta++;
-            visoeil++;
-        }
-
-        auto end = chrono::high_resolution_clock::now();
-        chrono::duration<double> elapsed = end - start;
-
-        cout << eilkiek << " nuskaite per "
-                  << elapsed.count() << " sek " << endl;
-
-        eilkiek *= 2;
-
-        if (kons.eof()) {
-            break;
-        }
-    }
-
-    kons.close();
-}
-
 void skaiciavimas(string h, int q, char H[], char b[], char N[], char L[]){
 
     int Skaicius=h.size();
@@ -227,6 +170,39 @@ void skaiciavimas2(string h, int q, char H[], char b[], char N[], char L[]){
     }
     wypisywanie(H);
 
+}
+
+void konstitucija(string konst, int q, char H[], char b[], char N[], char L[] ) {
+    ifstream kons(konst);
+    if (!kons.is_open()) {
+        cout << "Ivyko klaida. " << endl;
+        return;
+    }
+
+    string eilut;
+    int eilkiek = 1;
+    int visoeil = 0;
+
+    while (!kons.eof() && eilkiek!= 512) {
+        int eilnuskaityta = 0;
+        auto start = chrono::high_resolution_clock::now();
+        while (eilnuskaityta < eilkiek && getline(kons, eilut)) {
+            eilnuskaityta++;
+            visoeil++;
+            string laikinas=eilut;
+            skaiciavimas(laikinas,q,H,b,N,L);
+        }
+        auto end = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed = end - start;
+        cout << eilkiek << " nuskaite per "<< elapsed.count() << " sek " << endl;
+        eilkiek *= 2;
+
+        if (kons.eof()) {
+            break;
+        }
+    }
+    wypisywanie(H);
+    kons.close();
 }
 
 int main() {
@@ -305,13 +281,16 @@ int main() {
             cout << "Nuskaitomas tuscias failas." << endl;
             ofstream tuscias("tuscias.txt");
             tuscias.close();
-            string tuscias_failas = failoskaitytuvas("tuscias.txt");
+            string tusciasfailas = failoskaitytuvas("tuscias.txt");
+            cout << "Failo tuscias.txt hashas: "  << endl;
+            skaiciavimas(tusciasfailas, q,H,b,N,L);
             break;
         }
 
         case 6: {
-            string konst = "konstitucija.txt"; // The filename to pass to the function
-            konstitucija(konst);
+            string konst = "konstitucija.txt";
+            konstitucija(konst, q,H,b,N,L);
+
 
         break;
         }
