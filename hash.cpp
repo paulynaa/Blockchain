@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 #include <ctime>
-
+#include <chrono>
 using namespace std;
 
 string failoskaitytuvas(string failopav) {
@@ -64,89 +64,44 @@ void failai1simbdiff(string failas1, string failas2, int simboliukiek) {
     cout << "Failai su vienu simbolio skirtumu: " << failas1 << ", " << failas2 << endl;
 }
 
-void konstitucija(){
-
-}
-
-
-void wypisywanie(char H[]){
-    int x=0;
-for(int j=0;j<4;j++){
-for(int i=0;i<16;i++)
-{
-    cout<<H[x]<<" ";x++;
-}
-cout<<endl;
-}
-}//israsimas
-void robienie64Key(char H[],char b[],int q){
-int x=0,qq=q;
-for(int j=0;j<4;j++){
-for(int i=0;i<16;i++)
-{
-    H[x]=b[(i+qq)%16];x++;
-}
-qq+=qq;
-}
-if(q>64){
-q=q-64;
-qq=q;
-x=0;
-for(int j=0;j<q/16;j++){
-for(int i=0;i<q/4;i+=q/16)
-{
-    H[x]=b[(qq^2)%16];x++;
-}
-qq+=qq;
-}
-q=q+64;
-}
-
-}//nadajim znaczenia dla H
-void cope(char H[],char L[]){
-    for(int i=0;i<64;i++){
-        L[i]=H[i];
+void konstitucija(string konst) {
+    ifstream kons(konst);
+    if (!kons.is_open()) {
+        cout << "Ivyko klaida. " << endl;
+        return;
     }
+
+    string eilut;
+    int eilkiek = 1;
+    int visoeil = 0;
+
+    while (!kons.eof()) {
+        int eilnuskaityta = 0;
+
+        auto start = chrono::high_resolution_clock::now();
+
+        while (eilnuskaityta < eilkiek && getline(kons, eilut)) {
+            eilnuskaityta++;
+            visoeil++;
+        }
+
+        auto end = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed = end - start;
+
+        cout << eilkiek << " nuskaite per "
+                  << elapsed.count() << " sek " << endl;
+
+        eilkiek *= 2;
+
+        if (kons.eof()) {
+            break;
+        }
+    }
+
+    kons.close();
 }
-void Haszinimas1(char H[],char b[],int q){
-int qq=q;
-if(q>64){qq=q-64+1;}
-for(int i=0;i<64;i=i+qq+1){
-H[i]=b[i%16];
-}
-}
-void Haszinimas2(char H[],char b[],int q){
-int qq=q%16;
-for(int i=0;i<64;i+=qq+1){
-H[i]=b[i%16];
-}
-}
-void Haszinimas3(char H[],char b[],int q,char L[]){
-int qq=q;
-if(q>64){qq=q-64+1;}
-for(int i=0;i<64;i+=qq+1){
-if(2*i<64){H[i]=L[2*i];}
-else{H[i]=L[(2*i)%64];}
-}
-}
-void HASZHASZ(int f,char N[],char H[],char h[],char b[],char L[]){
-for(int i=0;i<64;i++){
-    N[i]=H[i];
-}
-int q;
-for(int i=0;i<64;i++){
-q =(int)N[i];
-Haszinimas1(H,b,q);
-Haszinimas2(H,b,q);
-cope(H,L);
-Haszinimas3(H,b,q,L);
-}
-q=(int)h[f];
-Haszinimas1(H,b,q);
-Haszinimas2(H,b,q);
-cope(H,L);
-Haszinimas3(H,b,q,L);
-}
+
+
 int main() {
     int variantas;
     cout << "Pasirinkite norima veiksma: " << endl;
@@ -206,6 +161,7 @@ int main() {
         }
 
         case 6: {
+            //string konsti = konstitucija("konstitucija.txt");
 
         break;
         }
@@ -221,42 +177,5 @@ int main() {
         }
     }
 
-    int q,y,laikinas,z;
-string h,c,p;
-char b[17]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-char H[64];
-char L[64];
-char N[1200];
-char Laikinas[1200];
-cin>>h;
-int Skaicius=h.size();
-cout<<Skaicius<<" ";
-for(int i=0;i<Skaicius;i++){
-q =(int)h[i];
-cout<<q<<endl;
-if(i==0){robienie64Key(H,b,q);}
-/*if(i==1){
-//Laikinas[i]=h[i];
-//HASZHASZ(i,N,H,Laikinas,b,L);
-Haszinimas1(H,b,q);
-Haszinimas2(H,b,q);
-cope(H,L);
-Haszinimas3(H,b,q,L);
-
-}*/
-if(i>1){
-        cope(H,N);
-//Laikinas[i]=h[i];
-//HASZHASZ(i,N,H,Laikinas,b,L);
-Haszinimas1(H,N,q);
-Haszinimas2(H,N,q);
-cope(H,L);
-Haszinimas3(H,N,q,L);
-}
-}
-
-
-
-wypisywanie(H);
-
     return 0;
+}
