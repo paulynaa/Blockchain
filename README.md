@@ -63,16 +63,61 @@ Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu b�
 Faile hash.cpp aprašyta hash funkciją, kuri....
 
 ## Pseudokodas
-1. Input(char) -> X;
-2. X transform ASCII koduotės decimal numerį -> naujas X;
-3. X transform į 64 simbolius (string) iš Hex kuodotės
-(if X>64 priduodam simbolius 2 kartus) -> naujas X
-5. X yra laikinas "raktas".
-4-6. szamanim z haszinimasam
-7. Gaunamas X1 simbolis
-8. X1 transform ASCII koduotės decimal numerį - naujas X1;
-9. Naudojam X "raktą" 4-6... X1
-10. repeat 4-6.
+1. hashSkaiciavimas(ivestis, asciiReiksme, hashMasyvas, buferis, laikinasMasyvas, laikinaKopija):
+2. ivestiesIlgis ← ilgis(ivestis)
+3. for i <- 0 to ivestiesIlgis - 1 do
+4.         asciiReiksme ← ASCII reikšmė is ivestis[i]
+5.         jei i = 0 then:
+6.             inicializuotiHash(hashMasyvas, buferis, asciiReiksme)
+7.         jei i > 1 then:
+8.             kopijuotiMasyva(hashMasyvas, laikinasMasyvas)
+9.             hashZingsnis1(hashMasyvas, laikinasMasyvas, asciiReiksme)
+10.            hashZingsnis2(hashMasyvas, laikinasMasyvas, asciiReiksme)
+11.            kopijuotiMasyva(hashMasyvas, laikinaKopija)
+12.            hashZingsnis3(hashMasyvas, laikinasMasyvas, asciiReiksme, laikinaKopija)
+13.    spausdintiHash(hashMasyvas)
+14. inicializuotiHash(hashMasyvas, buferis, asciiReiksme):
+15.    i ← 0
+16.    pokytis ← asciiReiksme
+17.    for eilute from 0 iki 3 do
+18.        for stulpelis nuo 0 iki 15 do:
+19.            hashMasyvas[i] ← buferis[(stulpelis + pokytis) mod 16]
+20.            i ← i + 1
+21.        pokytis ← pokytis * 2
+22.    if asciiReiksme > 64 tada:
+23.        pokytis ← asciiReiksme - 64
+24.        i ← 0
+25.        for eilute from 0 to (asciiReiksme // 16) - 1 do
+26.            for stulpelis from 0 to (asciiReiksme // 4) - 1 kas (asciiReiksme // 16) do:
+27.                hashMasyvas[i] ← buferis[(pokytis ^ 2) mod 16]
+28.                i ← i + 1
+29. kopijuotiMasyva(saltinisMasyvas, tikslasMasyvas):
+30.    for i from 0 to 63 do
+31.        tikslasMasyvas[i] ← saltinisMasyvas[i]
+32. hashZingsnis1(hashMasyvas, buferis, asciiReiksme):
+33.    zingsnioDydis ← if asciiReiksme > 64 then asciiReiksme - 64 + 1 else asciiReiksme:
+34.    for i from 0 to 63 kas zingsnioDydis + 1 do
+35.        hashMasyvas[i] ← buferis[i mod 16]
+36. hashZingsnis2(hashMasyvas, buferis, asciiReiksme):
+37.    zingsnioDydis ← asciiReiksme mod 16
+38.    for i from 0 to 63 kas zingsnioDydis + 1 do
+39.        hashMasyvas[i] ← buferis[i mod 16]
+40. hashZingsnis3(hashMasyvas, buferis, asciiReiksme, laikinaKopija):
+41.    zingsnioDydis ← if asciiReiksme > 64 then asciiReiksme - 64 + 1 else asciiReiksme:
+42.    for i from 0 to 63 kas zingsnioDydis + 1 do
+43.        if 2 * i < 64 then
+44.            hashMasyvas[i] ← laikinaKopija[2 * i]
+45.        else:
+46.            hashMasyvas[i] ← laikinaKopija[(2 * i) mod 64]
+47. spausdintiHash(hashMasyvas):
+48.    i ← 0
+49.    for eilute from 0 to 3 do
+50.        for stulpelis from 0 to 15 do
+51.            spausdinti hashMasyvas[i] + " "
+52.            i ← i + 1
+53.        spausdinti nauja eilute
+
+
 
 ## Programos greitis dirbant su failu "konstitucija.txt"
 
