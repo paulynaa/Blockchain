@@ -234,7 +234,7 @@ string generateRandomString(int length) {
     const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     string result;
     static random_device rd;
-    static mt19937 generator(rd()); // Mersenne Twister engine
+    static mt19937 generator(rd());
     uniform_int_distribution<> distribution(0, characters.size() - 1);
 
     for (int i = 0; i < length; ++i) {
@@ -369,11 +369,11 @@ int main() {
     cout << "2. Tikrinti failus, sudarytus tik is vieno simbolio." << endl;
     cout << "3. Tikrinti failus, kuriuose yra > 1000 simboliu." << endl;
     cout << "4. Tikrinti failus su 1000 simboliais, kurie skiriasi tik 1 simboliu." << endl;
-    cout << "5. konst." << endl;
-    cout << "6. poros" << endl;
-    cout << "7. poros2" << endl;
-    cout << "8. Baigti darba." << endl;
-
+    cout << "5. Atlikti testa su konstitucija.txt failu." << endl;
+    cout << "6. Generuoti faila su 100 000 atsitiktiniu simboliu poru ir tikrinti ar hash nesutampa." << endl;
+    cout << "7. Generuoti 100 000 atsitiktiniu simboliu poru su vienu skirtumu ir atlikti testus." << endl;
+    cout << "8. Nuskaityti faila tuscias.txt." << endl;
+    cout << "9. Baigti darba." << endl;
     cout << "Jusu pasirinkimas: ";
     cin >> variantas;
 
@@ -445,8 +445,16 @@ int main() {
             evaluateHashDifferences(randomPairs);
             break;
         }
-
-        case 8:
+        case 8:{
+            ofstream tuscias("tuscias.txt");
+            tuscias.close();
+            string tusciasf = failoskaitytuvas("tuscias.txt");
+            cout<<"Hash:"<<endl;
+            char H[64], L[64], N[1200], b[17] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+            skaiciavimas(tusciasf, H, b, N, L);
+            break;
+        }
+        case 9:
             return 0;
         default:
             cout << "Tokio pasirinkimo nera." << endl;
