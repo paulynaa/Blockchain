@@ -438,7 +438,6 @@ int main() {
             skaiciavimas(h, H, b, N, L);
             break;
         }
-
         case 2: {
             cout << "Nuskaitomi failai su vienu simboliu." << endl;
             string simbolis1 = failoskaitytuvas("simbolis1.txt");
@@ -450,7 +449,6 @@ int main() {
             skaiciavimas(simbolis2, H, b, N, L);
             break;
         }
-
         case 3: {
             int pasirinkimas;
             cout << "Ar norite sugeneruoti du naujus failus? Spauskite 1, jei taip. Bet koks kitas skaicius - ne." << endl;
@@ -468,7 +466,6 @@ int main() {
             skaiciavimas(failas2, H, b, N, L);
             break;
         }
-
         case 4: {
             cout << "Generuojami du failai, kurie skiriasi tik vienu simboliu." << endl;
             failai1simbdiff("1001simboliai1.txt", "1001simboliai2.txt", 1000);
@@ -481,31 +478,22 @@ int main() {
             skaiciavimas(failas2, H, b, N, L);
             break;
         }
-
         case 5: {
-            vector<string> fileName = readFileLines("konstitucija.txt");  // You can replace this with the actual file name
+            vector<string> fileName = readFileLines("konstitucija.txt");
             testHashEfficiency(fileName);
             break;
         }
         case 6: {
             vector<pair<string, string>> randomPairs = generateRandomStringPairs();
-
-            // Write the pairs to a file
             string filename = "random_string_pairs.txt";
             writePairsToFile(randomPairs, filename);
-
-            // Optionally, read back and check for hash collisions
             checkHashCollisions(randomPairs);
-                }
+        }
         case 7: {
-            const int numPairs = 100000; // Total number of pairs
-    const int maxLength = 1000; // Max length of strings
-
-    // Generate string pairs differing by one character
-    vector<pair<string, string>> randomPairs = generateStringPairsDifferingByOneChar(numPairs, maxLength);
-
-    // Evaluate hash differences
-    evaluateHashDifferences(randomPairs);
+            const int numPairs = 100000;
+            const int maxLength = 1000;
+            vector<pair<string, string>> randomPairs = generateStringPairsDifferingByOneChar(numPairs, maxLength);
+            evaluateHashDifferences(randomPairs);
         }
         case 8:
             return 0;
