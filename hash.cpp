@@ -12,14 +12,13 @@
 #include <cmath>
 #include <numeric>
 #include <algorithm>
+//#include <besties<3>
 using namespace std;
 
-// Bitwise rotation (right shift)
 uint32_t rightRotate(uint32_t n, unsigned int d) {
     return (n >> d) | (n << (32 - d));
 }
 
-// Padding function to make the message length a multiple of 512 bits
 string padMessage(string input) {
     uint64_t messageLength = input.size() * 8;  // Size in bits
     input += (char)0x80;  // Add a single '1' bit (0x80 in hex)
@@ -37,7 +36,6 @@ string padMessage(string input) {
     return input;
 }
 
-// Enhanced hash function (similar to SHA-256 structure)
 vector<uint32_t> enhancedHashBlocks(const vector<string> &blocks) {
     // Initial hash values (similar to SHA-256)
     uint32_t H[8] = {
@@ -112,7 +110,6 @@ vector<uint32_t> enhancedHashBlocks(const vector<string> &blocks) {
     return vector<uint32_t>(H, H + 8);
 }
 
-// Function to print the hash in hexadecimal format
 void printHash(const vector<uint32_t>& hash) {
     for (uint32_t part : hash) {
         cout << hex << setw(8) << setfill('0') << part;
@@ -120,7 +117,6 @@ void printHash(const vector<uint32_t>& hash) {
     cout << endl;
 }
 
-// Hash calculation function using the enhanced hash
 void skaiciavimas(string h, char H[], char b[], char N[], char L[]) {
     // Step 1: Pad the message
     string paddedInput = padMessage(h);
@@ -139,7 +135,6 @@ void skaiciavimas(string h, char H[], char b[], char N[], char L[]) {
     printHash(hashResult);
 }
 
-// Function to generate a file with random characters
 void failogeneratorius(string failopav, int simboliukiek) {
     ofstream F(failopav);
     if (!F.is_open()) {
@@ -157,7 +152,6 @@ void failogeneratorius(string failopav, int simboliukiek) {
     cout << "Sugeneruotas failas: " << failopav << endl;
 }
 
-// Function to read the contents of a file
 string failoskaitytuvas(string failopav) {
     ifstream failas(failopav);
     if (!failas.is_open()) {
@@ -174,7 +168,6 @@ string failoskaitytuvas(string failopav) {
     return ss.str();
 }
 
-// Function to generate two files with a 1-symbol difference
 void failai1simbdiff(string failas1, string failas2, int simboliukiek) {
     ofstream F1(failas1);
     ofstream F2(failas2);
@@ -210,39 +203,37 @@ vector<string> readFileLines(const string& fileName) {
 }
 
 void testHashEfficiency(const vector<string>& lines) {
-    int lineCount = 1; // Start with 1 line
+    float lineCount = 1;
     int totalLines = lines.size();
+    float k=0;
 
     while (lineCount <= totalLines) {
-        // Concatenate the selected number of lines
         string inputData = "";
         for (int i = 0; i < lineCount; ++i) {
             inputData += lines[i];
         }
-
-        // Measure the time taken for hashing
         auto start = chrono::high_resolution_clock::now();
 
-        // Perform hashing
         char H[64], L[64], N[1200], b[17] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         skaiciavimas(inputData, H,b,N,L);
 
-        // Stop measuring time
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
-
+        cout << endl;
         cout << "Lines processed: " << lineCount << ", Time taken: " << elapsed.count() << " seconds" << endl;
-
-        // Update the line count to the next power of 2
-        lineCount *= 2; // Exponential growth for testing
+        lineCount = lineCount*2;
+        if(lineCount>totalLines && k!=1){
+            lineCount = totalLines;
+            k++;
+        }
     }
-}
 
+}
 
 string generateRandomString(int length) {
     const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     string result;
-    static random_device rd; // Random device to seed the random number generator
+    static random_device rd;
     static mt19937 generator(rd()); // Mersenne Twister engine
     uniform_int_distribution<> distribution(0, characters.size() - 1);
 
@@ -253,7 +244,6 @@ string generateRandomString(int length) {
     return result;
 }
 
-// Function to generate pairs of random strings
 vector<pair<string, string>> generateRandomStringPairs() {
     vector<pair<string, string>> pairs;
 
@@ -272,7 +262,6 @@ vector<pair<string, string>> generateRandomStringPairs() {
     return pairs;
 }
 
-// Function to write the string pairs to a file
 void writePairsToFile(const vector<pair<string, string>>& pairs, const string& filename) {
     ofstream outFile(filename);
     if (!outFile) {
@@ -300,53 +289,29 @@ void checkHashCollisions(const vector<pair<string, string>>& pairs) {
 
         // Perform hashing
         vector<uint32_t> hashResult = enhancedHashBlocks({inputData});
-
-        // Convert hash result to string format for comparison
         string hashString;
         for (uint32_t part : hashResult) {
             hashString += to_string(part); // Adjust as necessary to match your hash output
         }
 
-        // Check for collisions
         if (hashMap.find(hashString) != hashMap.end()) {
             collisionCount++;
             cout << "Collision found for input pair index: " << i << " with hash: " << hashString << endl;
         } else {
-            hashMap[hashString].push_back(i); // Store the index of the original pair
+            hashMap[hashString].push_back(i);
         }
     }
 
     cout << "Total collisions found: " << collisionCount << endl;
 }
 
-
-string generateRandomString2(int length) {
-    const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    string result;
-    static random_device rd; // Random device to seed the random number generator
-    static mt19937 generator(rd()); // Mersenne Twister engine
-    uniform_int_distribution<> distribution(0, characters.size() - 1);
-
-    for (int i = 0; i < length; ++i) {
-        result += characters[distribution(generator)];
-    }
-
-    return result;
-}
-
-// Function to generate pairs of random strings differing by one character
 vector<pair<string, string>> generateStringPairsDifferingByOneChar(int numPairs, int maxLength) {
     vector<pair<string, string>> pairs;
 
     for (int i = 0; i < numPairs; ++i) {
-        // Generate a random string
-        string original = generateRandomString2(maxLength);
-
-        // Randomly change one character in the string
-        int charIndex = rand() % maxLength; // Random index to change
-        char newChar = generateRandomString2(1)[0]; // New random character
-
-        // Create a new string that differs by one character
+        string original = generateRandomString(maxLength);
+        int charIndex = rand() % maxLength;
+        char newChar = generateRandomString(1)[0];
         string modified = original;
         modified[charIndex] = newChar;
 
@@ -356,59 +321,42 @@ vector<pair<string, string>> generateStringPairsDifferingByOneChar(int numPairs,
     return pairs;
 }
 
-// Function to calculate the hash difference percentage at the bit level
 double calculateBitDifferencePercentage(uint32_t hash1, uint32_t hash2) {
-    uint32_t diff = hash1 ^ hash2; // XOR to find differing bits
-    int bitDifference = __builtin_popcount(diff); // Count set bits
-    return (static_cast<double>(bitDifference) / (sizeof(uint32_t) * 8)) * 100; // Percentage
+    uint32_t diff = hash1 ^ hash2;
+    int bitDifference = __builtin_popcount(diff);
+    return (static_cast<double>(bitDifference) / (sizeof(uint32_t) * 8)) * 100;
 }
 
-// Function to calculate the hash difference percentage at the hex level
 double calculateHexDifferencePercentage(const string& hex1, const string& hex2) {
     int length = min(hex1.size(), hex2.size());
     int diffCount = 0;
-
-    // Compare hex characters
     for (int i = 0; i < length; ++i) {
         if (hex1[i] != hex2[i]) {
             diffCount++;
         }
     }
-
-    return (static_cast<double>(diffCount) / length) * 100; // Percentage
+    return (static_cast<double>(diffCount) / length) * 100;
 }
 
-// Function to collect and display the min, max, and average differences
 void evaluateHashDifferences(const vector<pair<string, string>>& pairs) {
     vector<double> bitDifferences;
     vector<double> hexDifferences;
-
     for (const auto& pair : pairs) {
-        // Placeholder for hashing function
         uint32_t hash1 = static_cast<uint32_t>(std::hash<string>{}(pair.first));
         uint32_t hash2 = static_cast<uint32_t>(std::hash<string>{}(pair.second));
-
-        // Convert hashes to hex representation (you may adjust the output format as needed)
         string hex1 = to_string(hash1);
         string hex2 = to_string(hash2);
-
-        // Calculate differences
         bitDifferences.push_back(calculateBitDifferencePercentage(hash1, hash2));
         hexDifferences.push_back(calculateHexDifferencePercentage(hex1, hex2));
     }
-
-    // Calculate min, max, and average for bit differences
     double bitMin = *min_element(bitDifferences.begin(), bitDifferences.end());
     double bitMax = *max_element(bitDifferences.begin(), bitDifferences.end());
     double bitAvg = accumulate(bitDifferences.begin(), bitDifferences.end(), 0.0) / bitDifferences.size();
 
-    // Calculate min, max, and average for hex differences
     double hexMin = *min_element(hexDifferences.begin(), hexDifferences.end());
     double hexMax = *max_element(hexDifferences.begin(), hexDifferences.end());
     double hexAvg = accumulate(hexDifferences.begin(), hexDifferences.end(), 0.0) / hexDifferences.size();
-
-    // Output results
-    cout << fixed << setprecision(2); // Set precision for output
+    cout << fixed << setprecision(2);
     cout << "Bit Difference - Min: " << bitMin << "%, Max: " << bitMax << "%, Avg: " << bitAvg << "%" << endl;
     cout << "Hex Difference - Min: " << hexMin << "%, Max: " << hexMax << "%, Avg: " << hexAvg << "%" << endl;
 }
@@ -483,21 +431,23 @@ int main() {
             testHashEfficiency(fileName);
             break;
         }
-        case 6: {
+        case 6:{
             vector<pair<string, string>> randomPairs = generateRandomStringPairs();
             string filename = "random_string_pairs.txt";
             writePairsToFile(randomPairs, filename);
             checkHashCollisions(randomPairs);
-        }
+            break;
+            }
         case 7: {
             const int numPairs = 100000;
             const int maxLength = 1000;
             vector<pair<string, string>> randomPairs = generateStringPairsDifferingByOneChar(numPairs, maxLength);
             evaluateHashDifferences(randomPairs);
+            break;
         }
+
         case 8:
             return 0;
-
         default:
             cout << "Tokio pasirinkimo nera." << endl;
             return 0;
