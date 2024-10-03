@@ -10,7 +10,6 @@ greitai - efektyviai.
 7. Bent minimaliai pakeitus įvedimą, pvz., vietoj "Lietuva" pateikus "lietuva", maišos
 funkcijos rezultatas-maišos kodas turi skirtis iš esmės.
 
-### Versijai 0.1 pavyko įgyvendinti šiuos reikalavimus: 1, 2, 3, 4, 7, dalinai 5 ir 6.
 
 ## Reikalavimai versijai v0.1
 1. Realizuoti hash'avimo generatorių C++ programavimo kalboje.
@@ -21,8 +20,6 @@ nurodyti per Command Line Argument'ą.
 5. Repozicijos README.md faile aprašyti maišos funkcijos idėją pseudo-kodo stiliumi.
 6. Atlikite eksperimentinę analizę, kurios metu įsitikinti, kad hash funkcija-generatorius iš tiesų pasižymi aukščiau aprašytais hash funkcijoms keliamais reikalavimais.
 7. Atliktą tyrimą ir gautuosius rezultatus išsamiai aprašyti README.md faile.
-
-### Versijai 0.1 pavyko realizuoti 1, 2, 4, 5, dalinai 6 ir 7 reikalavimus.
 
 ## Eksperimentinis tyrimas ir rezultatų analizė
 1. Susikurti testinių įvedimo failų pavyzdžių, tokių kad:
@@ -48,7 +45,6 @@ pvz.: (asdfg, bsdfg). Įvertinkite Jūsų gautų hash'ų procentinį "skirtingum
 Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu būdu
 įsitikinti, kaip gerai hash funkcija tenkina lavinos efektą.
 
-### Versijai 0.1 pavyko realizuoti 1, 2, 3(yra trūkumų), kadangi hash funkcija dar turi trūkumų, 4, 5 ir 6 įgyvendinsiu versijoje v0.2.
 
 # Darbo rezultatai
 ## Naudojimosi instrukcija
@@ -57,12 +53,14 @@ Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu b�
 3. Paspaudus 2, matysime 2 eilutes skirtingo hash'o, nes bus apdoroti du failai su skirtingais simboliais juose.
 4. Paspaudus 3, taip pat matysime 2 eilutes skirtingo hasho, nes bus apdoroti du failai su daugiau nei 1000 surandomintų simbolių.
 5. Paspaudus 4, matysime 2 eilutes skirtingo hash'o, nes bus apdoroti du failai su daugiau nei 1000 simbolių, kurie skirsis tik vienu simboliu.
-6. Paspaudus 5, bus atidarytas tuščias failas, ....
-7. Paspaudus 6, matysime kiek laiko užtruko skirtingo eilučių kiekio hashinimas.
-8. Paspaudus 7, programa bus baigta ir uždaryta.
+6. Paspaudus 5, matysime hash'ą tam tikrų eilučių ir laiką kiek tai užtruko padaryti.
+7. Paspaudus 6, matysime kiek kartų sutapo hash'ai 100 000 eilučių skirtingų simbolių porų.
+8. Paspaudus 7, matysime hash'ų procentinį skirtingumą bit'ų ir hex'ų lygmenyje iš 100 000 simbolių eilučių porų.
+9. Paspaudus 8, matysime hash'ą tuščio failo.
+10. Paspaudus 9, programa bus baigta ir uždaryta.
 
 
-## Pseudokodas
+## Pseudokodas v0.1
 1.  hashSkaiciavimas(ivestis, asciiReiksme, hashMasyvas, buferis, laikinasMasyvas, laikinaKopija): 
 2.  ivestiesIlgis ← ilgis(ivestis) 
 3.  for i <- 0 to ivestiesIlgis - 1 do
@@ -120,26 +118,23 @@ Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu b�
 16.  end
 
 
-Aukščiau pateiktas detalus maišos generavimo pseudokodas.
+Aukščiau pateiktas detalus versijos v0.1 maišos generavimo pseudokodas.
 
 ## Eksperimentas su 2 failais sudarytais tik iš vieno simbolio
 
 Pirmame faile yra simbolis "F", antrame "9". Rezultatas:
 
-![image](https://github.com/user-attachments/assets/9da0ac47-c34b-4d71-84c2-c0f55e2e5b19)
+![image](https://github.com/user-attachments/assets/2eabc175-9772-4ff3-b87f-d55aa4dc9809)
+
 
 ## Eksperimentas su 2 failais sudarytais iš > 1000 skirtingų simbolių
 
-Kadangi failų generavimui naudoju rand, tai šie failai skiriasi tik keliais simboliais, dėl to hashai yra beveik vienodi:
+![image](https://github.com/user-attachments/assets/644738de-474c-4170-be49-50a112b6506f)
 
-![image](https://github.com/user-attachments/assets/93e5f543-6a83-40f9-a987-240587bd4830)
 
 ## Eksperimentas su 2 failais, sudarytais iš > 1000 simbolių, kurie skiriasi tik vienu simboliu:
 
-Hashas nesiskiria iš esmės, bet skirtumas yra.
-
-![image](https://github.com/user-attachments/assets/8c85d26c-ba3f-45a5-857c-ce84844c1b01)
-
+![image](https://github.com/user-attachments/assets/6863ef31-6589-4f2d-81a3-c2fa9e136310)
 
 ## Programos greitis dirbant su failu "konstitucija.txt"
 
@@ -147,16 +142,17 @@ Lentelėje vaizduojama kiek vidutiniškai laiko programa hash'ina atitinkamai vi
 
 |Eilučių skaičius|Vidurkis (sek.)|
 |---|-----|
-|1 | 0,0107 s.| 
-|2| 0,0103 s.| 
-|4| 0,0195 s.| 
-|8| 0,0372 s.| 
-|16| 0,0748 s.| 
-|32| 0,1671 s.| 
-|64| 0,3123 s.| 
-|128| 0,5857 s.| 
-|256| 1,1964 s.| 
-
+|1 | 0,00245 s.| 
+|2| 0 s.| 
+|4| 0,00005 s.| 
+|8| 0 s.| 
+|16| 0,0015 s.| 
+|32| 0,001 s.| 
+|64| 0,0009 s.| 
+|128| 0,00098 s.| 
+|256| 0,00097 s.|
+|512| 0,00029 s.|
+|789| 0,002 s.|
 
 ## Deterministinė
 
@@ -164,34 +160,42 @@ Kiekvieną kartą vedant tą patį žodį, gauname tą patį rezultatą:
 
 ### 1:
 
-![image](https://github.com/user-attachments/assets/7acda4ff-71ad-4621-bff3-837217b7e048)
+![image](https://github.com/user-attachments/assets/9afcea0e-22ef-4407-a7aa-932799e84297)
+
 
 ### 2:
 
-![image](https://github.com/user-attachments/assets/010ba0f2-0bfe-4579-839d-fb12b678f2d2)
+![image](https://github.com/user-attachments/assets/d67f28f4-0078-404a-899a-dcdcd7159e72)
+
 
 ## Lavinos efektas
 
-Įvedus žodį hash ir Hash, gauname skirtingus kodus:
+Matome, kad ši versija turi gerą lavinos efektą, o rezultatai išlieka vienodi net kelis kartus atliekant testus, tikriausiai dėl to, kad naudoju rand funkciją generavimui, kuri nėra visiškai randominė(pseudo).
 
-![image](https://github.com/user-attachments/assets/38c552af-d7ee-485e-914f-3fc01d132dd7)
+![image](https://github.com/user-attachments/assets/8b971dd8-1900-48de-87f6-18bbec1ab401)
 
-![image](https://github.com/user-attachments/assets/7083b1e8-d224-47e5-972f-ee6691a77f89)
+
+## Atsparumas kolizijai
+
+Net kelis kartus generuojant failą su 100 000 eilučių skirtingų simbolių poromis(25000 porų su 10 simbolių ilgiu, 25000 su 100, 25000 su 500, 25000 su 1000) ir tikrinant ar nėra kolizijų, rezultatas kiekvieną kartą lygus 0:
+
+![image](https://github.com/user-attachments/assets/d7f7f038-2f26-499c-8e1a-9746ae0353e0)
+
+## Tuščio failo testas
+Kadangi ASCII koduotėj NULL turi reikšmę, tai gaunamas toks hashas:
+
+![image](https://github.com/user-attachments/assets/ef5ba903-0a81-469a-a7eb-6638022e1562)
 
 
 ## Stiprybės ir trūkumai
-Kadangi dar nėra implementuota extended ASCII koduotė, tai programa nehashuoja lietuviškų ir tam tikrų simbolių. Taip pat kai yra nuskaitomas tuscias failas, programa hasho negražina, bet gaunamas toks outputas:
+Versijoje v0.2 buvo panaikinti visi trūkumai, kurie buvo v0.1. Papildžiau testais ir rezultatus aprašiau aukščiau. Dabartinis patobulintas kodas atitinka visus reikalavimus ir praeina testus. Kadangi tobulindama naudojausi įvairiais šaltiniais, tai pavyko padaryti beveik vienodą maišos funkciją su SHA256:
 
-![image](https://github.com/user-attachments/assets/6796df69-22f6-4603-bcc5-a227367bf4ae)
+![image](https://github.com/user-attachments/assets/ca31ce3f-d25d-474b-9515-0547c45f6c3e)
 
-Savo jėgomis sugebėjau sukurti tik tokią hash funkciją, kurios outputas nėra toks "surandomintas" kaip pvz.: SHA256. Taip pat mano funkcija nepakankamai gerai veikia su dideliu inputu. Ši versija netikrina ar hashas yra atsparus kolizijai, nėra atlikti testai 100 000 atsitiktinių simbolių eilučių poromis, bet hashas yra atsparus kolizijai su vienu simboliu, ilgesnį stringą koduoja taip:
+![image](https://github.com/user-attachments/assets/632b7365-2986-417e-afcf-cc842c8b7006)
 
-![image](https://github.com/user-attachments/assets/aaf9acfa-3385-49d9-98e9-46e065f89377)
+Taip pat vedant tą patį žodį tik pvz. iš didelės raidės ar su vienu skirtumu, hashas skiriasi iš esmės.
 
-![image](https://github.com/user-attachments/assets/9b30d926-b809-4c56-bc93-31b724681058)
-
-Šie trūkumai turėtų būti sutvarkyti sekančioje versijoje.
-Stiprybės ir ką pavyko realizuoti: Maišos funkcija priima bet kokio dydžio simbolių eilutę. Maišos funkcijos išėjimas visuomet yra to paties dydžio rezultatas. Maišos funkcija yra deterministinė. Maišos funkcijos kodas bet kokiai input'o reikšmei yra apskaičiuojamas greitai - efektyviai. Atlikti eksperimentiniai tyrimai. Maišos funkcija tenkina lavinos efektą. Iš outputo beveik neįmanoma atgaminti inputo, nes tai priklauso nuo ASCII, kur visi simboliai nuo 32 iki 127 turės skirtingą hashą.
 
 
 
