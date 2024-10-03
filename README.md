@@ -194,7 +194,7 @@ Versijoje v0.2 buvo panaikinti visi trūkumai, kurie buvo v0.1. Papildžiau test
 
 ![image](https://github.com/user-attachments/assets/632b7365-2986-417e-afcf-cc842c8b7006)
 
-Taip pat vedant tą patį žodį tik pvz. iš didelės raidės ar su vienu skirtumu, hashas skiriasi iš esmės.
+Taip pat vedant tą patį žodį tik pvz. iš didelės raidės ar su vienu skirtumu, hashas skiriasi iš esmės. Tą taip pat pavaizduoja eksperimentas su 1000 random simbolių, bet su vienu simbolio skirtumu.
 
 
 
