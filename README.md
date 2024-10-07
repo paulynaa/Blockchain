@@ -199,8 +199,7 @@ Taip pat vedant tą patį žodį tik pvz. iš didelės raidės ar su vienu skirt
 
 # Papildomos užduotys
 
-1.	Objektyviai palyginti mano Hash funkcijos spartą su MD5 , 
-SHA-1 , SHA-256 ar kita gerai žinoma hash funkcija.
+1.	Objektyviai palyginti mano Hash funkcijos spartą su MD5 , SHA-1 , SHA-256 ar kita gerai žinoma hash funkcija.
 2.	Parodyti, kad iš hash funkcijos rezultato (output'o) praktiškai neįmanoma atgaminti pradinio įvedimo (input'o), t. y., kaip hash funkcijoje realizuota hiding ir puzzlefriendliness savybės. 
 3.	Reikia 3-4  grupės/pogrupio sukurtų hash funkcijų/generatorių apjungti/integruoti į mano programą. Tai gali būti ir visiškai nauja programa, kurioje būtų iškviečiamos visų sukurtos funkcijos.
 - Tuomet atlikti anksčiau aprašytus eksperimentus su grupės/pogrupio kolegų sukurtais hash generatoriais. Gautus grupės/pogrupio rezultatus - agreguoti ir sureitinguoti.
@@ -210,8 +209,19 @@ SHA-1 , SHA-256 ar kita gerai žinoma hash funkcija.
 
 
 ## 2 papildoma
+Be salt funkcijos tą pačią simbolių seką hashina vienodai
 
+![image](https://github.com/user-attachments/assets/b20d6ad2-493e-43f0-bae7-d7038d6250ff)
 
+![image](https://github.com/user-attachments/assets/24a18594-8774-4496-9d28-a0c7cff64b3f)
+
+Salt(druska) padeda labiau apsaugoti duomenis nuo nuhackinimo, nes sukuriama papildoma individuali reikšmė prie mūsų įvestos simbolių sekos, todėl tom pačiom simbolių sekom bus išvedami skirtingi hashai.
+
+Norėdama įsitikinti ar tikrai veikia salt programoje, sukūriau du failus su ta pačia simbolių seka, šiuo atveju abejuose failuose įrašiau "hash123" ir gavau skirtingas reikšmes:
+
+![image](https://github.com/user-attachments/assets/09b165ee-5bee-440d-8afb-163a7f22c870)
+
+Patikrinus net 1 000 000 skirtingų porų hashus, galima teigti, kad hash funkcija yra atspari kolizjai. Dėl to, kad yra 16^64 skirtingų įmanomų hashų, o pridėjus salt, hashai tampa labiau individualizuoti, negalime atkurti hasho, nebent turime pradinį inputą, jam sugeneruotą salt ir taip pat pradinį key. 
 
 
 ## 3 papildoma
