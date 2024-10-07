@@ -197,5 +197,23 @@ Versijoje v0.2 buvo panaikinti visi trūkumai, kurie buvo v0.1. Papildžiau test
 Taip pat vedant tą patį žodį tik pvz. iš didelės raidės ar su vienu skirtumu, hashas skiriasi iš esmės. Tą taip pat pavaizduoja eksperimentas su 1000 random simbolių, bet su vienu simbolio skirtumu.
 
 
+# Papildomos užduotys
+
+1.	Objektyviai palyginti mano Hash funkcijos spartą su MD5 , 
+SHA-1 , SHA-256 ar kita gerai žinoma hash funkcija.
+2.	Parodyti, kad iš hash funkcijos rezultato (output'o) praktiškai neįmanoma atgaminti pradinio įvedimo (input'o), t. y., kaip hash funkcijoje realizuota hiding ir puzzlefriendliness savybės. 
+3.	Reikia 3-4  grupės/pogrupio sukurtų hash funkcijų/generatorių apjungti/integruoti į mano programą. Tai gali būti ir visiškai nauja programa, kurioje būtų iškviečiamos visų sukurtos funkcijos.
+- Tuomet atlikti anksčiau aprašytus eksperimentus su grupės/pogrupio kolegų sukurtais hash generatoriais. Gautus grupės/pogrupio rezultatus - agreguoti ir sureitinguoti.
+
+## 1 papildoma
+
+
+
+## 2 papildoma
+
+
+
+
+## 3 papildoma
 
 
