@@ -15,6 +15,7 @@
 using namespace std;
 
 
+
 uint32_t rightRotate(uint32_t n, unsigned int d) {
     return (n >> d) | (n << (32 - d));
 }
@@ -280,6 +281,7 @@ void porosfailiukas(const vector<pair<string, string>>& pora, const string& file
     cout << "Poros irasytos i faila " << filename << endl;
 }
 
+
 void hashkolizijos(const vector<pair<string, string>>& pora) {
     unordered_map<string, vector<int>> hashMap;
     int collisionCount = 0;
@@ -287,8 +289,18 @@ void hashkolizijos(const vector<pair<string, string>>& pora) {
     for (size_t i = 0; i < pora.size(); ++i) {
         const auto& pair = pora[i];
         string inputData = pair.first + pair.second;
+        string salt = generateSalt(16);
+        string saltedInput = salt + inputData;
 
-        vector<uint32_t> hashResult = hashblokai({inputData});
+        string paddedInput = padMessage(saltedInput);
+
+        vector<string> blocks;
+        for (size_t j = 0; j < paddedInput.size(); j += 64) {
+            blocks.push_back(paddedInput.substr(j, 64));
+        }
+
+        vector<uint32_t> hashResult = hashblokai(blocks);
+
         string hashString;
         for (uint32_t part : hashResult) {
             hashString += to_string(part);
@@ -301,6 +313,7 @@ void hashkolizijos(const vector<pair<string, string>>& pora) {
             hashMap[hashString].push_back(i);
         }
     }
+
     cout << "Is viso koliziju: " << collisionCount << endl;
 }
 
@@ -400,17 +413,18 @@ vector<pair<string, string>> skaitytiporas(const string& failoPavadinimas) {
 
 }
 
-vector<pair<string, string>> generuotiIdentiskasPoras(int kiekis) {
+vector<pair<string, string>> generuojamvienodasporas(int kiekis) {
     vector<pair<string, string>> poros;
-    string identiskaPoruPirmaDalis = "IdentiskaPora";
-    string identiskaPoruAntraDalis = "IdentiskaPora";
+    string poravien = "poranumeris1";
+    string poradu = "poranumeris2";
 
     for (int i = 0; i < kiekis; ++i) {
-        poros.emplace_back(identiskaPoruPirmaDalis, identiskaPoruAntraDalis);
+        poros.emplace_back(poravien, poradu);
     }
 
     return poros;
 }
+
 int main() {
     int variantas;
 
@@ -519,7 +533,7 @@ int main() {
             break;
         }
         case 10:{
-            vector<pair<string, string>> poros = generuotiIdentiskasPoras(20);
+            vector<pair<string, string>> poros = generuojamvienodasporas(100000);
     // Step 2: Check for hash collisions
             hashkolizijos(poros);
             break;
