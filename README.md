@@ -172,7 +172,7 @@ Kiekvieną kartą vedant tą patį žodį, gauname tą patį rezultatą:
 
 Matome, kad ši versija turi gerą lavinos efektą, o rezultatai išlieka vienodi net kelis kartus atliekant testus, tikriausiai dėl to, kad naudoju rand funkciją generavimui, kuri nėra visiškai randominė(pseudo).
 
-![image](https://github.com/user-attachments/assets/8b971dd8-1900-48de-87f6-18bbec1ab401)
+![image](https://github.com/user-attachments/assets/d847ebfa-86f0-404a-aaa7-032886d7bd69)
 
 
 ## Atsparumas kolizijai
@@ -222,6 +222,7 @@ Norėdama įsitikinti ar tikrai veikia salt programoje, sukūriau du failus su t
 ![image](https://github.com/user-attachments/assets/09b165ee-5bee-440d-8afb-163a7f22c870)
 
 Patikrinus net 1 000 000 skirtingų porų hashus, galima teigti, kad hash funkcija yra atspari kolizjai. Dėl to, kad yra 16^64 skirtingų įmanomų hashų, o pridėjus salt, hashai tampa labiau individualizuoti, negalime atkurti hasho, nebent turime pradinį inputą, jam sugeneruotą salt ir taip pat pradinį key. 
+
 
 
 ## 3 papildoma
