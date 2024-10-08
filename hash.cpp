@@ -14,6 +14,7 @@
 #include <algorithm>
 using namespace std;
 
+
 uint32_t rightRotate(uint32_t n, unsigned int d) {
     return (n >> d) | (n << (32 - d));
 }
@@ -104,8 +105,27 @@ void printHash(const vector<uint32_t>& hash) {
     cout << endl;
 }
 
+// generuojam druska
+string generateSalt(int length) {
+    const string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=[];,./{}:`~|<>?";
+    string salt;
+    static random_device rd;
+    static mt19937 generator(rd());
+    uniform_int_distribution<> distribution(0, characters.size() - 1);
+
+    for (int i = 0; i < length; ++i) {
+        salt += characters[distribution(generator)];
+    }
+
+    return salt;
+}
+
 void skaiciavimas(string h, char H[], char b[], char N[], char L[]) {
-    string paddedInput = padMessage(h);
+    string salt = generateSalt(16);
+
+    string saltedInput = salt + h;
+
+    string paddedInput = padMessage(saltedInput);
 
     vector<string> blocks;
     for (size_t i = 0; i < paddedInput.size(); i += 64) {
@@ -113,10 +133,12 @@ void skaiciavimas(string h, char H[], char b[], char N[], char L[]) {
     }
 
     vector<uint32_t> hashResult = hashblokai(blocks);
+    cout << "Salt: " << salt << endl;
     cout << "Hash: ";
     printHash(hashResult);
 }
 
+// generuoja random simboliu faila
 void failogeneratorius(string failopav, int simboliukiek) {
     ofstream F(failopav);
     if (!F.is_open()) {
@@ -150,6 +172,7 @@ string failoskaitytuvas(string failopav) {
     return ss.str();
 }
 
+// generuojami 2 failai sudaryti tik is simboliu, kurie skiriasi tik vienu simboliu
 void failai1simbdiff(string failas1, string failas2, int simboliukiek) {
     ofstream F1(failas1);
     ofstream F2(failas2);
@@ -241,6 +264,7 @@ vector<pair<string, string>> generuojamrandporas() {
     return pora;
 }
 
+// sugeneruotas poras irasom i faila
 void porosfailiukas(const vector<pair<string, string>>& pora, const string& filename) {
     ofstream outFile(filename);
     if (!outFile) {
@@ -263,6 +287,7 @@ void hashkolizijos(const vector<pair<string, string>>& pora) {
     for (size_t i = 0; i < pora.size(); ++i) {
         const auto& pair = pora[i];
         string inputData = pair.first + pair.second;
+
         vector<uint32_t> hashResult = hashblokai({inputData});
         string hashString;
         for (uint32_t part : hashResult) {
@@ -279,13 +304,14 @@ void hashkolizijos(const vector<pair<string, string>>& pora) {
     cout << "Is viso koliziju: " << collisionCount << endl;
 }
 
+// generuojam poras tik su vieno simboliu skirtumu lavinos efekto tikrinimui
 vector<pair<string, string>> generuojamporas1simbdiff(int numPairs, int maxLength) {
     vector<pair<string, string>> pora;
 
     for (int i = 0; i < numPairs; ++i) {
         string original = generuojamrandstring(maxLength);
         int charIndex = rand() % maxLength;
-        char newChar = generuojamrandstring(1)[0];
+        char newChar = generuojamrandstring(1)[2];
         string modified = original;
         modified[charIndex] = newChar;
 
@@ -312,6 +338,7 @@ double hexskirtumasproc(const string& hex1, const string& hex2) {
     return (static_cast<double>(diffCount) / length) * 100;
 }
 
+// eksperimentas su bitu ir hexu skirtingumu
 void lavinosteastas(const vector<pair<string, string>>& pora) {
     vector<double> bitDifferences;
     vector<double> hexDifferences;
@@ -335,6 +362,55 @@ void lavinosteastas(const vector<pair<string, string>>& pora) {
     cout << "Hex skirtingumas - Min: " << hexMin << "%, Max: " << hexMax << "%, Avg: " << hexAvg << "%" << endl;
 }
 
+// 2 papildomam darbui tikrinti ar puzzle friendly
+// sukuriam faila kuriame visos eilutes bus pp+skaicius
+void skaiciusfailas(string failoPavadinimas, int skaicius) {
+    ofstream failiukas(failoPavadinimas);
+    if (!failiukas) {
+        cout << "Nepavyko atidaryti failo: " << failoPavadinimas << endl;
+        return;
+    }
+
+    for (int i = 0; i < skaicius; i++) {
+        string ivestis = "pp" + to_string(i);
+        failiukas << ivestis << endl;
+    }
+
+
+    failiukas.close();
+}
+
+//nuskaitom sukurtas eilutes kaip poras
+vector<pair<string, string>> skaitytiporas(const string& failoPavadinimas) {
+    ifstream failiukas(failoPavadinimas);
+    vector<pair<string, string>> poros;
+
+    if (!failiukas) {
+        cout << "Nepavyko atidaryti failo: " << failoPavadinimas << endl;
+        return poros;
+    }
+
+    string pirmas, antras;
+    while (getline(failiukas, pirmas) && getline(failiukas, antras)) {
+        poros.emplace_back(pirmas, antras);
+    }
+
+    failiukas.close();
+    return poros;
+
+}
+
+vector<pair<string, string>> generuotiIdentiskasPoras(int kiekis) {
+    vector<pair<string, string>> poros;
+    string identiskaPoruPirmaDalis = "IdentiskaPora";
+    string identiskaPoruAntraDalis = "IdentiskaPora";
+
+    for (int i = 0; i < kiekis; ++i) {
+        poros.emplace_back(identiskaPoruPirmaDalis, identiskaPoruAntraDalis);
+    }
+
+    return poros;
+}
 int main() {
     int variantas;
 
@@ -347,7 +423,10 @@ int main() {
     cout << "6. Generuoti faila su 100 000 atsitiktiniu simboliu poru ir tikrinti ar hash nesutampa." << endl;
     cout << "7. Generuoti 100 000 atsitiktiniu simboliu poru su vienu skirtumu ir atlikti testus." << endl;
     cout << "8. Nuskaityti faila tuscias.txt." << endl;
-    cout << "9. Baigti darba." << endl;
+    cout << "9. Tikrinti ar veikia salt su failais kuriuose yra ta pati simboliu seka." << endl;
+    cout << "10. Tikrinti hiding savybe." << endl;
+    cout << "11. Tikrinti puzzle friendliness savybe." << endl;
+    cout << "12. Baigti darba." << endl;
     cout << "Jusu pasirinkimas: ";
     cin >> variantas;
 
@@ -428,7 +507,31 @@ int main() {
             skaiciavimas(tusciasf, H, b, N, L);
             break;
         }
-        case 9:
+        case 9: {
+            cout << "Nuskaitomi failai su ta pacia simboliu seka." << endl;
+            string salt1 = failoskaitytuvas("salt1.txt");
+            cout << "Failo salt1.txt hashas: " << endl;
+            char H[64], L[64], N[1200], b[17] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+            skaiciavimas(salt1, H, b, N, L);
+            string salt2 = failoskaitytuvas("salt2.txt");
+            cout << endl << "Failo salt2.txt hashas: " << endl;
+            skaiciavimas(salt2, H, b, N, L);
+            break;
+        }
+        case 10:{
+            vector<pair<string, string>> poros = generuotiIdentiskasPoras(20);
+    // Step 2: Check for hash collisions
+            hashkolizijos(poros);
+            break;
+        }
+        case 11:{
+            string failoPavadinimas = "puzzle.txt";
+            skaiciusfailas(failoPavadinimas, 100000);
+            vector<pair<string, string>> poros = skaitytiporas(failoPavadinimas);
+            hashkolizijos(poros);
+            break;
+        }
+        case 12:
             return 0;
         default:
             cout << "Tokio pasirinkimo nera." << endl;
