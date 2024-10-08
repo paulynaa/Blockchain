@@ -205,6 +205,8 @@ Taip pat vedant tą patį žodį tik pvz. iš didelės raidės ar su vienu skirt
 - Tuomet atlikti anksčiau aprašytus eksperimentus su grupės/pogrupio kolegų sukurtais hash generatoriais. Gautus grupės/pogrupio rezultatus - agreguoti ir sureitinguoti.
 
 ## 1 papildoma
+Kadangi mano hash generatorius yra panašus į SHA256, tai palyginsiu su tikru SHA256 generatoriumi ir SHA1.
+Tam sukūriau atskirą programą, ir parsisiunčiau OpenSSL biblioteką. (prisegta "palyginimas.cpp")
 
 
 
@@ -223,6 +225,17 @@ Norėdama įsitikinti ar tikrai veikia salt programoje, sukūriau du failus su t
 
 Patikrinus net 1 000 000 skirtingų porų hashus, galima teigti, kad hash funkcija yra atspari kolizjai. Dėl to, kad yra 16^64 skirtingų įmanomų hashų, o pridėjus salt, hashai tampa labiau individualizuoti, negalime atkurti hasho, nebent turime pradinį inputą, jam sugeneruotą salt ir taip pat pradinį key. 
 
+Su saltu dar atskirai patikrinu hiding savybę, t.y. sugeneruoju failą, kuriame yra 100 000 vienodų porų ir tikrinu ar nėra kolizijų:
+
+![image](https://github.com/user-attachments/assets/f194032d-5039-46d6-acf8-51ee7df8d0c6)
+
+Kadangi kiekvienam stringui yra sukuriamas individualus saltas, jų hashai skirsis.
+
+Tikrinu puzzle friendliness savybę. Sukuriu failą, kuriame yra 100 000 panašių porų: pp1, pp2; pp3, pp4; pp5,pp6 ir tt. ir tikrinu ar nėra kolizijų:
+
+![image](https://github.com/user-attachments/assets/49eed24e-cf56-40f0-8a5b-8312722b14cc)
+
+Net kai toks nereikšmingas skirtumas tarp porų, kolizijų vis tiek nėra.
 
 
 ## 3 papildoma
