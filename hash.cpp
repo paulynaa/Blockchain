@@ -535,7 +535,6 @@ int main() {
         }
         case 10:{
             vector<pair<string, string>> poros = generuojamvienodasporas(100000);
-    // Step 2: Check for hash collisions
             hashkolizijos(poros);
             break;
         }
