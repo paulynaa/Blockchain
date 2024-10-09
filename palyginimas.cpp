@@ -8,8 +8,22 @@
 #include <string>
 #include <cstring>
 #include <fstream>
+
 using namespace std;
 using namespace std::chrono;
+
+string generuojamrand(size_t ilgis) {
+    const char simboliai[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    string randsimb;
+    random_device rd;
+    mt19937 generator(rd());
+    uniform_int_distribution<> distribution(0, sizeof(simboliai) - 2);
+
+    for (size_t i = 0; i < ilgis; ++i) {
+        randsimb += simboliai[distribution(generator)];
+    }
+    return randsimb;
+}
 
 uint32_t rightRotate(uint32_t n, unsigned int d) {
     return (n >> d) | (n << (32 - d));
@@ -93,25 +107,26 @@ vector<uint32_t> hashblokai(const vector<string> &blocks) {
 }
 
 void printHash(const vector<uint32_t>& hash) {
-    cout<<"Mano hash: ";
+    cout << "Mano hash: ";
     for (uint32_t part : hash) {
-
         cout << hex << setw(8) << setfill('0') << part;
     }
     cout << endl;
 }
 
-// --- Helper function to benchmark ---
 template <typename Func>
-void benchmark(Func hashFunction, const string& input, const string& name) {
-    auto start = high_resolution_clock::now();
-    hashFunction(input);
-    auto end = high_resolution_clock::now();
-    duration<double> elapsed = end - start;
-    cout << name << " took: " << elapsed.count() << " seconds" << endl;
+void benchmark(Func hashFunction, const string& input, const string& name, int iter = 1) {
+    duration<double, milli> total_time(0);
+    for (int i = 0; i < iter; ++i) {
+        auto start = high_resolution_clock::now();
+        hashFunction(input);
+        auto end = high_resolution_clock::now();
+        total_time += end - start;
+    }
+    cout << name << " took on average: " << (total_time.count() / iter) << " milliseconds over " << iter << " iter." << endl;
 }
 
-void customHash(const string &input) {
+void manoHash(const string &input) {
     string paddedInput = padMessage(input);
     vector<string> blocks;
     for (size_t i = 0; i < paddedInput.size(); i += 64) {
@@ -143,77 +158,24 @@ void sha256Hash(const string &input) {
     cout << "SHA-256: " << ss.str() << endl;
 }
 
+void testas(int iter, const vector<int>& ilgiait) {
+    for (int ilgis : ilgiait) {
+        string randomInput = generuojamrand(ilgis);
+        cout << "Testuojam su random ilgiais: " << ilgis << endl;
 
-vector<string> skaitytieil(const string& fileName) {
-    ifstream file(fileName);
-    vector<string> lines;
-    string line;
-    while (getline(file, line)) {
-        lines.push_back(line);
-    }
-    return lines;
-}
+        benchmark(manoHash, randomInput, "Mano Hash", iter);
+        benchmark(sha1Hash, randomInput, "SHA-1", iter);
+        benchmark(sha256Hash, randomInput, "SHA-256", iter);
 
-
-void konstitucijatestas(const vector<string>& lines) {
-    float lineCount = 1;
-    int totalLines = lines.size();
-    float k = 0;
-
-    while (lineCount <= totalLines) {
-        string inputData = "";
-        for (int i = 0; i < lineCount; ++i) {
-            inputData += lines[i];
-        }
-
-        auto start_mano = chrono::high_resolution_clock::now();
-        customHash(inputData);
-        auto end_mano = chrono::high_resolution_clock::now();
-        chrono::duration<double> elapsed_mano = end_mano - start_mano;
-
-        auto start_sha1 = chrono::high_resolution_clock::now();
-        sha1Hash(inputData);
-        auto end_sha1 = chrono::high_resolution_clock::now();
-        chrono::duration<double> elapsed_sha1 = end_sha1 - start_sha1;
-
-        auto start_sha256 = chrono::high_resolution_clock::now();
-        sha256Hash(inputData);
-        auto end_sha256 = chrono::high_resolution_clock::now();
-        chrono::duration<double> elapsed_sha256 = end_sha256 - start_sha256;
-
-        cout << "Eiluciu skaicius: " << lineCount << ", SHA-1 laikas: " << elapsed_sha1.count() << " s, ";
-        cout << "SHA-256 laikas: " << elapsed_sha256.count() << " s." << endl;
-        cout << "Mano hash laikas: " << elapsed_mano.count() << " s." << endl;
-
-        lineCount = lineCount * 2;
-        if (lineCount > totalLines && k != 1) {
-            lineCount = totalLines;
-            k++;
-        }
+        cout << "-----------------------------------------------" << endl;
     }
 }
+
 
 int main() {
-    /*
-    string input = "The quick brown fox jumps over the lazy dog";
-    string largeInput;
-    for (int i = 0; i < 10000; ++i) {
-        largeInput += input;
-    }
-    benchmark(customHash, largeInput, "Custom Hash Function");
-    benchmark(sha1Hash, largeInput, "SHA-1");
-    benchmark(sha256Hash, largeInput, "SHA-256");
+    int iteracijos = 10;
+    vector<int> ilgiai = {32, 64, 128, 256, 512, 1024, 2048};
 
-    return 0;
-    */
-    string fileName = "konstitucija.txt";
-    vector<string> lines = skaitytieil(fileName);
-
-    if (lines.empty()) {
-        cout << "Could not read any lines from the file: " << fileName << endl;
-        return 1;
-    }
-
-    konstitucijatestas(lines);
+    testas(iteracijos, ilgiai);
     return 0;
 }
