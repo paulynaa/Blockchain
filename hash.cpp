@@ -413,10 +413,11 @@ vector<pair<string, string>> skaitytiporas(const string& failoPavadinimas) {
 
 }
 
+// tikrinti kaip veikia hiding
 vector<pair<string, string>> generuojamvienodasporas(int kiekis) {
     vector<pair<string, string>> poros;
     string poravien = "poranumeris1";
-    string poradu = "poranumeris2";
+    string poradu = "poranumeris1";
 
     for (int i = 0; i < kiekis; ++i) {
         poros.emplace_back(poravien, poradu);
