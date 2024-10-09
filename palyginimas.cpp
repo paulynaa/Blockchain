@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 #include <cstring>
-
+#include <fstream>
 using namespace std;
 using namespace std::chrono;
 
@@ -93,7 +93,9 @@ vector<uint32_t> hashblokai(const vector<string> &blocks) {
 }
 
 void printHash(const vector<uint32_t>& hash) {
+    cout<<"Mano hash: ";
     for (uint32_t part : hash) {
+
         cout << hex << setw(8) << setfill('0') << part;
     }
     cout << endl;
@@ -141,7 +143,58 @@ void sha256Hash(const string &input) {
     cout << "SHA-256: " << ss.str() << endl;
 }
 
+
+vector<string> skaitytieil(const string& fileName) {
+    ifstream file(fileName);
+    vector<string> lines;
+    string line;
+    while (getline(file, line)) {
+        lines.push_back(line);
+    }
+    return lines;
+}
+
+
+void konstitucijatestas(const vector<string>& lines) {
+    float lineCount = 1;
+    int totalLines = lines.size();
+    float k = 0;
+
+    while (lineCount <= totalLines) {
+        string inputData = "";
+        for (int i = 0; i < lineCount; ++i) {
+            inputData += lines[i];
+        }
+
+        auto start_mano = chrono::high_resolution_clock::now();
+        customHash(inputData);
+        auto end_mano = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed_mano = end_mano - start_mano;
+
+        auto start_sha1 = chrono::high_resolution_clock::now();
+        sha1Hash(inputData);
+        auto end_sha1 = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed_sha1 = end_sha1 - start_sha1;
+
+        auto start_sha256 = chrono::high_resolution_clock::now();
+        sha256Hash(inputData);
+        auto end_sha256 = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed_sha256 = end_sha256 - start_sha256;
+
+        cout << "Eiluciu skaicius: " << lineCount << ", SHA-1 laikas: " << elapsed_sha1.count() << " s, ";
+        cout << "SHA-256 laikas: " << elapsed_sha256.count() << " s." << endl;
+        cout << "Mano hash laikas: " << elapsed_mano.count() << " s." << endl;
+
+        lineCount = lineCount * 2;
+        if (lineCount > totalLines && k != 1) {
+            lineCount = totalLines;
+            k++;
+        }
+    }
+}
+
 int main() {
+    /*
     string input = "The quick brown fox jumps over the lazy dog";
     string largeInput;
     for (int i = 0; i < 10000; ++i) {
@@ -151,5 +204,16 @@ int main() {
     benchmark(sha1Hash, largeInput, "SHA-1");
     benchmark(sha256Hash, largeInput, "SHA-256");
 
+    return 0;
+    */
+    string fileName = "konstitucija.txt";
+    vector<string> lines = skaitytieil(fileName);
+
+    if (lines.empty()) {
+        cout << "Could not read any lines from the file: " << fileName << endl;
+        return 1;
+    }
+
+    konstitucijatestas(lines);
     return 0;
 }
