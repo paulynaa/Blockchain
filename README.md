@@ -1,54 +1,8 @@
-# Užduoties aprašymas
-## Bendri reikalavimai
-1. Maišos funkcijos įėjimas bet kokio dydžio simbolių eilutė.
-2. Maišos funkcijos išėjimas to paties, fiksuoto, dydžio rezultatas.
-3. Maišos funkcija yra deterministinės.
-4. Maišos funkcijos hash‘as bet kokiai input'o reikšmei yra apskaičiuojamas
-greitai - efektyviai.
-5. Iš hash funkcijos rezultato praktiškai neįmanoma atgaminti pradinio įvedimo.
-6. Maišos funkcija yra atspari "kolizijai".
-7. Bent minimaliai pakeitus įvedimą, pvz., vietoj "Lietuva" pateikus "lietuva", maišos
-funkcijos rezultatas-maišos kodas turi skirtis iš esmės.
-
-
-## Reikalavimai versijai v0.1
-1. Realizuoti hash'avimo generatorių C++ programavimo kalboje.
-2. Programos realizavimas turi būti versijuojamas (pvz. v0.1 , v0.2 ir t.t.) git'e bei patalpintas asmeniniame Github viešoje repozicijoje.
-3. Programos realizacijoje hash'avimui reikiamą input'ą, esantį išoriniame faile, reikia
-nurodyti per Command Line Argument'ą.
-4. Papildomai, turi būti realizuota galimybė input'ą įvesti ir ranka.
-5. Repozicijos README.md faile aprašyti maišos funkcijos idėją pseudo-kodo stiliumi.
-6. Atlikite eksperimentinę analizę, kurios metu įsitikinti, kad hash funkcija-generatorius iš tiesų pasižymi aukščiau aprašytais hash funkcijoms keliamais reikalavimais.
-7. Atliktą tyrimą ir gautuosius rezultatus išsamiai aprašyti README.md faile.
-
-## Eksperimentinis tyrimas ir rezultatų analizė
-1. Susikurti testinių įvedimo failų pavyzdžių, tokių kad:
-+ Bent du failai būtų sudaryti tik iš vieno, tačiau skirtingo, simbolio.
-+ Bent du failai būtų sudaryti iš daug (> 1000) atsitiktinai sugeneruotų simbolių.
-+ Bent du failai būtų sudaryti iš daug (> 1000) simbolių, bet skirtųsi vienas nuo kito tik
-vienu (pvz. vidurinėje pozicijoje esančiu) simboliu.
-+ Tuščio failo.
-2. Naudojant pirmame žingsnyje susikurtus testinius failus, kaip programos input'us,
-įsitikinkti, kad hash funkcija atitinka aukščiau aprašytus reikalavimus.
-3. Ištirti sukurtos hash funkcijos efektyvumą ir greitį. Tuo tikslu pirmiausiai suhash'uosiu vieną eilutę iš failo
-konstitucija.txt ir išmatuosiu kiek laiko visa tai užtruko.
-Tuomet kartosiu eksperimentą hash'uojant 2 eilutes, 4 eilutes, 8 eilutes ir t.t. Matuoti reikia tik programos veikimo laiką. Reiktų pateikti suvidurkintą hash'avimo laiko priklausomybę nuo eilučių skaičiaus. Rezultatą pavaizduosiu grafiškai.
-4. Susigeneruoti bent 100 000 atsitiktinių simbolių eilučių ( string 'ų) porų, apsiribojant iki 1000 simbolių ilgiu. Toje pačioje poroje esančių string'ų ilgiai turi sutapti, tačiau skirtingos poros gali būti skirtingo ilgio.
-5. Naudojant 4 žingsnyje sugeneruotas poras, patikrinti, ar visais atvejais gautieji porų
-hash'ai nesutampa. O jeigu sutampta, tai kaip dažnai tai nutinka. Tokiu būdu (jei visuomet
-hash'ai nesutampa) bent dalinai įsitikinti, kad hash funkcija atspari kolizijai.
-6. Susigeneruoti bent 100 000 atsitiktinių simbolių eilučių ( string 'ų) porų, apsiribojant
-iki 1000 simbolių eilučių ilgiu, taip, kad jos skirtųsi tik vienu simboliu
-pvz.: (asdfg, bsdfg). Įvertinkite Jūsų gautų hash'ų procentinį "skirtingumą":
-+ bitų lygmenyje;
-+ hex'ų lygmenyje;
-Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu būdu
-įsitikinti, kaip gerai hash funkcija tenkina lavinos efektą.
-
-
 # Darbo rezultatai
+Versijoje v0.2 buvo patobulintas mano v0.1 hash generatorius ir pridėti trūkstami eksperimentai, taip pat įgyvendintos papildomos užduotys. Šiai versijai buvo panaudotas šis kodas: https://gist.github.com/hak8or/8794351  , kurį integravau į savo kodą. Atlikti visi reikalavimuose nurodyti eksperimentai, o jų rezultatai pateikti žemiau. Dabartinė hash funkcija veikia akivaizdžiai geriau ir efektyviau, ką įrodo visi testai. Šioje versijoje naudojama extended ASCII, todėl nėra tos problemos, kuri buvo pirmoje versijoje(pvz. hashinant tuščią failą).
+
 ## Naudojimosi instrukcija
-1. Paleidus programą, galime pasirinkti vieną iš 7 norimų veiksmų: 1. Įvesti ranka, 2. Tikrinti failus, sudarytus tik iš vieno simbolio, 3. Tikrinti failus, kuriuose yra daugiau nei 1000 simbolių, 4. Tikrinti failus su 1000 simbolių, kurie skiriasi tik vienu simboliu, 5. Atidaryti failą 'tuscias.txt', 6. Skaičiuoti failą 'konstitucija.txt', 7. Baigti programą.
+1. Paleidus programą, galime pasirinkti vieną iš 12 norimų veiksmų: 1. Įvesti ranka, 2. Tikrinti failus, sudarytus tik iš vieno simbolio, 3. Tikrinti failus, kuriuose yra daugiau nei 1000 simbolių, 4. Tikrinti failus su 1000 simbolių, kurie skiriasi tik vienu simboliu, 5. Atlikti testą su failu 'konstitucija.txt', 6. Atlikti testą kolizijom su 100 000 skirtingų simbolių porų, 7. Atlikti testą bitų ir hexų skirtingumui su 100 000 porų, kurios skiriasi tik vienu simboliu. 8. Nuskaitytį failą 'tuscias.txt', 9,10,11 skirti papildomų užduočių testams, 12. Baigti programą. 
 2. Paspaudus 1, turime galimybę suvesti norimą tekstą ranka, kuris bus užhashintas.
 3. Paspaudus 2, matysime 2 eilutes skirtingo hash'o, nes bus apdoroti du failai su skirtingais simboliais juose.
 4. Paspaudus 3, taip pat matysime 2 eilutes skirtingo hasho, nes bus apdoroti du failai su daugiau nei 1000 surandomintų simbolių.
@@ -57,7 +11,10 @@ Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu b�
 7. Paspaudus 6, matysime kiek kartų sutapo hash'ai 100 000 eilučių skirtingų simbolių porų.
 8. Paspaudus 7, matysime hash'ų procentinį skirtingumą bit'ų ir hex'ų lygmenyje iš 100 000 simbolių eilučių porų.
 9. Paspaudus 8, matysime hash'ą tuščio failo.
-10. Paspaudus 9, programa bus baigta ir uždaryta.
+10. Paspaudus 9, matysime 2 skirtingus hashus tos pačios simbolių sekos(pridėta druskos).
+11. Paspaudus 10, matysime kiek kartų sutapo hashai tarp vienodų porų, pasikartojančių 100 000 kartų(salt, hiding)
+12. Paspaudus 11, matysime kiek kartų sutapo hashai tarp mažo skirtingumo 100 000 porų(puzzlefriendly)
+13. Paspaudus 12, programa bus baigta ir uždaryta.
 
 
 ## Pseudokodas v0.1
@@ -118,8 +75,6 @@ Išvesti minimalią, maksimalią ir vidurkines "skirtingumo" reikšmes. Tokiu b�
 16.  end
 
 
-Aukščiau pateiktas detalus versijos v0.1 maišos generavimo pseudokodas.
-
 ## Eksperimentas su 2 failais sudarytais tik iš vieno simbolio
 
 Pirmame faile yra simbolis "F", antrame "9". Rezultatas:
@@ -172,7 +127,7 @@ Kiekvieną kartą vedant tą patį žodį, gauname tą patį rezultatą:
 
 Matome, kad ši versija turi gerą lavinos efektą, o rezultatai išlieka vienodi net kelis kartus atliekant testus, tikriausiai dėl to, kad naudoju rand funkciją generavimui, kuri nėra visiškai randominė(pseudo).
 
-![image](https://github.com/user-attachments/assets/d847ebfa-86f0-404a-aaa7-032886d7bd69)
+![image](https://github.com/user-attachments/assets/23aa0144-8071-4f74-8694-ce6fa0e5183e)
 
 
 ## Atsparumas kolizijai
@@ -187,16 +142,6 @@ Kadangi ASCII koduotėj NULL turi reikšmę, tai gaunamas toks hashas:
 ![image](https://github.com/user-attachments/assets/ef5ba903-0a81-469a-a7eb-6638022e1562)
 
 
-## Stiprybės ir trūkumai
-Versijoje v0.2 buvo panaikinti visi trūkumai, kurie buvo v0.1. Papildžiau testais ir rezultatus aprašiau aukščiau. Dabartinis patobulintas kodas atitinka visus reikalavimus ir praeina testus. Kadangi tobulindama naudojausi įvairiais šaltiniais, tai pavyko padaryti beveik vienodą maišos funkciją su SHA256:
-
-![image](https://github.com/user-attachments/assets/ca31ce3f-d25d-474b-9515-0547c45f6c3e)
-
-![image](https://github.com/user-attachments/assets/632b7365-2986-417e-afcf-cc842c8b7006)
-
-Taip pat vedant tą patį žodį tik pvz. iš didelės raidės ar su vienu skirtumu, hashas skiriasi iš esmės. Tą taip pat pavaizduoja eksperimentas su 1000 random simbolių, bet su vienu simbolio skirtumu.
-
-
 # Papildomos užduotys
 
 1.	Objektyviai palyginti mano Hash funkcijos spartą su MD5 , SHA-1 , SHA-256 ar kita gerai žinoma hash funkcija.
@@ -207,8 +152,39 @@ Taip pat vedant tą patį žodį tik pvz. iš didelės raidės ar su vienu skirt
 ## 1 papildoma
 Kadangi mano hash generatorius yra panašus į SHA256, tai palyginsiu su tikru SHA256 generatoriumi ir SHA1.
 Tam sukūriau atskirą programą, ir parsisiunčiau OpenSSL biblioteką. (prisegta "palyginimas.cpp")
+Testo objektyvumui nusprendžiau paleisti programą per 2 skirtingus kompiuterius, kad rezultatai būtų nepriklausomi nuo geležies. Testo esmė: sugeneruojamas atsitiktinių simbolių rinkinys: 32 simbolių, 40, 80, 100, 200... ir hashinamas yra 10 kartų, po ko apskaičiuojamas vidutinis hashinimo laikas milisekundėmis su Mano Hash, SHA256, SHA1. Testavimas buvo atliktas daug kartų, kad atmesti įmanomus kompiuterio lagus.
+Žemiau pateiktos skirtingų kompiuterių specifikacijos ir hashų greitis.
+### Pirmas kompiuteris
+
+![image](https://github.com/user-attachments/assets/6828e50c-37f4-4643-8eb4-71bbab7a64f6)
+
+|Rand string ilgis| Mano Hash| SHA-256 | SHA-1 |
+|---|-----|---------|-------|
+|32 | 1,333179| 0,3388 | 0,65167 |
+|40| 1,00617 | 0,29982 | 0,20053 |
+|80| 0,90307 | 0,19979 | 0,30026 |
+|100| 0,87083 | 0,25144 | 0,19995 |
+|200| 0,90061 | 0,19971 | 0,35201 |
+|400| 0,90582 | 0,25136 | 0,19757 |
+|800| 1,12793 | 0,29986 | 0,30006 |
+
+### Antras kompiuteris
+
+![image](https://github.com/user-attachments/assets/e3325513-9fdf-4276-b9ad-bbe26fc6afd7)
 
 
+|Rand string ilgis| Mano Hash| SHA-256 | SHA-1 |
+|---|-----|---------|-------|
+|32 | 0,86767 | 0,29918 | 0,69826 |
+|40| 1,59585 | 0,59847 | 0,4986 |
+|80| 1,19668 | 0,54934 | 0,69801 |
+|100| 1,39646 | 0,99734 | 0,59837 |
+|200| 1,39637 | 0,69811 | 0,49862 |
+|400| 1,69547 | 0,79798 | 0,69811 |
+|800| 1,69536 | 0,79788 | 0,89761 |
+
+### Išvados
+1 kompiuterio procesorius galingesnis 30% už 2 kompiuterį(informacija iš: https://cpu.userbenchmark.com/Compare/Intel-Core-i7-1165G7-vs-Intel-Core-i5-7400/m1195374vs3886 ). Taip testuojant per 2 kompiuterius greičiausiai veikia SHA256, SHA1 ir tada Mano Hash. Vidutiniškai 1 kompiuteris hashina 2+ kartus greičiau už 2 kompiuterį su SHA256 ir SHA1, bet ManoHash laikas lieka beveik nepakitęs. Darau išvada, kad geležies pakeitimas nedaro reikšminės įtakos mano hashui, bet kadangi SHA256 ir SHA1 yra žymiai optimalesni, tai jų greitis labiau priklauso nuo kompiuterio galingumo. 
 
 ## 2 papildoma
 Be salt funkcijos tą pačią simbolių seką hashina vienodai
@@ -239,5 +215,5 @@ Net kai toks nereikšmingas skirtumas tarp porų, kolizijų vis tiek nėra.
 
 
 ## 3 papildoma
-
+Rezultatai: https://github.com/aran1ja/Blockchain/tree/v0.2
 
