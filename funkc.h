@@ -31,8 +31,8 @@ public:
     string getPublicKey() const;
     int getBalansas() const;
 
-    static string vardoskaitymas(const string& failiukas);
-    static int generuojambalansa();
+    static string vardoskaitymas(const string& failiukas, int i);
+    static int generuojambalansa(int i);
     static string createPublicKey();
 };
 

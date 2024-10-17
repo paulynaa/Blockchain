@@ -5,9 +5,9 @@ int main() {
     vector<Vartotojas> vartotojai;
 
     for (int i = 0; i < 10; i++) {
-        string vardas = Vartotojas::vardoskaitymas(failas);
+        string vardas = Vartotojas::vardoskaitymas(failas,i);
         string publicKey = Vartotojas::createPublicKey();
-        int balansas = Vartotojas::generuojambalansa();
+        int balansas = Vartotojas::generuojambalansa(i);
 
         Vartotojas vartotojas(vardas, publicKey, balansas);
         vartotojai.push_back(vartotojas);

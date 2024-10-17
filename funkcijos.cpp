@@ -8,7 +8,7 @@ string Vartotojas::getVardas() const { return vardas; }
 string Vartotojas::getPublicKey() const { return publicKey; }
 int Vartotojas::getBalansas() const { return balansas; }
 
-string Vartotojas::vardoskaitymas(const string& failiukas) {
+string Vartotojas::vardoskaitymas(const string& failiukas,int i) {
     ifstream file(failiukas);
     if (!file) {
         cerr << "Nepavyko atidaryti failo " << failiukas << endl;
@@ -29,18 +29,13 @@ string Vartotojas::vardoskaitymas(const string& failiukas) {
         cerr << "Klaida " << failiukas << endl;
         return "";
     }
-
-    random_device rd;
-    mt19937 generator(rd());
-    uniform_int_distribution<size_t> distribution(0, names.size() - 1);
-    return names[distribution(generator)];
+    srand(time(0)*i);
+    return names[rand()%2942];
 }
 
-int Vartotojas::generuojambalansa() {
-    random_device rd;
-    mt19937 generator(rd());
-    uniform_int_distribution<int> distribution(100, 1000000);
-    return distribution(generator);
+int Vartotojas::generuojambalansa(int i) {
+    srand(time(0)*i^2);
+    return rand()%1000000+100;
 }
 
 void createPrivateKey(char Prekey[], const char H[]) {
@@ -157,3 +152,4 @@ string skaiciavimas(const string& input) {
     vector<uint32_t> hashResult = hashblokai(blocks);
     return hashToString(hashResult);
 }
+
