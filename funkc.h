@@ -6,14 +6,10 @@
 #include <sstream>
 #include <fstream>
 #include <string>
-#include <cstring>
 #include <vector>
-#include <chrono>
-#include <random>
-#include <unordered_map>
-#include <cmath>
-#include <numeric>
 #include <algorithm>
+#include <random>
+#include <ctime>
 using namespace std;
 
 class Vartotojas {
@@ -23,17 +19,26 @@ private:
     int balansas;
 
 public:
-    // Constructor
     Vartotojas(const string& vardas, const string& publicKey, int balansas);
-
-    // Getters
     string getVardas() const;
     string getPublicKey() const;
     int getBalansas() const;
+    void atnaujintiBalansa(int suma);
 
     static string vardoskaitymas(const string& failiukas, int i);
     static int generuojambalansa(int i);
     static string createPublicKey();
+};
+
+class Transakcija {
+public:
+    string siuntejas;
+    string gavejas;
+    int suma;
+    string transakcijosID;
+
+    Transakcija(const string& siuntejas, const string& gavejas, int suma);
+    static string sukurtiTransakcijosID(const string& siuntejas, const string& gavejas, int suma);
 };
 
 string skaiciavimas(const string& input);

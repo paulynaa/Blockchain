@@ -3,12 +3,13 @@
 Vartotojas::Vartotojas(const string& vardas, const string& publicKey, int balansas)
     : vardas(vardas), publicKey(publicKey), balansas(balansas) {}
 
-// Getters
 string Vartotojas::getVardas() const { return vardas; }
 string Vartotojas::getPublicKey() const { return publicKey; }
 int Vartotojas::getBalansas() const { return balansas; }
 
-string Vartotojas::vardoskaitymas(const string& failiukas,int i) {
+void Vartotojas::atnaujintiBalansa(int suma) { balansas += suma; }
+// nipanimaju czy co ale atnaujina tylko w+
+string Vartotojas::vardoskaitymas(const string& failiukas, int i) {
     ifstream file(failiukas);
     if (!file) {
         cerr << "Nepavyko atidaryti failo " << failiukas << endl;
@@ -17,7 +18,6 @@ string Vartotojas::vardoskaitymas(const string& failiukas,int i) {
 
     vector<string> names;
     string name;
-
     while (getline(file, name)) {
         if (!name.empty()) {
             names.push_back(name);
@@ -29,29 +29,36 @@ string Vartotojas::vardoskaitymas(const string& failiukas,int i) {
         cerr << "Klaida " << failiukas << endl;
         return "";
     }
-    srand(time(0)*i);
-    return names[rand()%2942];
+    srand(time(0) * i);
+    return names[rand() % names.size()];
 }
 
 int Vartotojas::generuojambalansa(int i) {
-    srand(time(0)*i^2);
-    return rand()%1000000+100;
+    srand(time(0) * i);
+    return rand() % 1000000 + 100;
 }
-
-void createPrivateKey(char Prekey[], const char H[]) {
-    for (int i = 0; i < 63; i++) {
-        Prekey[i] = H[rand() % 16];
-    }
-    Prekey[64] = '\0';
-}
-
+// zetar private key i zrobil taki public key, mozno mieniac
 string Vartotojas::createPublicKey() {
-    char H[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
-    char Prekey[65];
-    createPrivateKey(Prekey, H);
-    string privk(Prekey);
-    string publicKey = skaiciavimas(privk);
-    return publicKey;
+    static const char alphanum[] =
+        "0123456789"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz";
+    string s;
+    for (int i = 0; i < 32; ++i) {
+        s += alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+    return s;
+}
+
+Transakcija::Transakcija(const string& siuntejas, const string& gavejas, int suma)
+    : siuntejas(siuntejas), gavejas(gavejas), suma(suma) {
+    transakcijosID = sukurtiTransakcijosID(siuntejas, gavejas, suma);
+}
+
+string Transakcija::sukurtiTransakcijosID(const string& siuntejas, const string& gavejas, int suma) {
+    stringstream ss;
+    ss << siuntejas << gavejas << suma << time(0);
+    return skaiciavimas(ss.str());// i stringa str
 }
 
 uint32_t rightRotate(uint32_t n, unsigned int d) {
@@ -152,4 +159,3 @@ string skaiciavimas(const string& input) {
     vector<uint32_t> hashResult = hashblokai(blocks);
     return hashToString(hashResult);
 }
-
