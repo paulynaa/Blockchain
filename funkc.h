@@ -1,5 +1,6 @@
 #ifndef FUNKC_H_INCLUDED
 #define FUNKC_H_INCLUDED
+
 #include <iostream>
 #include <iomanip>
 #include <bitset>
@@ -10,6 +11,7 @@
 #include <algorithm>
 #include <random>
 #include <ctime>
+
 using namespace std;
 
 class Vartotojas {
@@ -39,6 +41,7 @@ public:
 
     Transakcija(const string& siuntejas, const string& gavejas, int suma);
     static string sukurtiTransakcijosID(const string& siuntejas, const string& gavejas, int suma);
+    static string calculateMerkleRoot(const vector<Transakcija>& transakcijos);
 };
 
 string skaiciavimas(const string& input);
