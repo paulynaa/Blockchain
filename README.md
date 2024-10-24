@@ -25,3 +25,6 @@ kurią transakciją ir bloką. Išvedimo detalumas ir vizualumas turės įtakos 
 3. Vietoj dvejetainio Merkle medžio, galite naudoti visų bloko transakcijų ID maišos reikšmę.
 4. Saugumas yra labai svarbus blokų grandinėms, todėl naudokite gerąsias OOP praktikas (pvz., enkapsuliavimą,
 konstruktorius, RAII idiomą).
+
+
+![image](https://github.com/user-attachments/assets/7e6d471d-ec13-4ae0-bb27-63105052478a)
