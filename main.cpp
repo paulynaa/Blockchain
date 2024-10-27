@@ -35,15 +35,21 @@ int main() {
     while(transakcijos.size() > 0){
     // Isrenkame 100 transakciju ir itraukiame i bloka
 
+    // padaryti dar viena klase su bloku info, perziuret antraste. irasyti ten: difficulty 1, timestamp, prev_block_hash, merkel root hash, sito bloko hasha,
+    // versija 1, nonce, transakciju kiekis(galimybe perziureti transakcijas), bloko eiles numeris, miner: Paulina!.
+    // utxo modelis
+    // detalus isvedimas
+
         vector<Transakcija> blokas;
         int atsitiktinis_indeksas[100];
         for (int i = 0; i < 100; i++) {
             atsitiktinis_indeksas[i] = rand() % transakcijos.size();
             blokas.push_back(transakcijos[atsitiktinis_indeksas[i]]);
-            //transakcijos.erase(transakcijos.begin() + atsitiktinis_indeksas);
         }
-
-        //reikia bloka pridet
+// difficulty 1, nes programa nerunina pakankamai ilgai kad padaryti difficulty, bet jei runnintu, tai w srednik blok za (9,2sek) to w tydzien
+// wychodzi +- 65 739 .
+// priklausomai nuo to keisti difficulty. greiciausiai po pirmos savaites reiktu ji padidint, nes pow reikalauja mazai resursu, ty daro blokus per greitai.
+//
         // Sukuriame bloko duomenis (Merkle root)
         string blokas_data = Transakcija::calculateMerkleRoot(blokas);
 
@@ -52,9 +58,8 @@ int main() {
         do {
             block_hash = skaiciavimas(blokas_data + to_string(nonce));
             nonce++;
-        } while (block_hash.substr(0, 5) != "00000"); // mnie to nenravitsa
+        } while (block_hash.substr(0, 6) != "000000"); // mnie to nenravitsa
         // kaip nuliu skaicius priklauso nuo maisos funkcijos?
-        // kad greiciau patikrinti mes ieskom hasha kuris turi 6 nulius, ir tai uztrunka ~1min per bloka,
 
         cout << "Blokas sukurtas, nonce: " << nonce << ", maisa: " << block_hash << endl;
         cout << "Kelintas blokas " << kelintasblokas << endl;
@@ -73,7 +78,7 @@ int main() {
             gavejas->atnaujintiBalansa(t.suma);
         }
         kelintasblokas++;
+        string prev_block_hash = skaiciavimas(block_hash + blokas_data + prev_block_hash); // wypisywac przed tym jak funkcija suveiks
     }
-// i konsole vesti??
     return 0;
 }
