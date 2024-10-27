@@ -30,44 +30,49 @@ int main() {
         transakcijos.push_back(transakcija);
     }
 
-
-    // Isrenkame 100 transakciju ir itraukiame i bloka
-    vector<Transakcija> blokas;
-    int atsitiktinis_indeksas[100];
-    for (int i = 0; i < 100; i++) {
-        atsitiktinis_indeksas[i] = rand() % transakcijos.size();
-        blokas.push_back(transakcijos[atsitiktinis_indeksas[i]]);
-        //transakcijos.erase(transakcijos.begin() + atsitiktinis_indeksas);
-    }
-
-    //reikia bloka pridet
-    // Sukuriame bloko duomenis (Merkle root)
-    string blokas_data = Transakcija::calculateMerkleRoot(blokas);
-
-    // Kasame bloka su Proof-of-Work algoritmu
     int nonce = 0;//
-    string block_hash;
-    do {
-        block_hash = skaiciavimas(blokas_data + to_string(nonce));
-        nonce++;
-    } while (block_hash.substr(0, 4) != "0000"); // mnie to nenravitsa
-// kaip nuliu skaicius priklauso nuo maisos funkcijos?
-// kad greiciau patikrinti mes ieskom hasha kuris turi 6 nulius, ir tai uztrunka ~1min per bloka,
+    int kelintasblokas=0;
+    while(transakcijos.size() > 0){
+    // Isrenkame 100 transakciju ir itraukiame i bloka
 
-    cout << "Blokas sukurtas, nonce: " << nonce << ", maisa: " << block_hash << endl;
+        vector<Transakcija> blokas;
+        int atsitiktinis_indeksas[100];
+        for (int i = 0; i < 100; i++) {
+            atsitiktinis_indeksas[i] = rand() % transakcijos.size();
+            blokas.push_back(transakcijos[atsitiktinis_indeksas[i]]);
+            //transakcijos.erase(transakcijos.begin() + atsitiktinis_indeksas);
+        }
 
-    for (int i = 0; i < 100; i++) {
-        transakcijos.erase(transakcijos.begin() + atsitiktinis_indeksas[i]);
-    }
-    // Atnaujiname vartotoju balansus pagal transakcijas
-    for (const auto& t : blokas) {
-        auto siuntejas = find_if(vartotojai.begin(), vartotojai.end(),
-                                 [&t](const Vartotojas& v) { return v.getPublicKey() == t.siuntejas; });
-        auto gavejas = find_if(vartotojai.begin(), vartotojai.end(),
-                               [&t](const Vartotojas& v) { return v.getPublicKey() == t.gavejas; });
+        //reikia bloka pridet
+        // Sukuriame bloko duomenis (Merkle root)
+        string blokas_data = Transakcija::calculateMerkleRoot(blokas);
 
-        siuntejas->atnaujintiBalansa(-t.suma);
-        gavejas->atnaujintiBalansa(t.suma);
+        // Kasame bloka su Proof-of-Work algoritmu
+        string block_hash;
+        do {
+            block_hash = skaiciavimas(blokas_data + to_string(nonce));
+            nonce++;
+        } while (block_hash.substr(0, 5) != "00000"); // mnie to nenravitsa
+        // kaip nuliu skaicius priklauso nuo maisos funkcijos?
+        // kad greiciau patikrinti mes ieskom hasha kuris turi 6 nulius, ir tai uztrunka ~1min per bloka,
+
+        cout << "Blokas sukurtas, nonce: " << nonce << ", maisa: " << block_hash << endl;
+        cout << "Kelintas blokas " << kelintasblokas << endl;
+
+        for (int i = 0; i < 100; i++) {
+            transakcijos.erase(transakcijos.begin() + atsitiktinis_indeksas[i]);
+        }
+        // Atnaujiname vartotoju balansus pagal transakcijas
+        for (const auto& t : blokas) {
+            auto siuntejas = find_if(vartotojai.begin(), vartotojai.end(),
+                                     [&t](const Vartotojas& v) { return v.getPublicKey() == t.siuntejas; });
+            auto gavejas = find_if(vartotojai.begin(), vartotojai.end(),
+                                   [&t](const Vartotojas& v) { return v.getPublicKey() == t.gavejas; });
+
+            siuntejas->atnaujintiBalansa(-t.suma);
+            gavejas->atnaujintiBalansa(t.suma);
+        }
+        kelintasblokas++;
     }
 // i konsole vesti??
     return 0;
