@@ -29,7 +29,7 @@ int main() {
     int kelintasBlokas = 0;
     int difficulty = 1;
 
-    while (transakcijos.size() > 0) {
+    while (transakcijos.size() > 0) { // transakcijos id ismest
         // Atsitiktinai pasirenkame 100 transakciju
         vector<Transakcija> blokas;
         int atsitiktinis_indeksas[100];
