@@ -26,5 +26,10 @@ kurią transakciją ir bloką. Išvedimo detalumas ir vizualumas turės įtakos 
 4. Saugumas yra labai svarbus blokų grandinėms, todėl naudokite gerąsias OOP praktikas (pvz., enkapsuliavimą,
 konstruktorius, RAII idiomą).
 
+# Naudojimosi instrukcija
+
+# Veikimo principas
+
+# Darbas
 
 ![image](https://github.com/user-attachments/assets/7e6d471d-ec13-4ae0-bb27-63105052478a)
