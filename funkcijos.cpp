@@ -38,7 +38,7 @@ int Vartotojas::generuojambalansa(int i) {
     return rand() % 1000000 + 100;
 }
 
-string Vartotojas::createPublicKey() { // wo tak
+string Vartotojas::createPublicKey() {
     static const char alphanum[] =
         "0123456789"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -57,7 +57,7 @@ Transakcija::Transakcija(const string& siuntejas, const string& gavejas, int sum
 
 string Transakcija::sukurtiTransakcijosID(const string& siuntejas, const string& gavejas, int suma) {
     stringstream ss;
-    ss << siuntejas << gavejas << suma << time(0); // naco???
+    ss << siuntejas << gavejas << suma << time(0);
     return skaiciavimas(ss.str());
 }
 
@@ -83,7 +83,7 @@ string Transakcija::calculateMerkleRoot(const vector<Transakcija>& transakcijos)
     return hashes.front();  // Graziname saknies maisa
 }
 
-// SHA-256 (Proof-of-Work)// zostawic?
+// SHA-256 (Proof-of-Work)
 uint32_t rightRotate(uint32_t n, unsigned int d) {
     return (n >> d) | (n << (32 - d));
 }
@@ -100,7 +100,7 @@ string padMessage(const string& input) {
     return padded;
 }
 
-string skaiciavimas(const string& input) { // prapali keys, czy trzeba cos mieniac?
+string skaiciavimas(const string& input) {
     string paddedInput = padMessage(input);
     uint32_t h0 = 0x6a09e667, h1 = 0xbb67ae85, h2 = 0x3c6ef372, h3 = 0xa54ff53a;
     uint32_t h4 = 0x510e527f, h5 = 0x9b05688c, h6 = 0x1f83d9ab, h7 = 0x5be0cd19; // prapalo

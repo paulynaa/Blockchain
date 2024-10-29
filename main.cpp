@@ -21,15 +21,16 @@ int main() {
         do {
             gavejas_idx = rand() % vartotojai.size();
         } while (gavejas_idx == siuntejas_idx);
-        int suma = rand() % 1000 + 1;
+        int suma = rand() % 100000 + 200;
         transakcijos.push_back(Transakcija(vartotojai[siuntejas_idx].getPublicKey(), vartotojai[gavejas_idx].getPublicKey(), suma));
     }
 
-    string prev_block_hash = "0000000000000000"; // Pradinis hash???
+    string prev_block_hash = "0000000000000000";
     int kelintasBlokas = 0;
     int difficulty = 1;
 
-    while (transakcijos.size() > 0) { // transakcijos id ismest
+    vector<Blokas> blokai;
+    while (transakcijos.size() > 0) {
         // Atsitiktinai pasirenkame 100 transakciju
         vector<Transakcija> blokas;
         int atsitiktinis_indeksas[100];
@@ -47,36 +48,37 @@ int main() {
         do {
             block_hash = skaiciavimas(merkle_root + to_string(nonce));
             nonce++;
-        } while (block_hash.substr(0, difficulty) != string(difficulty, '0')); // ??a
+        } while (block_hash.substr(0, difficulty) != string(difficulty, '0'));
 
         // Sukuriame ir spausdiname bloka
         Blokas naujasBlokas(kelintasBlokas, prev_block_hash, difficulty, merkle_root, nonce, 1, blokas, "Paulina");
         naujasBlokas.block_hash = block_hash;
-        naujasBlokas.spausdintiInfo();// daji 100 razy wpisywac swoja odp, good?
-
-        // Atvaizduojame transakcijas pagal vartotojo pasirinkima
-        char pasirinkimas;
-        cout << "Ar norite pamatyti sio bloko transakcijas? (y=taip/n=ne): ";
-        cin >> pasirinkimas;
-        if (pasirinkimas == 'y') {
-            naujasBlokas.spausdintiTransakcijas();
-        }
-
+        naujasBlokas.spausdintiInfo();
+        blokai.push_back(naujasBlokas);
         // Transakciju salinimas is saraso ir vartotoju balansu atnaujinimas
         for (int i = 0; i < 100; i++) {
             transakcijos.erase(transakcijos.begin() + atsitiktinis_indeksas[i]);
         }
-        for (const auto& t : blokas) { // nelabai jsn
+        for (const auto& t : blokas) {
             auto siuntejas = find_if(vartotojai.begin(), vartotojai.end(),[&t](const Vartotojas& v) { return v.getPublicKey() == t.siuntejas; });
             auto gavejas = find_if(vartotojai.begin(), vartotojai.end(), [&t](const Vartotojas& v) { return v.getPublicKey() == t.gavejas; });
 
             siuntejas->atnaujintiBalansa(-t.suma);
             gavejas->atnaujintiBalansa(t.suma);
         }
-
-        // Nustatome nauja prev_block_hash ir didiname bloko numeri
         prev_block_hash = block_hash;
         kelintasBlokas++;
     }
+
+    int blokas_nr;
+    cout << "Iveskite bloko numeri, kurio transakcijas norite pamatyti: ";
+    cin >> blokas_nr;
+
+    if (blokas_nr >= 0 && blokas_nr < blokai.size()) {
+        blokai[blokas_nr].spausdintiTransakcijas();
+    } else {
+        cout << "Neteisingas bloko numeris.\n";
+    }
+
     return 0;
 }
