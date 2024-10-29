@@ -23,9 +23,8 @@ int main() {
         } while (gavejas_idx == siuntejas_idx);
         int suma = rand() % 100000 + 200;
 
-        // Show progress creatively
         if (i % 1000 == 0) {
-            cout << "Creating transaction " << i + 1 << " of 10000..." << endl;
+            cout << "Kuriama transakcija " << i + 1 << " is 10000..." << endl;
         }
 
         transakcijos.push_back(Transakcija(vartotojai[siuntejas_idx].getPublicKey(), vartotojai[gavejas_idx].getPublicKey(), suma));
@@ -37,7 +36,6 @@ int main() {
     vector<Blokas> blokai;
 
     while (transakcijos.size() > 0) {
-        // Select 100 random transactions
         vector<Transakcija> blokas;
         int atsitiktinis_indeksas[100];
         for (int i = 0; i < 100; i++) {
@@ -62,7 +60,6 @@ int main() {
         naujasBlokas.spausdintiInfo();
         blokai.push_back(naujasBlokas);
 
-        // UTXO Model for balance updates
         for (const auto& t : blokas) {
             auto siuntejas = find_if(vartotojai.begin(), vartotojai.end(), [&](const Vartotojas& v) { return v.getPublicKey() == t.siuntejas; });
             auto gavejas = find_if(vartotojai.begin(), vartotojai.end(), [&](const Vartotojas& v) { return v.getPublicKey() == t.gavejas; });
@@ -73,7 +70,6 @@ int main() {
             }
         }
 
-        // Remove used transactions
         for (int i = 0; i < 100; i++) {
             transakcijos.erase(transakcijos.begin() + atsitiktinis_indeksas[i]);
         }
@@ -82,7 +78,6 @@ int main() {
         kelintasBlokas++;
     }
 
-    // Loop to display specific block transactions
     char pasirinkimas;
     do {
         int blokas_nr;

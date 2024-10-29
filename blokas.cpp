@@ -10,7 +10,7 @@ Blokas::Blokas(int blokoNr, const string& prev_block_hash, int difficulty, const
       timestamp(""), merkle_root(merkle_root), nonce(nonce), versija(versija),
       transakcijuKiekis(transakcijos.size()), miner(miner), transakcijos(transakcijos) {
     time_t now = time(nullptr);
-    now += 2 * 3600;  // Add 2 hours for GMT+2 timezone
+    now += 2 * 3600;
     stringstream ss;
     ss << put_time(gmtime(&now), "%Y-%m-%d %H:%M:%S");
     timestamp = ss.str();
@@ -18,10 +18,10 @@ Blokas::Blokas(int blokoNr, const string& prev_block_hash, int difficulty, const
 
 void Blokas::spausdintiInfo() const {
     cout << "Bloko Nr.: " << blokoNr << "\n"
-         << "Previous Block Hash: " << prev_block_hash << "\n"
-         << "Current Block Hash: " << block_hash << "\n"
+         << "Praeito Bloko Hash: " << prev_block_hash << "\n"
+         << "Dabartinio Bloko Hash: " << block_hash << "\n"
          << "Difficulty Target: " << difficulty << "\n"
-         << "Timestamp: " << timestamp << "\n"
+         << "Laiko zyma: " << timestamp << "\n"
          << "Merkle Root Hash: " << merkle_root << "\n"
          << "Nonce: " << nonce << "\n"
          << "Versija: " << versija << "\n"
@@ -33,6 +33,6 @@ void Blokas::spausdintiTransakcijas() const {
     int nr = 1;
     for (const auto& t : transakcijos) {
         cout << "Nr: " << nr++ << " Siuntejas: " << t.siuntejas << ", Gavejas: " << t.gavejas
-             << ", Suma: " << t.suma << ", ID: " << t.transakcijosID << "\n";
+             << ", Suma: " << t.suma << "\n" << "    ID: " << t.transakcijosID << "\n";
     }
 }
