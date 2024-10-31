@@ -61,7 +61,7 @@ string Transakcija::sukurtiTransakcijosID(const string& siuntejas, const string&
     return skaiciavimas(ss.str());
 }
 
-// Merkle root skaiciavimas geras?
+// Merkle root skaiciavimas
 string Transakcija::calculateMerkleRoot(const vector<Transakcija>& transakcijos) {
     vector<string> hashes;
     for (const auto& t : transakcijos) {
