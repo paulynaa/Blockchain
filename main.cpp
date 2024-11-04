@@ -1,18 +1,11 @@
 #include "funkc.h"
 #include "blokas.h"
-#include <set>
-#include <random>
-#include <ctime>
-#include <iostream>
-#include <chrono>
-#include <thread>
 
 using namespace std;
 
 int main() {
     default_random_engine generator(time(0));
     uniform_int_distribution<int> balansopaskirtymas(100, 1000000);
-    uniform_int_distribution<int> transakcijossumpas(200, 10000);
     uniform_int_distribution<int> vartindexpask(0, 999);
 
     string failas = "vardai.txt";
@@ -37,13 +30,14 @@ int main() {
             gavejas_idx = vartindexpask(generator);
         } while (gavejas_idx == siuntejas_idx);
 
-        int suma = transakcijossumpas(generator);
-
-        vector<UTXO> senderUTXOs = getUTXOs(vartotojai[siuntejas_idx], utxoPool);
-        int totalAvailable = 0;
-        for (const auto& utxo : senderUTXOs) {
-            totalAvailable += utxo.value;
+        int totalAvailable = vartotojai[siuntejas_idx].getBalansas();
+        if (totalAvailable < 200) {
+            trnesekminga++;
+            continue;
         }
+        uniform_int_distribution<int> transakcijossumpas(200, min(200000, totalAvailable));
+        int suma = transakcijossumpas(generator);
+        vector<UTXO> senderUTXOs = getUTXOs(vartotojai[siuntejas_idx], utxoPool);
 
         if (totalAvailable < suma) {
             trnesekminga++;
@@ -58,7 +52,8 @@ int main() {
         }
 
         spendUTXOs(senderUTXOs, suma, utxoPool);
-
+        vartotojai[siuntejas_idx].atnaujintiBalansa(-suma);
+        vartotojai[gavejas_idx].atnaujintiBalansa(suma);
         trsekminga++;
         transakcijos.push_back(newTransaction);
         utxoPool.push_back(UTXO(vartotojai[gavejas_idx].getPublicKey(), suma, newTransaction.transakcijosID));
