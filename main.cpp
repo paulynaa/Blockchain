@@ -129,7 +129,7 @@ int main() {
 
     } else if (pasirinkimas == 2) {
         // nauja uzd su kandidatais
-        int difficulty = 4;
+        int difficulty = 5;
         vector<vector<Transakcija>> kandidatai;
         for (int i = 0; i < 5; i++) {
             vector<Transakcija> blokas;
@@ -141,46 +141,47 @@ int main() {
         }
 
         bool iskastas = false;
-        chrono::seconds maxDuration(5);
-        int maxAttempts = 100000;
+        chrono::seconds maxlaikas(5);
+        int maxbandymu = 100000;
 
         while (!iskastas) {
             for (int i = 0; i < kandidatai.size(); i++) {
-                cout << "Bandoma kasti bloka-kandidata Nr. " << (i + 1) << endl;
+                cout << "Kasame kandidata Nr. " << (i + 1) << endl;
 
                 vector<Transakcija>& blokas = kandidatai[i];
                 string merkle_root = Transakcija::calculateMerkleRoot(blokas);
                 string block_hash;
                 int nonce = 0;
                 bool sekmingaiIskastas = false;
-
                 auto start = chrono::steady_clock::now();
-                while (nonce < maxAttempts) {
+                while (true) {
+                    auto end = chrono::steady_clock::now();
+                    if (chrono::duration_cast<chrono::seconds>(end - start) >= maxlaikas) {
+                        cout << "Nepavyko iskasti kandidato Nr. " << (i + 1) << " per " << maxlaikas.count() << " sekundes. ";
+                        cout << "Bandymu skaicius: " << nonce << endl;
+                        break;
+                    }
+                    if (nonce >= maxbandymu) {
+                        cout << "Pasiektas bandymu limitas: " << maxbandymu << " kandidato Nr. " << (i + 1) << " kasimui." << endl;
+                        break;
+                    }
                     block_hash = skaiciavimas(merkle_root + to_string(nonce));
                     if (block_hash.substr(0, difficulty) == string(difficulty, '0')) {
                         iskastas = true;
                         sekmingaiIskastas = true;
-                        cout << "Bloko kandidatas Nr. " << (i + 1) << " sekmingai iskastas!" << endl;
+                        cout << "Kandidatas Nr. " << (i + 1) << " sekmingai iskastas!" << endl;
                         break;
                     }
                     nonce++;
-
-                    auto end = chrono::steady_clock::now();
-                    if (chrono::duration_cast<chrono::seconds>(end - start) >= maxDuration) {
-                        cout << "Nepavyko iskasti bloko per " << maxDuration.count() << " sekundes. ";
-                        cout << "Bandymu skaicius: " << nonce << endl;
-                        break;
-                    }
                 }
 
                 if (sekmingaiIskastas) break;
             }
-
             if (!iskastas) {
-                maxDuration *= 2;
-                maxAttempts *= 2;
-                cout << "Nepavyko iskasti jokio bloko. Pailginamas laiko limitas iki " << maxDuration.count()
-                     << " sekundziu ir bandymu limitas iki " << maxAttempts << "." << endl;
+                maxlaikas *= 2;
+                maxbandymu *= 2;
+                cout << "Neiskastas joks blokas. Pratesiame laika iki " << maxlaikas.count()
+                     << " sekundziu ir bandymu limita iki " << maxbandymu << "." << endl;
             }
         }
     } else {
