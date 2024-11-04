@@ -26,13 +26,15 @@ void Blokas::spausdintiInfo() const {
          << "Nonce: " << nonce << "\n"
          << "Versija: " << versija << "\n"
          << "Transakciju kiekis: " << transakcijuKiekis << "\n"
-         << "Miner: " << miner << "\n";
+         << "Miner: " << miner << "\n"
+         << "----------------------------------------------" << "\n";
 }
 
 void Blokas::spausdintiTransakcijas() const {
     int nr = 1;
     for (const auto& t : transakcijos) {
         cout << "Nr: " << nr++ << " Siuntejas: " << t.siuntejas << ", Gavejas: " << t.gavejas
-             << ", Suma: " << t.suma << "\n" << "    ID: " << t.transakcijosID << "\n";
+             << ", Suma: " << t.suma << "\n" << "    ID: " << t.transakcijosID << "\n"
+             <<"---------------------------------------------------------"<<"\n";
     }
 }

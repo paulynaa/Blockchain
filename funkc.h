@@ -19,9 +19,7 @@ public:
     string address;
     int value;
     string txID;
-
-    UTXO(const string& address, int value, const string& txID)
-        : address(address), value(value), txID(txID) {}
+    UTXO(const string& address, int value, const string& txID);
 };
 
 class Vartotojas {

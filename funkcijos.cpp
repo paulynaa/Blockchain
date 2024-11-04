@@ -34,8 +34,9 @@ string Vartotojas::vardoskaitymas(const string& failiukas, int i) {
 }
 
 int Vartotojas::generuojambalansa(int i) {
-    srand(time(0) * i);
-    return rand() % 1000000 + 100;
+    static std::default_random_engine generator(time(0));
+    std::uniform_int_distribution<int> distribution(100, 1000000);
+    return distribution(generator);
 }
 
 string Vartotojas::createPublicKey() {
@@ -49,6 +50,10 @@ string Vartotojas::createPublicKey() {
     }
     return s;
 }
+
+UTXO::UTXO(const string& address, int value, const string& txID)
+    : address(address), value(value), txID(txID) {}
+
 
 Transakcija::Transakcija(const string& siuntejas, const string& gavejas, int suma)
     : siuntejas(siuntejas), gavejas(gavejas), suma(suma) {
