@@ -3,30 +3,30 @@
 #include <set>
 #include <random>
 #include <ctime>
+#include <iostream>
 
 int main() {
-    default_random_engine generator(time(0));
-    uniform_int_distribution<int> balansopaskirtymas(100, 1000000);
-    uniform_int_distribution<int> transakcijossumpas(200, 20000);
-    uniform_int_distribution<int> vartindexpask(0, 999);
+    std::default_random_engine generator(time(0));
+    std::uniform_int_distribution<int> balansopaskirtymas(100, 1000000);
+    std::uniform_int_distribution<int> transakcijossumpas(200, 20000);
+    std::uniform_int_distribution<int> vartindexpask(0, 999);
 
     // Generuojam vartotojus
-    string failas = "vardai.txt";
-    vector<Vartotojas> vartotojai;
-    vector<UTXO> utxoPool;
+    std::string failas = "vardai.txt";
+    std::vector<Vartotojas> vartotojai;
+    std::vector<UTXO> utxoPool;
 
     for (int i = 0; i < 1000; i++) {
-        string vardas = Vartotojas::vardoskaitymas(failas, i);
-        string publicKey = Vartotojas::createPublicKey();
+        std::string vardas = Vartotojas::vardoskaitymas(failas, i);
+        std::string publicKey = Vartotojas::createPublicKey();
         int pradinisbalansas = balansopaskirtymas(generator);
         vartotojai.push_back(Vartotojas(vardas, publicKey, pradinisbalansas));
 
-        utxoPool.push_back(UTXO(publicKey, pradinisbalansas, "genesis_" + to_string(i)));
+        utxoPool.push_back(UTXO(publicKey, pradinisbalansas, "genesis_" + std::to_string(i)));
     }
 
     // Generuojam transakcijas
-    //vector<string> fiksuojam;
-    vector<Transakcija> transakcijos;
+    std::vector<Transakcija> transakcijos;
     int trsekminga = 0;
     int trnesekminga = 0;
 
@@ -38,38 +38,41 @@ int main() {
         } while (gavejas_idx == siuntejas_idx);
 
         int suma = transakcijossumpas(generator);
-
         int siuntejobalansas = vartotojai[siuntejas_idx].getBalansas();
+
         if (siuntejobalansas < suma) {
             trnesekminga++;
             continue;
         }
 
-        // Sekmingos transakcijos pridedamos i bloka
+        Transakcija newTransaction(vartotojai[siuntejas_idx].getPublicKey(), vartotojai[gavejas_idx].getPublicKey(), suma);
+        if (!newTransaction.patikrintiID()) {
+            std::cerr << "Klaida: Transakcijos ID nesutampa su maiðos reikðme." << std::endl;
+            trnesekminga++;
+            continue;
+        }
+        // Tik sekmingas prie bloko
         trsekminga++;
-        transakcijos.push_back(Transakcija(vartotojai[siuntejas_idx].getPublicKey(),
-                                           vartotojai[gavejas_idx].getPublicKey(), suma));
+        transakcijos.push_back(newTransaction);
         vartotojai[siuntejas_idx].atnaujintiBalansa(-suma);
         vartotojai[gavejas_idx].atnaujintiBalansa(suma);
     }
 
-    cout << "--- Transakciju apzvalga ---";
-    cout << endl;
-    cout << "Sekmingos transakcijos: " << trsekminga << "\n";
-    cout << "Atmestos transakcijos: " << trnesekminga << "\n";
-    cout << "------------------------------------------------------------" <<endl;
+    std::cout << "--- Transakciju apzvalga ---\n";
+    std::cout << "Sekmingos transakcijos: " << trsekminga << "\n";
+    std::cout << "Atmestos transakcijos: " << trnesekminga << "\n";
+    std::cout << "------------------------------------------------------------\n";
 
     // Kuriam blokus
-    string prev_block_hash = "0000000000000000";
+    std::string prev_block_hash = "0000000000000000";
     int kelintasBlokas = 0;
-    int difficulty = 1;
-    vector<Blokas> blokai;
+    int difficulty = 3;
+    std::vector<Blokas> blokai;
 
-    //
     while (!transakcijos.empty()) {
-        vector<Transakcija> blokas;
-        int numTransactions = min(100, (int)transakcijos.size());
-        set<int> usedIndexes;
+        std::vector<Transakcija> blokas;
+        int numTransactions = std::min(100, static_cast<int>(transakcijos.size()));
+        std::set<int> usedIndexes;
 
         while (usedIndexes.size() < numTransactions) {
             int randIndex = rand() % transakcijos.size();
@@ -78,23 +81,24 @@ int main() {
             }
         }
 
-        // Merkel root skaiciavimas
-        string merkle_root = Transakcija::calculateMerkleRoot(blokas);
-        string block_hash;
+        // Calculate Merkle root
+        std::string merkle_root = Transakcija::calculateMerkleRoot(blokas);
+        std::string block_hash;
         int nonce = 0;
-        do {
-            block_hash = skaiciavimas(merkle_root + to_string(nonce));
-            nonce++;
-        } while (block_hash.substr(0, difficulty) != string(difficulty, '0'));
 
-        // Vaizduojam blokus
+        do {
+            block_hash = skaiciavimas(merkle_root + std::to_string(nonce));
+            nonce++;
+        } while (block_hash.substr(0, difficulty) != std::string(difficulty, '0'));
+
+        // Ekranizuojam detales
         Blokas naujasBlokas(kelintasBlokas, prev_block_hash, difficulty, merkle_root, nonce, 1, blokas, "Paulina");
         naujasBlokas.block_hash = block_hash;
         naujasBlokas.spausdintiInfo();
         blokai.push_back(naujasBlokas);
 
         for (const auto& t : blokas) {
-            vector<UTXO> siuntejoUTXO;
+            std::vector<UTXO> siuntejoUTXO;
             int likonepanaudota = 0;
 
             for (auto it = utxoPool.begin(); it != utxoPool.end();) {
@@ -124,21 +128,21 @@ int main() {
         kelintasBlokas++;
     }
 
-    // Galimybe perziureti transakcijas
+    //
     char pasirinkimas;
     do {
         int blokas_nr;
-        cout << "Iveskite bloko numeri, kurio transakcijas norite pamatyti: ";
-        cin >> blokas_nr;
+        std::cout << "Iveskite bloko numeri, kurio transakcijas norite pamatyti: ";
+        std::cin >> blokas_nr;
 
         if (blokas_nr >= 0 && blokas_nr < blokai.size()) {
             blokai[blokas_nr].spausdintiTransakcijas();
         } else {
-            cout << "Neteisingas bloko numeris.\n";
+            std::cout << "Neteisingas bloko numeris.\n";
         }
 
-        cout << "Ar norite pamatyti kito bloko transakcijas? (y=taip/n=ne): ";
-        cin >> pasirinkimas;
+        std::cout << "Ar norite pamatyti kito bloko transakcijas? (y=taip/n=ne): ";
+        std::cin >> pasirinkimas;
     } while (pasirinkimas == 'y');
 
     return 0;
