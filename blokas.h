@@ -6,6 +6,7 @@
 #include <ctime>
 #include "funkc.h"
 using namespace std;
+
 class Blokas {
 public:
     int blokoNr;
