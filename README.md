@@ -55,4 +55,18 @@ Jūsų programoje, kai vartotojas bando atlikti transakciją:
     Pažymite panaudotus UTXO kaip panaudotus ir sukurkite naujus UTXO gavėjui (ir grąžos UTXO siuntėjui, jei reikia).
     Atnaujinate UTXO baseiną (utxoPool), kad jame visada būtų naujausia neišleistų transakcijų išvestis.
 
-    
+openmp
+suzinojau numatyta giju skaiciu
+
+![image](https://github.com/user-attachments/assets/19a725e3-f150-4f93-9a56-b9409a219ba8)
+
+Jei sistemoje numatytas gijų skaičius (pagal CPU branduolius) yra, tarkime, 4, OpenMP automatiškai paskirstys darbą 4 gijoms.
+
+![image](https://github.com/user-attachments/assets/c0ce0a4c-ff57-4fdb-a0b2-f94d48e334ab)
+
+toliau galime keisti giju skaiciu rankiniu budu:
+su 5
+![image](https://github.com/user-attachments/assets/9b0bdfb4-269a-4bd2-a81a-5ad51c4ee8a5)
+su 10
+
+
