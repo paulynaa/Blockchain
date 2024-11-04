@@ -5,10 +5,10 @@
 #include <ctime>
 
 int main() {
-    std::default_random_engine generator(time(0));
-    std::uniform_int_distribution<int> balanceDistribution(100, 1000000);
-    std::uniform_int_distribution<int> transactionAmountDistribution(200, 20000);
-    std::uniform_int_distribution<int> userIndexDistribution(0, 999); // Assumes 1000 users
+    default_random_engine generator(time(0));
+    uniform_int_distribution<int> balansopaskirtymas(100, 1000000);
+    uniform_int_distribution<int> transakcijossumpas(200, 20000);
+    uniform_int_distribution<int> vartindexpask(0, 999);
 
     // Generuojam vartotojus
     string failas = "vardai.txt";
@@ -18,35 +18,35 @@ int main() {
     for (int i = 0; i < 1000; i++) {
         string vardas = Vartotojas::vardoskaitymas(failas, i);
         string publicKey = Vartotojas::createPublicKey();
-        int initialAmount = balanceDistribution(generator);
-        vartotojai.push_back(Vartotojas(vardas, publicKey, initialAmount));
+        int pradinisbalansas = balansopaskirtymas(generator);
+        vartotojai.push_back(Vartotojas(vardas, publicKey, pradinisbalansas));
 
-        utxoPool.push_back(UTXO(publicKey, initialAmount, "genesis_" + to_string(i)));
+        utxoPool.push_back(UTXO(publicKey, pradinisbalansas, "genesis_" + to_string(i)));
     }
 
     // Generuojam transakcijas
-    vector<string> transactionLog;
+    //vector<string> fiksuojam;
     vector<Transakcija> transakcijos;
-    int successfulTransactions = 0;
-    int failedTransactions = 0;
+    int trsekminga = 0;
+    int trnesekminga = 0;
 
     for (int i = 0; i < 10000; i++) {
-        int siuntejas_idx = userIndexDistribution(generator);
+        int siuntejas_idx = vartindexpask(generator);
         int gavejas_idx;
         do {
-            gavejas_idx = userIndexDistribution(generator);
+            gavejas_idx = vartindexpask(generator);
         } while (gavejas_idx == siuntejas_idx);
 
-        int suma = transactionAmountDistribution(generator);
+        int suma = transakcijossumpas(generator);
 
-        int senderBalance = vartotojai[siuntejas_idx].getBalansas();
-        if (senderBalance < suma) {
-            failedTransactions++;
+        int siuntejobalansas = vartotojai[siuntejas_idx].getBalansas();
+        if (siuntejobalansas < suma) {
+            trnesekminga++;
             continue;
         }
 
         // Sekmingos transakcijos pridedamos i bloka
-        successfulTransactions++;
+        trsekminga++;
         transakcijos.push_back(Transakcija(vartotojai[siuntejas_idx].getPublicKey(),
                                            vartotojai[gavejas_idx].getPublicKey(), suma));
         vartotojai[siuntejas_idx].atnaujintiBalansa(-suma);
@@ -55,8 +55,8 @@ int main() {
 
     cout << "--- Transakciju apzvalga ---";
     cout << endl;
-    cout << "Sekmingos transakcijos: " << successfulTransactions << "\n";
-    cout << "Atmestos transakcijos: " << failedTransactions << "\n";
+    cout << "Sekmingos transakcijos: " << trsekminga << "\n";
+    cout << "Atmestos transakcijos: " << trnesekminga << "\n";
     cout << "------------------------------------------------------------" <<endl;
 
     // Kuriam blokus
@@ -65,6 +65,7 @@ int main() {
     int difficulty = 1;
     vector<Blokas> blokai;
 
+    //
     while (!transakcijos.empty()) {
         vector<Transakcija> blokas;
         int numTransactions = min(100, (int)transakcijos.size());
@@ -93,24 +94,24 @@ int main() {
         blokai.push_back(naujasBlokas);
 
         for (const auto& t : blokas) {
-            vector<UTXO> senderUTXOs;
-            int totalAvailable = 0;
+            vector<UTXO> siuntejoUTXO;
+            int likonepanaudota = 0;
 
             for (auto it = utxoPool.begin(); it != utxoPool.end();) {
                 if (it->address == t.siuntejas) {
-                    senderUTXOs.push_back(*it);
-                    totalAvailable += it->value;
+                    siuntejoUTXO.push_back(*it);
+                    likonepanaudota += it->value;
                     it = utxoPool.erase(it);
                 } else {
                     ++it;
                 }
-                if (totalAvailable >= t.suma) break;
+                if (likonepanaudota >= t.suma) break;
             }
 
-            if (totalAvailable >= t.suma) {
+            if (likonepanaudota >= t.suma) {
                 utxoPool.push_back(UTXO(t.gavejas, t.suma, t.transakcijosID));
-                if (totalAvailable > t.suma) {
-                    utxoPool.push_back(UTXO(t.siuntejas, totalAvailable - t.suma, t.transakcijosID + "_change"));
+                if (likonepanaudota > t.suma) {
+                    utxoPool.push_back(UTXO(t.siuntejas, likonepanaudota - t.suma, t.transakcijosID + "_change"));
                 }
             }
         }

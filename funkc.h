@@ -50,6 +50,7 @@ public:
     Transakcija(const string& siuntejas, const string& gavejas, int suma);
     static string sukurtiTransakcijosID(const string& siuntejas, const string& gavejas, int suma);
     static string calculateMerkleRoot(const vector<Transakcija>& transakcijos);
+    bool patikrintiID() const;
 };
 
 string skaiciavimas(const string& input);

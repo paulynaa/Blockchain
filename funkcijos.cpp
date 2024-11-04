@@ -60,6 +60,11 @@ Transakcija::Transakcija(const string& siuntejas, const string& gavejas, int sum
     transakcijosID = sukurtiTransakcijosID(siuntejas, gavejas, suma);
 }
 
+bool Transakcija::patikrintiID() const {
+    string recalculatedHash = sukurtiTransakcijosID(siuntejas, gavejas, suma);
+    return recalculatedHash == transakcijosID;
+}
+
 string Transakcija::sukurtiTransakcijosID(const string& siuntejas, const string& gavejas, int suma) {
     stringstream ss;
     ss << siuntejas << gavejas << suma << time(0);
