@@ -17,7 +17,7 @@ Blokas::Blokas(int blokoNr, const string& prev_block_hash, int difficulty, const
 }
 
 void Blokas::spausdintiInfo() const {
-    cout << "Bloko Nr.: " << blokoNr << "\n"
+    cout << "Bloko Nr.: " << (blokoNr+1) << "\n"
          << "Praeito Bloko Hash: " << prev_block_hash << "\n"
          << "Dabartinio Bloko Hash: " << block_hash << "\n"
          << "Difficulty Target: " << difficulty << "\n"
