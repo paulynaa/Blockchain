@@ -19,7 +19,12 @@ public:
     string address;
     int value;
     string txID;
-    UTXO(const string& address, int value, const string& txID);
+    UTXO(const string& address, int value, const string& txID)
+        : address(address), value(value), txID(txID) {}
+
+    bool operator==(const UTXO& other) const {
+        return address == other.address && value == other.value && txID == other.txID;
+    }
 };
 
 class Vartotojas {
@@ -39,6 +44,9 @@ public:
     static int generuojambalansa(int i);
     static string createPublicKey();
 };
+
+vector<UTXO> getUTXOs(const Vartotojas& vartotojas, const vector<UTXO>& utxoPool);
+void spendUTXOs(vector<UTXO>& utxos, int amount, vector<UTXO>& utxoPool);
 
 class Transakcija {
 public:

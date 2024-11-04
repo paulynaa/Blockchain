@@ -12,10 +12,9 @@ using namespace std;
 int main() {
     default_random_engine generator(time(0));
     uniform_int_distribution<int> balansopaskirtymas(100, 1000000);
-    uniform_int_distribution<int> transakcijossumpas(200, 20000);
+    uniform_int_distribution<int> transakcijossumpas(200, 10000);
     uniform_int_distribution<int> vartindexpask(0, 999);
 
-    // Generuojam vartotojus ir UTXO pool
     string failas = "vardai.txt";
     vector<Vartotojas> vartotojai;
     vector<UTXO> utxoPool;
@@ -28,7 +27,6 @@ int main() {
         utxoPool.push_back(UTXO(publicKey, pradinisbalansas, "genesis_" + to_string(i)));
     }
 
-    // Generuojam transakcijas
     vector<Transakcija> transakcijos;
     int trsekminga = 0;
     int trnesekminga = 0;
@@ -40,7 +38,14 @@ int main() {
         } while (gavejas_idx == siuntejas_idx);
 
         int suma = transakcijossumpas(generator);
-        if (vartotojai[siuntejas_idx].getBalansas() < suma) {
+
+        vector<UTXO> senderUTXOs = getUTXOs(vartotojai[siuntejas_idx], utxoPool);
+        int totalAvailable = 0;
+        for (const auto& utxo : senderUTXOs) {
+            totalAvailable += utxo.value;
+        }
+
+        if (totalAvailable < suma) {
             trnesekminga++;
             continue;
         }
@@ -52,10 +57,11 @@ int main() {
             continue;
         }
 
+        spendUTXOs(senderUTXOs, suma, utxoPool);
+
         trsekminga++;
         transakcijos.push_back(newTransaction);
-        vartotojai[siuntejas_idx].atnaujintiBalansa(-suma);
-        vartotojai[gavejas_idx].atnaujintiBalansa(suma);
+        utxoPool.push_back(UTXO(vartotojai[gavejas_idx].getPublicKey(), suma, newTransaction.transakcijosID));
     }
 
     cout << "--- Transakciju apzvalga ---\n";
@@ -63,7 +69,6 @@ int main() {
     cout << "Atmestos transakcijos: " << trnesekminga << "\n";
     cout << "------------------------------------------------------------\n";
 
-    // Pasirinkimo meniu
     int pasirinkimas;
     cout << "Pasirinkite:\n";
     cout << "1 - Generuoti ir kasti visus blokus\n";
@@ -111,21 +116,22 @@ int main() {
             prev_block_hash = block_hash;
             kelintasBlokas++;
         }
-        char pasirinkimas;
-            do {
-                int blokas_nr;
-                cout << "Iveskite bloko numeri, kurio transakcijas norite pamatyti: ";
-                cin >> blokas_nr;
-                blokas_nr-=1;
-                if (blokas_nr >= 0 && blokas_nr < blokai.size()) {
-                    blokai[blokas_nr].spausdintiTransakcijas();
-                } else {
-                    cout << "Neteisingas bloko numeris.\n";
-                }
 
-                cout << "Ar norite pamatyti kito bloko transakcijas? (y=taip/n=ne): ";
-                cin >> pasirinkimas;
-            } while (pasirinkimas == 'y');
+        char pasirinkimas;
+        do {
+            int blokas_nr;
+            cout << "Iveskite bloko numeri, kurio transakcijas norite pamatyti: ";
+            cin >> blokas_nr;
+            blokas_nr -= 1;
+            if (blokas_nr >= 0 && blokas_nr < blokai.size()) {
+                blokai[blokas_nr].spausdintiTransakcijas();
+            } else {
+                cout << "Neteisingas bloko numeris.\n";
+            }
+
+            cout << "Ar norite pamatyti kito bloko transakcijas? (y=taip/n=ne): ";
+            cin >> pasirinkimas;
+        } while (pasirinkimas == 'y');
 
     } else if (pasirinkimas == 2) {
         // nauja uzd su kandidatais
@@ -178,14 +184,13 @@ int main() {
                 if (sekmingaiIskastas) break;
             }
             if (!iskastas) {
-                maxlaikas *= 2;
-                maxbandymu *= 2;
-                cout << "Neiskastas joks blokas. Pratesiame laika iki " << maxlaikas.count()
-                     << " sekundziu ir bandymu limita iki " << maxbandymu << "." << endl;
+                cout << "Visi kandidatai nepavyko iskasti." << endl;
+                break;
             }
         }
+
     } else {
-        cout << "Neteisingas pasirinkimas!\n";
+        cout << "Neteisingas pasirinkimas." << endl;
     }
 
     return 0;

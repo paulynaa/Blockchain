@@ -6,7 +6,6 @@ Vartotojas::Vartotojas(const string& vardas, const string& publicKey, int balans
 string Vartotojas::getVardas() const { return vardas; }
 string Vartotojas::getPublicKey() const { return publicKey; }
 int Vartotojas::getBalansas() const { return balansas; }
-
 void Vartotojas::atnaujintiBalansa(int suma) { balansas += suma; }
 
 string Vartotojas::vardoskaitymas(const string& failiukas, int i) {
@@ -51,9 +50,24 @@ string Vartotojas::createPublicKey() {
     return s;
 }
 
-UTXO::UTXO(const string& address, int value, const string& txID)
-    : address(address), value(value), txID(txID) {}
+vector<UTXO> getUTXOs(const Vartotojas& vartotojas, const vector<UTXO>& utxoPool) {
+    vector<UTXO> utxos;
+    for (const auto& utxo : utxoPool) {
+        if (utxo.address == vartotojas.getPublicKey()) {
+            utxos.push_back(utxo);
+        }
+    }
+    return utxos;
+}
 
+void spendUTXOs(vector<UTXO>& utxos, int amount, vector<UTXO>& utxoPool) {
+    int amountSpent = 0;
+    for (auto it = utxos.begin(); it != utxos.end() && amountSpent < amount;) {
+        amountSpent += it->value;
+        utxoPool.erase(remove(utxoPool.begin(), utxoPool.end(), *it), utxoPool.end());
+        it = utxos.erase(it);
+    }
+}
 
 Transakcija::Transakcija(const string& siuntejas, const string& gavejas, int suma)
     : siuntejas(siuntejas), gavejas(gavejas), suma(suma) {
