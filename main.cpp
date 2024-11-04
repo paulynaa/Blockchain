@@ -131,67 +131,67 @@ int main() {
         } while (pasirinkimas == 'y');
 
     } else if (pasirinkimas == 2) {
-         int difficulty = 5;
-    int numThreads = 1;  // Set default number of threads
-    omp_set_num_threads(numThreads);  // Configure OpenMP with the number of threads
+        int difficulty = 5;
+        int numThreads = 1;
+        omp_set_num_threads(numThreads);
 
-    vector<vector<Transakcija>> kandidatai;
-    for (int i = 0; i < 5; i++) {
-        vector<Transakcija> blokas;
-        for (int j = 0; j < 100; j++) {
-            int randIndex = rand() % transakcijos.size();
-            blokas.push_back(transakcijos[randIndex]);
+        vector<vector<Transakcija>> kandidatai;
+        for (int i = 0; i < 5; i++) {
+            vector<Transakcija> blokas;
+            for (int j = 0; j < 100; j++) {
+                int randIndex = rand() % transakcijos.size();
+                blokas.push_back(transakcijos[randIndex]);
+            }
+            kandidatai.push_back(blokas);
         }
-        kandidatai.push_back(blokas);
-    }
 
-    bool iskastas = false;
-    chrono::seconds maxlaikas(5);
-    int maxbandymu = 100000;
+        bool iskastas = false;
+        chrono::seconds maxlaikas(5);
+        int maxbandymu = 100000;
 
-    while (!iskastas) {
-        #pragma omp parallel for shared(iskastas)
-        for (int i = 0; i < kandidatai.size(); i++) {
-            if (iskastas) continue;  // Exit if block is already mined
+        while (!iskastas) {
+            #pragma omp parallel for shared(iskastas)
+            for (int i = 0; i < kandidatai.size(); i++) {
+                if (iskastas) continue;
 
-            vector<Transakcija>& blokas = kandidatai[i];
-            string merkle_root = Transakcija::calculateMerkleRoot(blokas);
-            string block_hash;
-            int nonce = 0;
-            bool sekmingaiIskastas = false;
+                vector<Transakcija>& blokas = kandidatai[i];
+                string merkle_root = Transakcija::calculateMerkleRoot(blokas);
+                string block_hash;
+                int nonce = 0;
+                bool sekmingaiIskastas = false;
 
-            while (!iskastas && nonce < maxbandymu) {
-                block_hash = skaiciavimas(merkle_root + to_string(nonce));
-                if (block_hash.substr(0, difficulty) == string(difficulty, '0')) {
+                while (!iskastas && nonce < maxbandymu) {
+                    block_hash = skaiciavimas(merkle_root + to_string(nonce));
+                    if (block_hash.substr(0, difficulty) == string(difficulty, '0')) {
+                        #pragma omp critical
+                        {
+                            if (!iskastas) {
+                                iskastas = true;
+                                sekmingaiIskastas = true;
+                                cout << "Kandidatas Nr. " << (i + 1) << " sekmingai iskastas gijos ID "
+                                     << omp_get_thread_num() << " su nonce: " << nonce << endl;
+                            }
+                        }
+                        break;
+                    }
+                    nonce++;
+                }
+
+                if (!sekmingaiIskastas && nonce >= maxbandymu) {
                     #pragma omp critical
                     {
-                        if (!iskastas) {  // Double-check to avoid race conditions
-                            iskastas = true;
-                            sekmingaiIskastas = true;
-                            cout << "Kandidatas Nr. " << (i + 1) << " sekmingai iskastas gijos ID "
-                                 << omp_get_thread_num() << " su nonce: " << nonce << endl;
-                        }
+                        cout << "Pasiektas bandymu limitas: " << maxbandymu << " kandidato Nr. " << (i + 1) << " kasimui." << endl;
                     }
-                    break;
-                }
-                nonce++;
-            }
-
-            if (!sekmingaiIskastas && nonce >= maxbandymu) {
-                #pragma omp critical
-                {
-                    cout << "Pasiektas bandymu limitas: " << maxbandymu << " kandidato Nr. " << (i + 1) << " kasimui." << endl;
                 }
             }
-        }
 
-        if (!iskastas) {
-            maxlaikas *= 2;
-            maxbandymu *= 2;
-            cout << "Neiskastas joks blokas. Pratesiame laika iki " << maxlaikas.count()
-                 << " sekundziu ir bandymu limita iki " << maxbandymu << "." << endl;
+            if (!iskastas) {
+                maxlaikas *= 2;
+                maxbandymu *= 2;
+                cout << "Neiskastas joks blokas. Pratesiame laika iki " << maxlaikas.count()
+                     << " sekundziu ir bandymu limita iki " << maxbandymu << "." << endl;
+            }
         }
-    }
 
     } else {
         cout << "Neteisingas pasirinkimas." << endl;
