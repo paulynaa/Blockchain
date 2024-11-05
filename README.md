@@ -106,18 +106,17 @@ Rezultatas su 5 difficulty:
 ![image](https://github.com/user-attachments/assets/74a1ec68-3e5b-4a5e-b5a0-d345e9a106a1)
 
 Pastebime, kad nespėjus išnaudoti viso laiko, pradedamas kasti kitas blokas. Taip yra dėl to, kad pasiekiamas bandymų limitas anksčiau nei išnaudojamas laikas. Štai kodėl taip gali būti:
+
 Spartus skaičiavimas: Jei blokai yra kasami greitai, per nustatytą laiką gali būti atliktas didelis bandymų skaičius. Tokiu atveju, bandymų skaičius pasieks maxAttempts ribą prieš pasibaigiant maxDuration.
 
 ![image](https://github.com/user-attachments/assets/886577fa-af33-4f8e-8c22-565fc348dcdd)
 
 Kodas: Kadangi kiekvienas ciklas tikrina bandymų limitą prieš laiko ribą, pasiekus maxAttempts bus iš karto nutraukta bandymų seka tam kandidatui, net jei turima laiko riba dar nėra pasiekta.
 
-## igyvendinta
+# OOP praktikos
 
-# versija v0.2
-## reikalavimai
-## igyvendinta
-# naudojimosi instrukcija
+
+# Naudojimosi instrukcija
 
 Paleidus programą matysite transakcijų generavimo procesą (transakcijos nėra išvedamos į konsolę):
 
@@ -135,18 +134,16 @@ Matysite siuntėjo Public Key, gavėjo Public Key, transakcijos sumą ir transak
 Pasirinkus, kad nenorite tęsti transakcijų peržiūros, programa bus baigta.
 
 
-# veikimas
+
+
+# Trūkumų pašalinimas
 
 
 
-# trukumu pasalinimas
-v0.1 versijoje nebuvo igyvendinta ir ttt...
 
-## oop
+# Papildomos užduotys
 
-
-# papildomos uzduotys
-# utxo 
+## UTXO 
 
 UTXO (Unspent Transaction Output) modelis yra esminė transakcijų stebėjimo sistema, naudojama daugelyje blokų grandinių, pvz., Bitcoin tinkle. Jis užtikrina, kad kiekviena valiutos vieneto dalis būtų panaudota tik vieną kartą ir kad visi balansai būtų patikimi. UTXO modelis turi kelis privalumus ir pritaikymo atvejus, kurie gali būti naudingi jūsų programoje.
 Kas yra UTXO modelis?
@@ -157,7 +154,6 @@ Kaip UTXO modelis padeda jūsų programoje?
 Jūsų programoje UTXO modelis padeda:
 
     Tiksliai sekti balansus: Naudojant UTXO, kiekvieno vartotojo balansą galima apibrėžti kaip visų jo neišleistų transakcijų sumą. Tai leidžia lengviau patikrinti, ar vartotojas turi pakankamai lėšų naujai transakcijai.
-
     Patikimumas ir apsauga nuo dvigubo išleidimo: Kadangi kiekvienas UTXO gali būti panaudotas tik vieną kartą, sistema automatiškai apsaugo nuo dvigubo išleidimo. Jei vartotojas bando panaudoti tą patį UTXO kelis kartus, sistema atmes antrąją transakciją kaip neleistiną.
 
     Greitesnis patikrinimas: Kiekvieną kartą, kai vartotojas nori atlikti transakciją, nereikia ieškoti visos transakcijų istorijos, kad patikrintumėte balansą. Vietoje to, galima tiesiog patikrinti neišleistus UTXO, todėl operacijos tampa efektyvesnės ir greitesnės.
@@ -182,7 +178,8 @@ Jūsų programoje, kai vartotojas bando atlikti transakciją:
     Pasirenkate tinkamą UTXO rinkinį (arba jų kombinaciją), kad suma atitiktų transakcijos vertę.
     Pažymite panaudotus UTXO kaip panaudotus ir sukurkite naujus UTXO gavėjui (ir grąžos UTXO siuntėjui, jei reikia).
     Atnaujinate UTXO baseiną (utxoPool), kad jame visada būtų naujausia neišleistų transakcijų išvestis.
-# lygiagretus
+## Lygiagretus blokų kasimas
+
 openmp
 
 Sužinojau maksimalų gijų skaičių su funkcija omp_get_max_threads();.
@@ -203,22 +200,22 @@ Keičiame gijų skaičių rankiniu būdu:
 Paleidau testus su kiekviena gija po 6 kartus, kad galima būtų paskaičiuoti vidutiniškai iš kurio kurio kasimo iškasamas blokas.
 Programa vienu metu bando kasti blokus, paskirstydama darbą per skirtingas gijas. Testo rezultatas, tai kiek vidutiniškai buvo bandoma iškasti blokų, kol buvo iškastas bent vienas.
 Visi testai buvo atliekami su difficulty=5.
-## 1 gija
+### 1 gija
 su 1 gija vidutiniskai is 10 kasimo
 11, 24, nekyla auksciau 24 proc
 
-## 2 gijos
+### 2 gijos
 2 gijos vidutiniskai is 13 kasimo
 CPU apkrova vidutiniškai yra 36%, bet nekyla aukščiau 39%
-## 4 gijos
+### 4 gijos
 4 gijos vidutinisksai is 10 kasimo
 CPU apkrova vidutiniškai yra 53%, bet nekyla aukščiau 63%.
 
-## 8 gijos
+### 8 gijos
 su 8 gijom vidutiniskai is 6 kasimo
 CPU apkrova vidutiniškai 57%, bet nekyla aukščiau 79%
 
-## CPU akrovos priklausomybė nuo gijų skaičiaus grafiškai
+### CPU akrovos priklausomybė nuo gijų skaičiaus grafiškai
 Grafike vaizduojama maksimali CPU apkrova (%) priklausomai nuo naudojamų gijų skaičiaus.
 ![image](https://github.com/user-attachments/assets/d742dfbf-0d92-40c4-bcf9-ea3bb8f8493f)
 
