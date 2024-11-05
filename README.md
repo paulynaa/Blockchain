@@ -115,6 +115,17 @@ Kodas: Kadangi kiekvienas ciklas tikrina bandymų limitą prieš laiko ribą, pa
 
 # OOP praktikos
 
+Šis kodas naudoja objektiškai orientuotos programavimo (OOP) principus, tokius kaip enkapsuliacija, konstruktoriai ir resurso įsigijimo išleidimo (RAII) idiomą. Tačiau yra keletas aspektų, kuriuos galima tobulinti, kad būtų pasiektos geresnės OOP praktikos:
+
+Enkapsuliacija:
+
+Klasėse Vartotojas, UTXO, Transakcija ir Blokas viešos kintamųjų prieigos turėtų būti ribojamos. Pavyzdžiui, Blokas klasėje atributai turėtų būti privatūs, o prieiga prie jų turėtų būti suteikta per get/set metodus, kad būtų užtikrintas duomenų saugumas.
+Konstruktoriai:
+
+Klasėse jau naudojami konstruktoriai, pvz., Vartotojas ir Transakcija, kurie padeda inicializuoti objektus. Tai atitinka RAII idiomą, kai ištekliai yra priskiriami ir atlaisvinami objekto gyvavimo cikle.
+RAII idiomos naudojimas:
+
+Jei jūsų kodas tvarko dinaminę atmintį arba failų operacijas, RAII idėja turėtų užtikrinti, kad ištekliai (pvz., failai) būtų automatiškai uždaromi. Vartotojas::vardoskaitymas funkcijoje failų srautas (ifstream) tinkamai uždaromas pasinaudojant RAII, kai objektas sunaikinamas.
 
 # Naudojimosi instrukcija
 
