@@ -143,7 +143,6 @@ int main() {
                 int blokas_nr;
                 cout << "Iveskite bloko numeri, kurio transakcijas norite pamatyti: ";
                 cin >> blokas_nr;
-                blokas_nr =1;
                 if (blokas_nr >= 0 && blokas_nr < blokai.size()) {
                     blokai[blokas_nr].spausdintiTransakcijas();
                 } else {
@@ -156,7 +155,7 @@ int main() {
 
     } else if (pasirinkimas == 2) {
         int difficulty = 5;
-        int numThreads = 1;
+        int numThreads = 5;
         omp_set_num_threads(numThreads);
         vector<vector<Transakcija>> kandidatai;
 
