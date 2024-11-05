@@ -13,6 +13,7 @@ int main() {
     string failas = "vardai.txt";
     vector<Vartotojas> vartotojai;
     vector<UTXO> utxoPool;
+    vector<Transakcija> mempool;
 
     for (int i = 0; i < 1000; i++) {
         string vardas = Vartotojas::vardoskaitymas(failas, i);
@@ -22,7 +23,6 @@ int main() {
         utxoPool.push_back(UTXO(publicKey, pradinisbalansas, "genesis_" + to_string(i)));
     }
 
-    vector<Transakcija> transakcijos;
     int trsekminga = 0;
     int trnesekminga = 0;
     for (int i = 0; i < 10000; i++) {
@@ -37,10 +37,14 @@ int main() {
             trnesekminga++;
             continue;
         }
-        uniform_int_distribution<int> transakcijossumpas(1000, min(600000, totalAvailable));
+        uniform_int_distribution<int> transakcijossumpas(100000, min(600000, totalAvailable));
         int suma = transakcijossumpas(generator);
         vector<UTXO> senderUTXOs = getUTXOs(vartotojai[siuntejas_idx], utxoPool);
 
+        if (senderUTXOs.empty()) {
+        trnesekminga++;
+        continue;
+    }
         if (totalAvailable < suma) {
             trnesekminga++;
             continue;
@@ -52,13 +56,8 @@ int main() {
             trnesekminga++;
             continue;
         }
-
-        spendUTXOs(senderUTXOs, suma, utxoPool);
-        vartotojai[siuntejas_idx].atnaujintiBalansa(-suma);
-        vartotojai[gavejas_idx].atnaujintiBalansa(suma);
         trsekminga++;
-        transakcijos.push_back(newTransaction);
-        utxoPool.push_back(UTXO(vartotojai[gavejas_idx].getPublicKey(), suma, newTransaction.transakcijosID));
+        mempool.push_back(newTransaction);
     }
 
     cout << "--- Transakciju apzvalga ---\n";
@@ -74,28 +73,39 @@ int main() {
     cin >> pasirinkimas;
 
     if (pasirinkimas == 1) {
-        // ankstesnis bloku kurimas
         string prev_block_hash = "0000000000000000";
         int kelintasBlokas = 0;
         int difficulty = 3;
         vector<Blokas> blokai;
+        string merkle_root = "";
+        string block_hash;
+        int nonce = 0;
 
-        while (!transakcijos.empty()) {
+        do {
+            block_hash = skaiciavimas(merkle_root + to_string(nonce));
+            nonce++;
+        } while (block_hash.substr(0, difficulty) != string(difficulty, '0'));
+
+        Blokas genesisBlokas(kelintasBlokas, prev_block_hash, difficulty, merkle_root, nonce, 1, {}, "Paulina");
+        genesisBlokas.block_hash = block_hash;
+        genesisBlokas.spausdintiInfo();
+        blokai.push_back(genesisBlokas);
+        prev_block_hash = block_hash;
+        kelintasBlokas++;
+
+        while (!mempool.empty()) {
             vector<Transakcija> blokas;
-            int numTransactions = min(100, static_cast<int>(transakcijos.size()));
-            set<int> usedIndexes;
-
+            int numTransactions = min(100, static_cast<int>(mempool.size()));
+            unordered_set<int> usedIndexes;
             while (usedIndexes.size() < numTransactions) {
-                int randIndex = rand() % transakcijos.size();
+                int randIndex = rand() % mempool.size();
                 if (usedIndexes.insert(randIndex).second) {
-                    blokas.push_back(transakcijos[randIndex]);
+                    blokas.push_back(mempool[randIndex]);
                 }
             }
 
-            string merkle_root = Transakcija::calculateMerkleRoot(blokas);
-            string block_hash;
-            int nonce = 0;
-
+            merkle_root = Transakcija::calculateMerkleRoot(blokas);
+            nonce = 0;
             do {
                 block_hash = skaiciavimas(merkle_root + to_string(nonce));
                 nonce++;
@@ -106,40 +116,55 @@ int main() {
             naujasBlokas.spausdintiInfo();
             blokai.push_back(naujasBlokas);
 
-            for (const auto& index : usedIndexes) {
-                transakcijos.erase(transakcijos.begin() + index);
+            for (const auto& tx : blokas) {
+                auto siuntejas = find_if(vartotojai.begin(), vartotojai.end(), [&](Vartotojas& v) {
+                    return v.getPublicKey() == tx.siuntejas;
+                });
+                auto gavejas = find_if(vartotojai.begin(), vartotojai.end(), [&](Vartotojas& v) {
+                    return v.getPublicKey() == tx.gavejas;
+                });
+
+                vector<UTXO> senderUTXOs = getUTXOs(*siuntejas, utxoPool);
+                spendUTXOs(senderUTXOs, tx.suma, utxoPool);
+                siuntejas->atnaujintiBalansa(-tx.suma);
+                gavejas->atnaujintiBalansa(tx.suma);
+                utxoPool.push_back(UTXO(gavejas->getPublicKey(), tx.suma, tx.transakcijosID));
             }
 
+            for (const auto& index : usedIndexes) {
+                mempool.erase(mempool.begin() + index);
+            }
             prev_block_hash = block_hash;
             kelintasBlokas++;
+
         }
-
         char pasirinkimas;
-        do {
-            int blokas_nr;
-            cout << "Iveskite bloko numeri, kurio transakcijas norite pamatyti: ";
-            cin >> blokas_nr;
-            blokas_nr -= 1;
-            if (blokas_nr >= 0 && blokas_nr < blokai.size()) {
-                blokai[blokas_nr].spausdintiTransakcijas();
-            } else {
-                cout << "Neteisingas bloko numeris.\n";
-            }
+            do {
+                int blokas_nr;
+                cout << "Iveskite bloko numeri, kurio transakcijas norite pamatyti: ";
+                cin >> blokas_nr;
+                blokas_nr =1;
+                if (blokas_nr >= 0 && blokas_nr < blokai.size()) {
+                    blokai[blokas_nr].spausdintiTransakcijas();
+                } else {
+                    cout << "Neteisingas bloko numeris.\n";
+                }
 
-            cout << "Ar norite pamatyti kito bloko transakcijas? (y=taip/n=ne): ";
-            cin >> pasirinkimas;
-        } while (pasirinkimas == 'y');
+                cout << "Ar norite pamatyti kito bloko transakcijas? (y=taip/n=ne): ";
+                cin >> pasirinkimas;
+            } while (pasirinkimas == 'y');
 
     } else if (pasirinkimas == 2) {
         int difficulty = 5;
-        int numThreads = 8;
+        int numThreads = 1;
         omp_set_num_threads(numThreads);
         vector<vector<Transakcija>> kandidatai;
+
         for (int i = 0; i < 5; i++) {
             vector<Transakcija> blokas;
             for (int j = 0; j < 100; j++) {
-                int randIndex = rand() % transakcijos.size();
-                blokas.push_back(transakcijos[randIndex]);
+                int randIndex = rand() % mempool.size();
+                blokas.push_back(mempool[randIndex]);
             }
             kandidatai.push_back(blokas);
         }
@@ -147,6 +172,7 @@ int main() {
         bool iskastas = false;
         chrono::seconds maxlaikas(5);
         int maxbandymu = 100000;
+
         while (!iskastas) {
             #pragma omp parallel for shared(iskastas)
             for (int i = 0; i < kandidatai.size(); i++) {
@@ -157,6 +183,7 @@ int main() {
                 string block_hash;
                 int nonce = 0;
                 bool sekmingaiIskastas = false;
+
                 while (!iskastas && nonce < maxbandymu) {
                     block_hash = skaiciavimas(merkle_root + to_string(nonce));
                     if (block_hash.substr(0, difficulty) == string(difficulty, '0')) {
@@ -167,6 +194,21 @@ int main() {
                                 sekmingaiIskastas = true;
                                 cout << "Kandidatas Nr. " << (i + 1) << " sekmingai iskastas gijos ID "
                                      << omp_get_thread_num() << " su nonce: " << nonce << endl;
+
+                                for (const auto& tx : blokas) {
+                                    auto siuntejas = find_if(vartotojai.begin(), vartotojai.end(), [&](Vartotojas& v) {
+                                        return v.getPublicKey() == tx.siuntejas;
+                                    });
+                                    auto gavejas = find_if(vartotojai.begin(), vartotojai.end(), [&](Vartotojas& v) {
+                                        return v.getPublicKey() == tx.gavejas;
+                                    });
+
+                                    vector<UTXO> senderUTXOs = getUTXOs(*siuntejas, utxoPool);
+                                    spendUTXOs(senderUTXOs, tx.suma, utxoPool);
+                                    siuntejas->atnaujintiBalansa(-tx.suma);
+                                    gavejas->atnaujintiBalansa(tx.suma);
+                                    utxoPool.push_back(UTXO(gavejas->getPublicKey(), tx.suma, tx.transakcijosID));
+                                }
                             }
                         }
                         break;
