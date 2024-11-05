@@ -73,81 +73,42 @@ Jūsų programoje, kai vartotojas bando atlikti transakciją:
     Atnaujinate UTXO baseiną (utxoPool), kad jame visada būtų naujausia neišleistų transakcijų išvestis.
 # lygiagretus
 openmp
+
 Sužinojau maksimalų gijų skaičių su funkcija omp_get_max_threads();.
 
-![image](https://github.com/user-attachments/assets/475dacc7-0d88-4f2b-8694-2ef7432affcc)
 
-
-![image](https://github.com/user-attachments/assets/19a725e3-f150-4f93-9a56-b9409a219ba8)
-
-Jei sistemoje numatytas gijų skaičius (pagal CPU branduolius) yra, tarkime, 4, OpenMP automatiškai paskirstys darbą 4 gijoms.
+![image](https://github.com/user-attachments/assets/f7d5f2b9-78fc-4a30-b3a5-5cad4db7ee69)
 
 ![image](https://github.com/user-attachments/assets/c0ce0a4c-ff57-4fdb-a0b2-f94d48e334ab)
 
-toliau galime keisti giju skaiciu rankiniu budu:
-su 5
-![image](https://github.com/user-attachments/assets/9b0bdfb4-269a-4bd2-a81a-5ad51c4ee8a5)
-su 10
-
-1 gija
-![image](https://github.com/user-attachments/assets/996297b6-d9b8-4fee-be7b-33f7d899a629)
-.
-
-![image](https://github.com/user-attachments/assets/b6fad8f8-5526-4202-a3ff-0f87c6871f14)
-.
-![image](https://github.com/user-attachments/assets/4b913ea6-112e-4d6d-8d84-fffc2548c382)
-.
-![image](https://github.com/user-attachments/assets/2bc8967b-9865-47cc-8a76-e629d5ab129c)
-.
-![image](https://github.com/user-attachments/assets/81fe883d-d4f8-495b-9b3b-84110c6851a1)
+Rankiniam gijų skaičiaus nustatymui naudoju omp_set_num_threads();, nes kitaip OpenMP automatiškai naudos tik numatytą gijų skaičių.
 
 
+Keičiame gijų skaičių rankiniu būdu:
+
+![image](https://github.com/user-attachments/assets/7f999fbb-836a-4b00-a574-7db285330992)
+
+
+Paleidau testus su kiekviena gija po 6 kartus, kad galima būtų paskaičiuoti vidutiniškai iš kurio kurio kasimo iškasamas blokas.
+Programa vienu metu bando kasti blokus, paskirstydama darbą per skirtingas gijas. Testo rezultatas, tai kiek vidutiniškai buvo bandoma iškasti blokų, kol buvo iškastas bent vienas.
+Visi testai buvo atliekami su difficulty=5.
+## 1 gija
+su 1 gija vidutiniskai is 10 kasimo
 11, 24, nekyla auksciau 24 proc
 
-2 gijos su 5
-![image](https://github.com/user-attachments/assets/b22c3c47-2509-4a88-abb8-54aed25d42d6)
-.
-![image](https://github.com/user-attachments/assets/ce6e1546-6105-4733-ac15-148ef582c6ac)
-.
+## 2 gijos
+2 gijos vidutiniskai is 13 kasimo
+CPU apkrova vidutiniškai yra 36%, bet nekyla aukščiau 39%
+## 4 gijos
+4 gijos vidutinisksai is 10 kasimo
+CPU apkrova vidutiniškai yra 53%, bet nekyla aukščiau 63%.
 
-![image](https://github.com/user-attachments/assets/04af7189-1753-4725-9805-311bc9d5bd98)
-.
+## 8 gijos
+su 8 gijom vidutiniskai is 6 kasimo
+CPU apkrova vidutiniškai 57%, bet nekyla aukščiau 79%
 
-![image](https://github.com/user-attachments/assets/3dfd5cd7-44f2-45f9-bf3b-33f2edfda311)
-.
+## CPU akrovos priklausomybė nuo gijų skaičiaus grafiškai
+Grafike vaizduojama maksimali CPU apkrova (%) priklausomai nuo naudojamų gijų skaičiaus.
+![image](https://github.com/user-attachments/assets/d742dfbf-0d92-40c4-bcf9-ea3bb8f8493f)
 
-![image](https://github.com/user-attachments/assets/3fc68024-9da1-496e-8636-9b57e1cd0e07)
-
-nekyla auksciau 40, 36 vid,
-4 gijos 5 difficulty
-![image](https://github.com/user-attachments/assets/9edb7610-2f77-4071-ba97-eda08f8e8af4)
-.
-![image](https://github.com/user-attachments/assets/8537a164-5f74-4208-8b16-f730474321f9)
-.
-
-![image](https://github.com/user-attachments/assets/773911f9-7823-43eb-bad3-e043ceb6c8c6)
-.
-![image](https://github.com/user-attachments/assets/59000b4b-9257-44a1-91a8-67b4bbebf0dd)
-.
-![image](https://github.com/user-attachments/assets/a7b07890-e7ed-42d2-b858-edb84b42faf8)
-.
-![image](https://github.com/user-attachments/assets/2908b9ce-643b-4cd2-a057-5cc049433cb7)
-.
-
-
- 55proc, nekyla auksciau 63 , 
-
-8 gijos 5 difficulty
-![image](https://github.com/user-attachments/assets/a61ba917-6e6c-489c-bb28-220fa5343fa7)
-.
-![image](https://github.com/user-attachments/assets/dee5d288-c6cb-4099-a4c9-f3ee4f255389)
-.
-![image](https://github.com/user-attachments/assets/5dd2bfb1-da37-4c12-90e7-a7fccb2ce76b)
-.
-![image](https://github.com/user-attachments/assets/772a7a02-5784-4232-982d-2bcd6e0bc26b)
-.
-
-
-iki 75 proc 55, 15, nekyla auksciau 79
- rezultatu lentele
 
