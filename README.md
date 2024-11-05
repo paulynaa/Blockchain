@@ -66,7 +66,7 @@ Galiausiai tas vienintelis likęs elementas ir yra Merkle Root, kuri grąžinama
 
 # Transakcijų verifikavimas
 ## Balanso tikrinimas
-Jeigu siuntėjo balanso likutis yra mažesnis už transakcijos sumą, tokia transakcija yra atmetama ir laikoma nesėkminga, todėl nepridedamo jos į bloką.
+Jeigu siuntėjo balanso likutis yra mažesnis už transakcijos sumą, tokia transakcija yra atmetama ir laikoma nesėkminga, todėl nepridedame jos į bloką.
 Rankiniu būdu galima reguliuoti rėžius transakcijos sumos generavimui ir balanso generavimui, nuo ko priklauso galimas atmestų transakcijų kiekis. Pvz. nustatytas balanso galima suma nuo 100 iki 1 000 000, o transakcijos suma nuo 200 iki 200 0000. Gauname tiek sėkmingų ir atmestų transakcijų:
 
 ![image](https://github.com/user-attachments/assets/1f516086-c6a8-4cb5-9fdb-3176ea1d5b69)
@@ -83,7 +83,7 @@ Padidinę transakcijos sumos rėžius gausime daugiau atmestų transakcijų, ir 
 
 ## Transakcijos hasho tikrinimas
 Tikriname ar transakcijosID yra tikrai deterministinis, tam rehashinam transakcijos informaciją ir lyginam jį su pradiniu transakcijosID.
-Jeigu hashai nesutaps, tai tokia transakcija bus pridėta prie nesėkmingų ir neįtraukta į bloką, o ekrane galėsime matyti Klaidos pranešimą apie transakcijos hashų nesutapimą.
+Jeigu hashai nesutaps, tai tokia transakcija bus pridėta prie nesėkmingų ir neįtraukta į bloką, o ekrane galėsime matyti klaidos pranešimą apie transakcijos hashų nesutapimą.
 Toks patikrinimas leidžia įsitikinti ar mūsų realizuota hash funkcija gerai veikia, ir atmesti įmanomas problemas, kad jos neįsiveltų į blokus.
 
 # Decentralizuotas blokų kasimas
@@ -105,100 +105,78 @@ Rezultatas su 5 difficulty:
 
 ![image](https://github.com/user-attachments/assets/74a1ec68-3e5b-4a5e-b5a0-d345e9a106a1)
 
-Pastebime, kad nespėjus išnaudoti viso laiko, pradedamas kasti kitas blokas. Taip yra dėl to, kad pasiekiamas bandymų limitas anksčiau nei išnaudojamas laikas. Štai kodėl taip gali būti:
+Pastebime, kad nespėjus išnaudoti viso laiko, pradedamas kasti kitas blokas. Taip yra dėl to, kad pasiekiamas bandymų limitas anksčiau nei išnaudojamas laikas (jeigu padidiname bandymų limitą, tai blokas yra iškasamas žymiai greičiau). Štai kodėl taip gali būti:
 
-Spartus skaičiavimas: Jei blokai yra kasami greitai, per nustatytą laiką gali būti atliktas didelis bandymų skaičius. Tokiu atveju, bandymų skaičius pasieks maxAttempts ribą prieš pasibaigiant maxDuration.
+Spartus skaičiavimas: Jei blokai yra kasami greitai, per nustatytą laiką gali būti atliktas didelis bandymų skaičius. Tokiu atveju, bandymų skaičius pasieks maxbandymu ribą prieš pasibaigiant maxlaikas.
 
 ![image](https://github.com/user-attachments/assets/886577fa-af33-4f8e-8c22-565fc348dcdd)
 
-Kodas: Kadangi kiekvienas ciklas tikrina bandymų limitą prieš laiko ribą, pasiekus maxAttempts bus iš karto nutraukta bandymų seka tam kandidatui, net jei turima laiko riba dar nėra pasiekta.
+Kodas: Kadangi kiekvienas ciklas tikrina bandymų limitą prieš laiko ribą, pasiekus maxbandymu bus iš karto nutraukta bandymų seka tam kandidatui, net jei turima laiko riba dar nėra pasiekta.
 
 # OOP praktikos
 
-Šis kodas naudoja objektiškai orientuotos programavimo (OOP) principus, tokius kaip enkapsuliacija, konstruktoriai ir resurso įsigijimo išleidimo (RAII) idiomą. Tačiau yra keletas aspektų, kuriuos galima tobulinti, kad būtų pasiektos geresnės OOP praktikos:
+Enkapsuliacija: Klasės Vartotojas privatūs nariai (vardas, publicKey, balansas) užtikrina, kad vidus būtų pasiekiamas tik per viešus metodus, pvz., getVardas() ir t.t.. Tai apsaugo duomenis. 
 
-Enkapsuliacija:
+Konstruktoriai: Konstruktoriai, pvz., Vartotojas() ir Transakcija(), užtikrina, kad objektai būtų tinkamai sukurti su pradiniais duomenimis.
 
-Klasėse Vartotojas, UTXO, Transakcija ir Blokas viešos kintamųjų prieigos turėtų būti ribojamos. Pavyzdžiui, Blokas klasėje atributai turėtų būti privatūs, o prieiga prie jų turėtų būti suteikta per get/set metodus, kad būtų užtikrintas duomenų saugumas.
-Konstruktoriai:
+RAII idioma: Funkcijoje vardoskaitymas() failų srautai uždaromi automatiškai, kai objektas praranda reikšmę. Tai užtikrina saugų išteklių valdymą be rankinio uždarymo. T.y. kad resursai būtų atlaisvinit.
 
-Klasėse jau naudojami konstruktoriai, pvz., Vartotojas ir Transakcija, kurie padeda inicializuoti objektus. Tai atitinka RAII idiomą, kai ištekliai yra priskiriami ir atlaisvinami objekto gyvavimo cikle.
-RAII idiomos naudojimas:
-
-Jei jūsų kodas tvarko dinaminę atmintį arba failų operacijas, RAII idėja turėtų užtikrinti, kad ištekliai (pvz., failai) būtų automatiškai uždaromi. Vartotojas::vardoskaitymas funkcijoje failų srautas (ifstream) tinkamai uždaromas pasinaudojant RAII, kai objektas sunaikinamas.
+Modulizavimas: Klasės ir funkcijos yra suskirstytos į atskirus failus, todėl kodas yra tvarkingesnis, su lengvesniu skaitymu ir priežiūra.
 
 # Naudojimosi instrukcija
 
-Paleidus programą matysite transakcijų generavimo procesą (transakcijos nėra išvedamos į konsolę):
+Paleidus programą matysite transakcijų apžvalgą: kiek yra sėkmingų ir nesėkmingų transakcijų, pvz.:
+![image](https://github.com/user-attachments/assets/c9cd2557-0527-4b5a-be80-aa4a8b506797)
 
-![image](https://github.com/user-attachments/assets/7993f170-528b-4f5f-aa7b-37ba5a3c4d8c)
+Toliau programa leis jums pasirinkti vieną iš dviejų galimų variantų:
+1. Kurti ir kasti visus blokus
+2. Kasti 5 blokų kandidatus.
 
- tai įvyks po to, jeigu vartotojų generavimas bus sėkmingas. Sugeneruotos transakcijos bus įtrauktos į bloką, t.y. iš viso bus išvesta 100 blokų su sekančia informacija: Bloko eilės numeris, Praeito bloko hash, Dabartinio bloko hash, Bloko maišos reikšmės sudėtingumas, Laiko žyma, Merkel Root hash, Nonce, Versija, Transakcijų kiekis bloke, Miner'is (pvz žemiau):
- 
-![image](https://github.com/user-attachments/assets/3c430348-b5d3-4161-bf0a-75d732f5566e)
+![image](https://github.com/user-attachments/assets/fe87da1a-971d-43ad-8de4-6ef71ad3ea66)
 
-Kai transakcijos bus įtrauktos į bloką, vartotojas galės pasirinki, ar jis nori peržiūrėti kažkurio bloko transakcijas. Jeigu vartotojas nori peržiūrėti transakcijas, jis turėtų įrašyti bloko eilės numerį, pvz.:
+Pasirinkus pirmą variantą ekrane matysite visus blokus, su bloko informacija:
 
-![image](https://github.com/user-attachments/assets/c900bc4c-4240-434b-aafe-7d8742788858)
-
-Matysite siuntėjo Public Key, gavėjo Public Key, transakcijos sumą ir transakcijos ID, t.y. transakcijos duomenų maišos reikšmę.
-Pasirinkus, kad nenorite tęsti transakcijų peržiūros, programa bus baigta.
+![image](https://github.com/user-attachments/assets/ec3930ad-145d-4fce-8f61-c97dd76950db)
 
 
+Toliau programa paklaus kurio bloko transakcijas norėtumėte peržiūrėti:
+
+![image](https://github.com/user-attachments/assets/b8486044-d53d-42c7-8fe9-472cd14eb6f4)
+
+Galėsite peržiūrėti visas to bloko transakcijas. Po to vėl matysite klausimą, ar norite tęsti transakcijų išvedimą, turite pasirinkti y=taip arba n=ne:
+
+![image](https://github.com/user-attachments/assets/bd934f23-2071-493f-a031-5c93e76614fd)
+
+Pasirinkę, kad nenorite tęsti programa bus baigta.
+
+Pereiname prie 2 pasirinkimo: 5 kandidatų kasimo.
+Pasirinkę šį variantą programa pradės kasti blokus, kiekvienam blokų kasimui skiriamas tam tikras laikas ir bandymų skaičius, kurie bus didinami kol neišsikas blokas. Apie sėkmingai iškastą bloką bus matomas pranešimas ekrane su nonce reikšme. Jeigu bandymų arba laiko limitas bus viršijamas, ekrane matysime pranešimą apie tai, ir bus pereita prie bandymo iškasti sekantį bloką. Jeigu po pirmo kandidatų kasimo nepavyko iškasti nei vieno bloko, programa apie tai praneš, pratęs limitus ir bandys dar kartą.
 
 
-# Trūkumų pašalinimas
-
-
+# Veikimo principas
+Vartotojai ir Transakcijos yra sugeneruojamos atitinkamai pagal reikalavimus, po ko yra skaičiuojama kiek iš viso yra sėkmingų transakcijų, kurias saugome mempoole. Transakcija yra laikoma nesėkminga ir jeigu transakcijos ID nesutapo su transakcijos informacijos hashu. Toliau yra kuriami blokai. Pirmas blokas, arba Genesis blokas neturi įtrauktų transakcijų, todėl neturi ir Merkle Root Hasho, jo eilės numeris yra žymimas 0, o ankstesnio bloko hashas yra nulių rinkinys. Sekantys blokai turės iki 100 įtrauktų transakcijų, kurios yra įvykdomos po įtraukimo i bloką ir atnaujinami balansai. Paskirsčius visas transakcijas, jos yra ištrinamos iš mempoolo su mempool.erase();. Blokai sujungiami su prev_block_hash, sudarant blokų grandinę. Kasant 5 kandidatus, transakcijos taip pat yra įvykdomos įtraukus jas į bloką.
+(mempoole laikomos nepatvirtintos transakcijos, kol kol jos nesulauks patvirtinimo/įvykdymo per mining'ą)
 
 
 # Papildomos užduotys
 
 ## UTXO 
 
-UTXO (Unspent Transaction Output) modelis yra esminė transakcijų stebėjimo sistema, naudojama daugelyje blokų grandinių, pvz., Bitcoin tinkle. Jis užtikrina, kad kiekviena valiutos vieneto dalis būtų panaudota tik vieną kartą ir kad visi balansai būtų patikimi. UTXO modelis turi kelis privalumus ir pritaikymo atvejus, kurie gali būti naudingi jūsų programoje.
-Kas yra UTXO modelis?
-
-UTXO modelis reiškia "neišleistas transakcijos išvestis" (angl. Unspent Transaction Output). Kiekviena transakcija sukuria naujus UTXO, kuriuos galima naudoti būsimiems mokėjimams. UTXO apibrėžia konkrečius lėšų vienetus, susietus su naudotojo viešuoju raktu (arba adresu), kuriuos naudotojas gali išleisti būsimoms transakcijoms. Kiekviena transakcija sunaudoja ankstesnius UTXO kaip įėjimus ir sukuria naujus UTXO kaip išvestis.
-Kaip UTXO modelis padeda jūsų programoje?
-
-Jūsų programoje UTXO modelis padeda:
-
-    Tiksliai sekti balansus: Naudojant UTXO, kiekvieno vartotojo balansą galima apibrėžti kaip visų jo neišleistų transakcijų sumą. Tai leidžia lengviau patikrinti, ar vartotojas turi pakankamai lėšų naujai transakcijai.
-    Patikimumas ir apsauga nuo dvigubo išleidimo: Kadangi kiekvienas UTXO gali būti panaudotas tik vieną kartą, sistema automatiškai apsaugo nuo dvigubo išleidimo. Jei vartotojas bando panaudoti tą patį UTXO kelis kartus, sistema atmes antrąją transakciją kaip neleistiną.
-
-    Greitesnis patikrinimas: Kiekvieną kartą, kai vartotojas nori atlikti transakciją, nereikia ieškoti visos transakcijų istorijos, kad patikrintumėte balansą. Vietoje to, galima tiesiog patikrinti neišleistus UTXO, todėl operacijos tampa efektyvesnės ir greitesnės.
-
-    Lankstumas didesnėms ar mažesnėms transakcijoms: Jei vartotojo balansas sudarytas iš kelių skirtingų UTXO, galima pasirinkti jų kombinaciją, atitinkančią norimą sumą. Tai leidžia atlikti transakcijas pagal reikiamus dydžius ir efektyviai išlaikyti balanso būseną.
-
-    Decentralizuota balanso stebėsena: Kadangi UTXO yra tiesioginės transakcijų išvestys, kiekvienas gali patikrinti turimus UTXO atviroje blokų grandinėje. Tai leidžia bet kam pasitikrinti transakcijų autentiškumą ir balanso teisingumą be tarpininkų.
-
-Kaip tai pritaikyti jūsų programoje?
-
-Jūsų programoje UTXO padeda tvarkyti balansus ir valdyti transakcijų įrašus:
-
-    Balanso apskaičiavimas: Kai vartotojas bando atlikti transakciją, galite suskaičiuoti visų vartotojo turimų UTXO sumą, kad patikrintumėte balansą.
-    Transakcijos sumos pasirinkimas: Kadangi vartotojo balansas susideda iš UTXO, galite pasirinkti tinkamus UTXO, kurie atitiktų reikiamą sumą transakcijai. Jei transakcijos suma mažesnė nei UTXO vertė, sukurkite „grąžos“ UTXO vartotojui.
-    Nepanaudoti ir panaudoti UTXO: Kai transakcija atliekama, sunaudojate siuntėjo UTXO kaip įėjimą ir sukuriate naujus UTXO gavėjui (bei siuntėjui, jei yra grąžos). Tai užtikrina, kad panaudoti UTXO nebegalėtų būti naudojami kitose transakcijose.
-
-Pavyzdys jūsų programos kontekste
-
-Jūsų programoje, kai vartotojas bando atlikti transakciją:
-
-    Surandate vartotojo turimus UTXO (getUTXOs funkcija).
-    Pasirenkate tinkamą UTXO rinkinį (arba jų kombinaciją), kad suma atitiktų transakcijos vertę.
-    Pažymite panaudotus UTXO kaip panaudotus ir sukurkite naujus UTXO gavėjui (ir grąžos UTXO siuntėjui, jei reikia).
-    Atnaujinate UTXO baseiną (utxoPool), kad jame visada būtų naujausia neišleistų transakcijų išvestis.
+UTXO (Unspent Transaction Output) modelis užtikrina, kad kiekviena valiutos vieneto dalis būtų panaudota tik vieną kartą ir kad visi balansai būtų patikimi.
+Kiekviena transakcija sukuria naujus UTXO, kuriuos galima naudoti būsimiems mokėjimams. UTXO apibrėžia konkrečius lėšų vienetus, susietus su naudotojo viešuoju raktu (publicKey), kuriuos naudotojas gali išleisti būsimoms transakcijoms. Kiekviena transakcija sunaudoja ankstesnius UTXO kaip įėjimus ir sukuria naujus UTXO kaip išvestis.
+Programoje UTXO padeda tiksliai sekti balansus, apsaugo nuo pakartotinio balanso išleidimo, užtikrina veikimo efektyvumą, leidžia bet kam pasitikrinti transakcijų autentiškumą ir balansą be tarpininkų.
+    Surandu vartotojo turimus UTXO (getUTXOs funkcija).
+    Pasirenku tinkamą UTXO rinkinį, kad suma atitiktų transakcijos vertę.
+    Pažymiu panaudotus UTXO kaip panaudotus ir sukurkiu naujus UTXO gavėjui (+ grąžą UTXO siuntėjui).
+    Atnaujinu UTXO baseiną (utxoPool), kad jame visada būtų naujausia neišleistų transakcijų reikšmė.
+    
 ## Lygiagretus blokų kasimas
 
-openmp
+Lygiagrečiajam skaičiavimui naudoju OpenMp.
 
-Sužinojau maksimalų gijų skaičių su funkcija omp_get_max_threads();.
-
+Visų pirma sužinojau maksimalų gijų skaičių su funkcija omp_get_max_threads();.
 
 ![image](https://github.com/user-attachments/assets/f7d5f2b9-78fc-4a30-b3a5-5cad4db7ee69)
-
-![image](https://github.com/user-attachments/assets/c0ce0a4c-ff57-4fdb-a0b2-f94d48e334ab)
 
 Rankiniam gijų skaičiaus nustatymui naudoju omp_set_num_threads();, nes kitaip OpenMP automatiškai naudos tik numatytą gijų skaičių.
 
@@ -208,22 +186,22 @@ Keičiame gijų skaičių rankiniu būdu:
 ![image](https://github.com/user-attachments/assets/7f999fbb-836a-4b00-a574-7db285330992)
 
 
-Paleidau testus su kiekviena gija po 6 kartus, kad galima būtų paskaičiuoti vidutiniškai iš kurio kurio kasimo iškasamas blokas.
-Programa vienu metu bando kasti blokus, paskirstydama darbą per skirtingas gijas. Testo rezultatas, tai kiek vidutiniškai buvo bandoma iškasti blokų, kol buvo iškastas bent vienas.
+Paleidau testus su kiekviena gija po 10 kartų, kad galima būtų paskaičiuoti vidutiniškai iš kurio kurio bandymo kasti iškasamas blokas.
+Programa vienu metu bando kasti 5 blokus, paskirstydama darbą per skirtingas gijas. Testo rezultatas, tai iš kurio vidutiniškai karto buvo iškastas blokas.(1kartas = 1bloko kasimas)
 Visi testai buvo atliekami su difficulty=5.
-### 1 gija
-su 1 gija vidutiniskai is 10 kasimo
-11, 24, nekyla auksciau 24 proc
 
+### 1 gija
+Su 1 gija blokas iškasamas vidutiniškai iš 10 kasimo
+CPU apkrova vidutiniškai yra 16%, bet nekyla aukščiau 24%
 ### 2 gijos
-2 gijos vidutiniskai is 13 kasimo
+2 gijos vidutiniškai iškasa iš 13 kasimo
 CPU apkrova vidutiniškai yra 36%, bet nekyla aukščiau 39%
 ### 4 gijos
-4 gijos vidutinisksai is 10 kasimo
+4 gijos vidutiniškai iškasa iš 9 kasimo
 CPU apkrova vidutiniškai yra 53%, bet nekyla aukščiau 63%.
 
 ### 8 gijos
-su 8 gijom vidutiniskai is 6 kasimo
+Su 8 gijom blokas iškasamas vidutiniškai iš 6 kasimo
 CPU apkrova vidutiniškai 57%, bet nekyla aukščiau 79%
 
 ### CPU akrovos priklausomybė nuo gijų skaičiaus grafiškai
