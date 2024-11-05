@@ -169,7 +169,8 @@ Programoje UTXO padeda tiksliai sekti balansus, apsaugo nuo pakartotinio balanso
     Pasirenku tinkamą UTXO rinkinį, kad suma atitiktų transakcijos vertę.
     Pažymiu panaudotus UTXO kaip panaudotus ir sukurkiu naujus UTXO gavėjui (+ grąžą UTXO siuntėjui).
     Atnaujinu UTXO baseiną (utxoPool), kad jame visada būtų naujausia neišleistų transakcijų reikšmė.
-    
+
+
 ## Lygiagretus blokų kasimas
 
 Lygiagrečiajam skaičiavimui naudoju OpenMp.
@@ -185,9 +186,12 @@ Keičiame gijų skaičių rankiniu būdu:
 
 ![image](https://github.com/user-attachments/assets/7f999fbb-836a-4b00-a574-7db285330992)
 
+Paleidus kodą blokai kasami lygiagrečiai, matome, kad numeriai išdėstyti chaotiškai, ne iš eilės:
 
-Paleidau testus su kiekviena gija po 10 kartų, kad galima būtų paskaičiuoti vidutiniškai iš kurio kurio bandymo kasti iškasamas blokas.
-Programa vienu metu bando kasti 5 blokus, paskirstydama darbą per skirtingas gijas. Testo rezultatas, tai iš kurio vidutiniškai karto buvo iškastas blokas.(1kartas = 1bloko kasimas)
+![image](https://github.com/user-attachments/assets/497fa39f-dfdd-48bb-b1f5-efcf5c6828e4)
+
+
+Paleidau testus su kiekviena gija po 10 kartų, kad galima būtų paskaičiuoti vidutiniškai iš kurio kurio bandymo kasti iškasamas blokas. Testo rezultatas, tai iš kurio vidutiniškai karto buvo iškastas blokas.(1kartas = 1bloko kasimas)
 Visi testai buvo atliekami su difficulty=5.
 
 ### 1 gija
