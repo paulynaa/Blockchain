@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     int numatyta_threads = omp_get_max_threads();
-    cout << "Numatytas giju skaicius: " << numatyta_threads << endl;
+    cout << "Maksimalus giju skaicius: " << numatyta_threads << endl;
     default_random_engine generator(time(0));
     uniform_int_distribution<int> balansopaskirtymas(100, 1000000);
     uniform_int_distribution<int> vartindexpask(0, 999);
@@ -37,7 +37,7 @@ int main() {
             trnesekminga++;
             continue;
         }
-        uniform_int_distribution<int> transakcijossumpas(200, min(200000, totalAvailable));
+        uniform_int_distribution<int> transakcijossumpas(1000, min(600000, totalAvailable));
         int suma = transakcijossumpas(generator);
         vector<UTXO> senderUTXOs = getUTXOs(vartotojai[siuntejas_idx], utxoPool);
 
@@ -132,9 +132,8 @@ int main() {
 
     } else if (pasirinkimas == 2) {
         int difficulty = 5;
-        int numThreads = 1;
+        int numThreads = 8;
         omp_set_num_threads(numThreads);
-
         vector<vector<Transakcija>> kandidatai;
         for (int i = 0; i < 5; i++) {
             vector<Transakcija> blokas;
@@ -148,7 +147,6 @@ int main() {
         bool iskastas = false;
         chrono::seconds maxlaikas(5);
         int maxbandymu = 100000;
-
         while (!iskastas) {
             #pragma omp parallel for shared(iskastas)
             for (int i = 0; i < kandidatai.size(); i++) {
@@ -159,7 +157,6 @@ int main() {
                 string block_hash;
                 int nonce = 0;
                 bool sekmingaiIskastas = false;
-
                 while (!iskastas && nonce < maxbandymu) {
                     block_hash = skaiciavimas(merkle_root + to_string(nonce));
                     if (block_hash.substr(0, difficulty) == string(difficulty, '0')) {
@@ -176,7 +173,6 @@ int main() {
                     }
                     nonce++;
                 }
-
                 if (!sekmingaiIskastas && nonce >= maxbandymu) {
                     #pragma omp critical
                     {
@@ -184,7 +180,6 @@ int main() {
                     }
                 }
             }
-
             if (!iskastas) {
                 maxlaikas *= 2;
                 maxbandymu *= 2;
@@ -192,7 +187,6 @@ int main() {
                      << " sekundziu ir bandymu limita iki " << maxbandymu << "." << endl;
             }
         }
-
     } else {
         cout << "Neteisingas pasirinkimas." << endl;
     }
