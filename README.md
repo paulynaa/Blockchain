@@ -87,6 +87,7 @@ Galime buildinti programa. Susiduriau su errorais:
 Githubo repozitorijoje nebuvo failo bitcoin.hpp
 
 build_all.bat
+nu get environment variable
 ![image](https://github.com/user-attachments/assets/8b797702-976c-49ee-93f0-23c95d41a454)
 
 system.hpp
