@@ -86,4 +86,7 @@ Githubo repozitorijoje nebuvo failo bitcoin.hpp
 build_all.bat
 ![image](https://github.com/user-attachments/assets/8b797702-976c-49ee-93f0-23c95d41a454)
 
+system.hpp
+![image](https://github.com/user-attachments/assets/3f8a3357-7d18-4c22-85ac-86b2d60db516)
+
 
