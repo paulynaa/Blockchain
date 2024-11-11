@@ -1,29 +1,52 @@
 # Blockchain
 
+Visų pirma atsisiunčiau Visual Studio 2017 ir 2022 (su 2013 ir 2015 versija buvo problemų instaliuojant, kurių nepavyko išspręsti).
 ![image](https://github.com/user-attachments/assets/7fc7905a-6f21-418e-aba9-772be8365e4e)
 
 
+Toliau naudojau githubo linką iš pateiktos papildomos užduoties aprašymo :
+
 https://github.com/libbitcoin/libbitcoin-system
+Kopijuoju nuorodą ir cmd įrašau :
+
 ![image](https://github.com/user-attachments/assets/e536954e-5932-45d0-92a6-778d4fb38f7d)
 
-Community
-![image](https://github.com/user-attachments/assets/de57b355-d7a3-42c5-806a-3a989fe319c8)
 
-Visual Studio File > Open > Project/Solution randame kelia iki libbitcoin-system.sln (libbitcoin-system\builds\msvc\vs2022), atidarome solution faila ir spaudziame Build > Build Solution. Susiduriau su NuGet package missing erroru ir turejau atlikti siuos veiksmus: Tools > Options > NuGet Package Manager > General ir pazymim laukelius: 
+
+Bandymai dirbti su Visual Studio 2017 buvo nesėkmingi, todėl pasirinkau dirbti su 2022.
+
+Toliau reikėjo per Visual Studio 2022 pasirinkti File > Open > Project/Solution randu kelią iki libbitcoin-system.sln (libbitcoin-system\builds\msvc\vs2022), atidariau solution failą ir spaudžiau Build > Build Solution. Susidūriau su NuGet package missing klaida ir turėjau atlikti šiuos veiksmus: Tools > Options > NuGet Package Manager > General ir pažymėti laukelius: 
 - Automatically check for missing packages during build;
 - Allow NuGet to download missing packages during build;
 
-Tada desiniuoju klavisu ant Solution, Solution Explorer langelyje ir pasirenkame Restore NuGet Packages.
+Tada dešiniuoju klavišu spaudžiau Solution, Solution Explorer langelyje ir pasirinkau Restore NuGet Packages.
 
-Po restor'o galime is naujo pabuildinti solutiona: Build > Build Solution.
+Keletą minučių palaukus galima iš naujo pabuildinti solution'ą: Build > Build Solution. Šį kartą klaidų nebebuvo.
+
+Atidarau cmd, nurodau kelią iki aplankalo, kuriame yra build_all.bat failas (libbitcoin-system\build\msvc\build) ir paleidžiu jį.
+Man pranešama, kad neatpažįsta nuget.exe ir negali atsiųsti visų reikalingų paketų.
+Randu kelią kur yra nuget.exe failas, search bare įvedu environment variables:
+![image](https://github.com/user-attachments/assets/806d39f3-544b-42fe-ab57-d1ed6dc0195c)
+
+Toliau spaudžiu Environment Variables > System Variables > Path > Edit :
+
+![image](https://github.com/user-attachments/assets/aeda8d6f-0bc7-468a-9434-e358fcfa9395)
+
+Spaudžiame New ir pridedame kelią iki nuget.exe.
+
+Kartojame tas pačias instrukcijas su cmd. Atlikus šiuos veiksmus outputas buvo sekantis:
+
+![image](https://github.com/user-attachments/assets/8b797702-976c-49ee-93f0-23c95d41a454)
+
+
 
 Dabar galime kurti jau savo programas su <bitcoin/bitcoin.hpp< biblioteka.
 
-Sukure nauja faila nurodome Include Additional directories kelia iki bitcoin.hpp failo
+Sukūrę naują failą Visual Stuio nurodome per Project Properties - Include Additional directories kelią iki bitcoin.hpp failo
 
-Programa:
+Pateiktas kodas užduoties aprašyme:
 <details>
-  <summary> Perziureti koda </summary>
+  <summary> Peržiūrėti kodą </summary>
 
 ```
 
@@ -80,21 +103,22 @@ int main()
 
 </details>
 
-Galime buildinti programa. Susiduriau su errorais:
+Bandau buildinti programą, bet susiduriu su klaidomis:
 
 ![image](https://github.com/user-attachments/assets/b56dc781-a9db-419f-82a8-0a650f32e41a)
 
-Githubo repozitorijoje nebuvo failo bitcoin.hpp
+Githubo repozitorijoje nebuvo failo bitcoin.hpp, todėl banday keisti pirmą eilutę į #include <bitcoin/system.hpp>
 
-build_all.bat
-nu get environment variable
-![image](https://github.com/user-attachments/assets/8b797702-976c-49ee-93f0-23c95d41a454)
-
-system.hpp
 ![image](https://github.com/user-attachments/assets/3f8a3357-7d18-4c22-85ac-86b2d60db516)
 
+Bandau išspręsti šį errorą:
 
 ![image](https://github.com/user-attachments/assets/7eb9c1d4-9d8f-4026-b630-ae3c5394e7bd)
+
+Per Project Properties pakeičiu standartą iš default c++14 į c++20:
+
 ![image](https://github.com/user-attachments/assets/89ed0a07-73ac-482a-a672-645288d6d646)
+
+Po šio pakeitimo tas pats erroras nedingo, tik prisidėjo 80 naujų klaidų.
 
 
