@@ -4,7 +4,7 @@
 Truffle IDE
 node.js npm nvm
 
-cmd
+powershell
 
 # installs fnm (Fast Node Manager)
 winget install Schniz.fnm
@@ -20,4 +20,10 @@ node -v # should print `v22.11.0`
 
 # verifies the right npm version is in the environment
 npm -v # should print `10.9.0`
+
+https://nodejs.org/en
+
+node gyp
+https://github.com/nodejs/node-gyp#installation
+
 
