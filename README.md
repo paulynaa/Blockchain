@@ -29,6 +29,8 @@ https://github.com/nodejs/node-gyp#installation
 
 
 
+https://youtu.be/coQ5dg8wM2o?si=ndnboNGUSRcBmqp-
+
 ![image](https://github.com/user-attachments/assets/7755cb02-f599-4672-81c2-aa2b19b48a9a)
 
 ar prie networko gerai prisijunge tikrinam, gaunam pirmo acc balansa: web3.eth.getAccounts().then(accounts => {
