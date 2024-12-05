@@ -80,3 +80,47 @@ Set a deadline 10 minutes from now.
 
 problema su deployed, undefined
 
+
+modelis?
+    platforma, kurioje projektų kūrėjai gali pateikti projektus, o vartotojai (rėmėjai) gali siųsti ETH projektų finansavimui. Jei projektas surenka pakankamai lėšų per nustatytą laiką, lėšos išmokamos kūrėjui. Jei ne – rėmėjams grąžinami jų įnašai.
+
+
+    Projektų kūrėjas sukuria projektą su tokiomis savybėmis:
+        Minimalus lėšų tikslas.
+        Galutinis terminas (timestamp formatu).
+    Vartotojai gali prisidėti prie projekto, siųsdami ETH.
+    Kai pasibaigia projekto laikotarpis:
+        Jei lėšų tikslas pasiektas, kūrėjas gali atsiimti ETH.
+        Jei lėšų tikslas nepasiektas, vartotojai gali susigrąžinti savo įnašus.
+
+Šis modelis atspindi sutelktinio finansavimo (angl. crowdfunding) platformos logiką, kuri realiame gyvenime naudojama finansuoti įvairių tipų projektus – nuo technologinių naujovių iki socialinių iniciatyvų ar meno projektų.
+panasus sprendimai
+
+    Kickstarter
+        Veikimas:
+        Kickstarter yra viena didžiausių pasaulyje sutelktinio finansavimo platformų. Projektų kūrėjai pateikia projektus, nustato finansavimo tikslą ir laikotarpį. Jei projektas surenka pakankamai lėšų, jos pervedamos kūrėjui. Jei ne, lėšos grąžinamos rėmėjams.
+       
+    Indiegogo
+        Veikimas:
+        Kita populiari platforma, kuri leidžia rinkti lėšas su dviem modeliais: "viskas arba nieko" (panašu į jūsų modelį) ir "flexible funding" (kai surinktos lėšos perduodamos, net jei tikslas nepasiektas).
+       
+    Gitcoin Grants
+        Veikimas:
+        Blockchain paremta platforma, kurioje projektai gali gauti finansavimą iš bendruomenės, naudojant kriptovaliutas.
+
+Tradicinės platformos reikalauja pasitikėjimo trečiosiomis šalimis, kurios valdo lėšas (pvz., Kickstarter valdymas). Blockchain pagrįstas modelis pašalina šį tarpininką:
+
+    Rėmėjai yra tikri, kad jų lėšos bus arba perduotos kūrėjui, arba grąžintos, priklausomai nuo sutarties sąlygų.
+    Kūrėjas turi garantiją, kad lėšos bus automatiškai pervestos, kai pasieks tikslą.
+
+Decentralizuotas valdymas
+Naudojant Ethereum blockchain, platforma tampa decentralizuota. Nė viena institucija ar asmuo negali manipuliuoti lėšomis, o visi sandoriai yra viešai matomi Ethereum tinkle.
+
+Automatizavimas ir efektyvumas
+Išmanieji kontraktai automatizuoja visą procesą:
+
+    Taisyklių vykdymas užprogramuotas, todėl nereikia trečiosios šalies įsikišimo.
+    Tai sumažina administracinius kaštus.
+
+    
+  
