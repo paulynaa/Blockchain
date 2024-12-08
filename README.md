@@ -168,3 +168,27 @@ Po ko projekto balansas bus 0:
 ![image](https://github.com/user-attachments/assets/bd97a87a-40ba-40bb-9e30-ed02e1a295a6)
 
 
+# Thirdweb deploy ir publish
+
+install thirdweb
+
+npx thirdweb create
+
+![image](https://github.com/user-attachments/assets/e95e06f6-a605-4c42-9bf8-ca28afd313db)
+
+Visual Studio Code, čia atidarome aplankalą, kuriame guli mūsų sutartis, ir sukuriame *.sol failus. Perkeliame iš Remixo kodus į VScode.
+
+Turime susikurti ThirdWeb paskyrą, ir sukurti projektą, po ko gausime projekto PrivateKey. 
+Po ko grįžtame į VScode ir atidarome terminalą, ten suvedame: npx thirdweb deploy -k (+PrivateKey).
+
+![image](https://github.com/user-attachments/assets/639d9764-201c-47e9-a9e4-a23bb1c65f89)
+
+Sekame nuorodą ir atsiduriame čia:
+
+![image](https://github.com/user-attachments/assets/3ad64a3b-a374-4c83-b646-c382f1f4cc60)
+
+Pasirenkame testinį tinklą Localhost.
+
+
+
+
