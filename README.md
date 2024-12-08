@@ -43,6 +43,10 @@ https://metamask.io/
 Čia pagrindiniame puslapyje spaudžiame "View MetaMask web" ir toliau "Connect MetaMask", suvedame savo slaptažodį:
 
 
+## HardHat
+
+![image](https://github.com/user-attachments/assets/6a42af38-88d7-489c-a102-25a3efcb2998)
+
 
 # Case Study
 
@@ -100,4 +104,67 @@ Išmaniosios sutartys automatizuoja visą procesą:
 - Taisyklių vykdymas užprogramuotas, todėl nereikia trečiosios šalies įsikišimo.
 - Tai sumažina administracinius kaštus.
 
-  
+
+
+# Remix IDE
+
+https://remix.ethereum.org/#lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.26+commit.8a97fa7a.js
+
+Parašius kodą, galime jį sukompiliuoti per Solidity compiler:
+
+![image](https://github.com/user-attachments/assets/5b0f5ae9-5454-42cf-b2a9-64529d94a2d3)
+
+Spaudžiame Compile *.sol :
+
+![image](https://github.com/user-attachments/assets/80e4f7da-ab1a-4de5-b29d-8e1f0bafbeb9)
+
+Žalia varnelė nurodo, kad nebuvo nustatyta jokių klaidų:
+
+Skyriuje Deploy and Run Transactions randame mygtuką Deploy ir skyrelį Deplyed Contracts, kur galėsime pildyti norimus duomenis.
+
+Visų pirmą sukuriame projektą ir spaudžiame transact:
+
+
+![image](https://github.com/user-attachments/assets/fd4ab627-1c8a-4c50-bd17-4c394d9a08df)
+
+
+Matome daug langelių, kuriuos galime pildyti ir atlikti transakcijas:
+
+![image](https://github.com/user-attachments/assets/debc733b-c63a-4cd5-89e3-e7764b0045f2)
+
+Pvz. sukuriame 2 skirtingus aukojimo lygius: mini ir maxi (kadangi skaičiuojama nuo 0, tai mini bus 0, maxi 1 pagal eiliškumą):
+
+![image](https://github.com/user-attachments/assets/e87b57bb-e8fa-4b29-a372-f8013bd72d2f)
+
+Su mygtuku getTiers patikriname ar lygiai buvo sėkmingai sukurti:
+
+![image](https://github.com/user-attachments/assets/509bdfbd-8b26-4b4e-b0bf-30d850e47c1e)
+
+Laukelyje finansuoti suvedame tierą (0 arba 1), priklausomai nuo norimos paaukoti sumos:
+
+![image](https://github.com/user-attachments/assets/32acc0a6-f975-412c-a202-a4188148dd6f)
+
+Paaukoję galime paspausti mygtuką Balansas ir matysime projekto balansą:
+
+![image](https://github.com/user-attachments/assets/0fc310c7-aea4-4333-960d-5332eae0fb4c)
+
+Taip pat paspaudę mygtuką getCampaignStatus, galime patikrinti projekto statusą, čia 0 = Vyksta, 1 = Pavyko, 2 = Nepavyko :
+
+![image](https://github.com/user-attachments/assets/233f6b23-95cd-47f9-b7e3-bb249c5b8b41)
+
+
+Porą kartu parėmus projektą patikrinam jo Balansą ir statusą:
+
+![image](https://github.com/user-attachments/assets/73a1205b-6df0-4b78-9e77-c863bc0e127b)
+
+![image](https://github.com/user-attachments/assets/f436bcb6-3d83-4ce2-91da-58d3d4aad561)
+
+Nustatę savininko adresą, galime išsiimti pinigus:
+
+![image](https://github.com/user-attachments/assets/de4f6e58-07a1-4c24-93f1-a8ca2ebd5e0f)
+
+Po ko projekto balansas bus 0:
+
+![image](https://github.com/user-attachments/assets/bd97a87a-40ba-40bb-9e30-ed02e1a295a6)
+
+
