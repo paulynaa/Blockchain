@@ -47,6 +47,12 @@ https://metamask.io/
 
 ![image](https://github.com/user-attachments/assets/6a42af38-88d7-489c-a102-25a3efcb2998)
 
+Hardhat is a development environment for Ethereum software. It consists of different components for editing, compiling, debugging and deploying your smart contracts and dApps, all of which work together to create a complete development environment.
+
+
+## Goerli
+
+
 
 # Case Study
 
