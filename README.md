@@ -197,6 +197,11 @@ Sekame nuorodą ir atsiduriame čia:
 Pasirenkame testinį tinklą Localhost.
 
 Nustatymuose pakeičiam RPC URL iš Ganache.
+Prieš tai atsidarę Ganache, išsaugom tinklą, paimam Index 1 accounto PrivateKey ir importuojam jį į MetaMask, sukurdami naują Accountą:
+
+![image](https://github.com/user-attachments/assets/bf8f23fb-0a47-4654-b557-4d1e9bc6e3b0)
+
+
 Spaudžiam Deploy Now.
 
 MetaMask pop up'ins ir turėsim patvirtinti transakciją ir pasirašyti, iškart galime peržiūrėti sutartį paspaudę View Contract:
@@ -219,8 +224,6 @@ Užpildome reikiamus laukus, pavadinima sutarties, aprašymą ir spaudžiam Depl
 ![image](https://github.com/user-attachments/assets/2195be51-40be-492d-af2a-fb14787207f5)
 
 Toliau paspaudę Publish contract, pasirašome per MetaMask.
-
-![image](https://github.com/user-attachments/assets/f0ff2d1e-0bc6-4533-821d-386f98b2b04d)
 
 Susikuriame naują testinį projektą, per MetaMask patvirtinam, kad būtų sumokėta už transakciją.
 
