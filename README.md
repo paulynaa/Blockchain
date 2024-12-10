@@ -185,6 +185,7 @@ npx thirdweb create
 Visual Studio Code, čia atidarome aplankalą, kuriame guli mūsų sutartis, ir sukuriame *.sol failus. Perkeliame iš Remixo kodus į VScode.
 
 Turime susikurti ThirdWeb paskyrą, ir sukurti projektą, po ko gausime projekto PrivateKey. 
+
 Po ko grįžtame į VScode ir atidarome terminalą, ten suvedame: npx thirdweb deploy -k (+PrivateKey).
 
 ![image](https://github.com/user-attachments/assets/639d9764-201c-47e9-a9e4-a23bb1c65f89)
@@ -195,6 +196,43 @@ Sekame nuorodą ir atsiduriame čia:
 
 Pasirenkame testinį tinklą Localhost.
 
+Nustatymuose pakeičiam RPC URL iš Ganache.
+Spaudžiam Deploy Now.
+
+MetaMask pop up'ins ir turėsim patvirtinti transakciją ir pasirašyti, iškart galime peržiūrėti sutartį paspaudę View Contract:
+
+![image](https://github.com/user-attachments/assets/4a6a3cdd-376d-4f1c-b02b-5c5a844dd3b7)
+
+Galime iškart tikrinti Ganache, ar sutartis susikūrė:
+
+![image](https://github.com/user-attachments/assets/2c210299-1917-48d2-9db7-d726e08ef5d8)
+
+Toliau einame į VScode ir terminale suvedam npx thirdweb publish -k ir pridedame PrivateKey
+
+Gauname tokį outputą ir pereiname per pateiktą nuorodą: 
+
+![image](https://github.com/user-attachments/assets/c058dcdf-712a-4098-aa5f-d3f1f3ba54cc)
 
 
+Užpildome reikiamus laukus, pavadinima sutarties, aprašymą ir spaudžiam Deploy via factory, kad galėtume sekti per CrowdfundingFactory sutartį, kas deploy'ina sutartis.
+
+![image](https://github.com/user-attachments/assets/2195be51-40be-492d-af2a-fb14787207f5)
+
+Toliau paspaudę Publish contract, pasirašome per MetaMask.
+
+![image](https://github.com/user-attachments/assets/f0ff2d1e-0bc6-4533-821d-386f98b2b04d)
+
+Susikuriame naują testinį projektą, per MetaMask patvirtinam, kad būtų sumokėta už transakciją.
+
+Patrikrinam ar projektas buvo sukurtas: 
+
+![image](https://github.com/user-attachments/assets/57029438-52c1-4b2f-b8ff-81889f1c8de7)
+
+Toliau grįžtame į sutarties deploy'inimą, čia spaudžiame Deploy Now:
+
+![image](https://github.com/user-attachments/assets/0feb99a7-762c-4763-815f-5187c5596c11)
+
+Supildome laukus ir spaudžiame Deploy Now:
+
+![image](https://github.com/user-attachments/assets/303c5b95-7385-41a0-8a01-e9fda2a37480)
 
