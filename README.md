@@ -302,6 +302,9 @@ Remėjai skyriuje Campaigns gali paspausti view camaigns ir pagal siūlomus lygi
 # Etherscan
 
 Kadangi depolyinau ir publishinau sutartis ir projektus su thirdweb pagalba, o kaip testinį tinklą naudojau Sepolia, chrome iškart galėjau pereiti į puslapį su transaction logs.
+
+![image](https://github.com/user-attachments/assets/1cf89eeb-103f-40bb-95a4-3a62e553f97d)
+
 Po kiekvienos transakcijos galėjau peržiūrėti logus čia : https://sepolia.etherscan.io/tx/0xc0d599b76de24523d2c14ab810aa16dee9c23e7811793a226506a2510c45ccb1
 
 
