@@ -239,3 +239,13 @@ Supildome laukus ir spaudžiame Deploy Now:
 
 ![image](https://github.com/user-attachments/assets/303c5b95-7385-41a0-8a01-e9fda2a37480)
 
+
+
+Atidarome CMD ir suvedame npx thirdweb create app
+Framework pasirenkame Next.js, ir sukuriame pavadinimą.
+Tada įrašome cd (pavadinimas) ir rašome code . 
+Atsidarys VSCode, kuriame galėsime kurti Front-Endą.
+Toliau atidarome CMD terminalą per VSCode ir suvedame yarn dev, galėsim stebėti kaip keičiasi mūsų tinklapis realiu laiku. 
+Svarbu visur išsisaugoti Projekto adresą, Sutarties adresą, Naudojamos piniginės sutarties kūrimui adresą ir t.t.
+
+
