@@ -242,10 +242,68 @@ Supildome laukus ir spaudžiame Deploy Now:
 
 
 Atidarome CMD ir suvedame npx thirdweb create app
+
 Framework pasirenkame Next.js, ir sukuriame pavadinimą.
+
 Tada įrašome cd (pavadinimas) ir rašome code . 
+
 Atsidarys VSCode, kuriame galėsime kurti Front-Endą.
+
 Toliau atidarome CMD terminalą per VSCode ir suvedame yarn dev, galėsim stebėti kaip keičiasi mūsų tinklapis realiu laiku. 
+
 Svarbu visur išsisaugoti Projekto adresą, Sutarties adresą, Naudojamos piniginės sutarties kūrimui adresą ir t.t.
+
+
+# Išmaniosios sutarties testavimas testiniame tinkle Sepolia
+
+Kad gaučiau nemokamų 0.05 ETH pereinu čia: 
+
+https://cloud.google.com/application/web3/faucet/ethereum/sepolia
+
+Suvedu piniginės adresą, pakeičių tinklą į Sepolia ir gaunu pinigų:
+
+![image](https://github.com/user-attachments/assets/518347b0-3dfb-4c19-83fe-c09ba9587c04)
+
+
+Prieš tai deployinant ir skelbiant sutartis, pridedant sumos lygius, pasirašant transakcijas, turėjau už viską sumokėti:
+
+![image](https://github.com/user-attachments/assets/fdaace66-f8dc-43af-89a3-ea3a83c916f0)
+
+
+Toliau prisijungus prie tinklapio, galime jungtis su įvairiais accountais, kurti savo projektus. Štai taip atrodo pagrindinis puslapis:
+
+![image](https://github.com/user-attachments/assets/9421c93b-b46d-446b-af6e-cd5523e79602)
+
+Čia viršuje dešinėje gali keisti accountą:
+
+![image](https://github.com/user-attachments/assets/e4eede48-ff9f-4ac9-8d9c-076aaf8f3a21)
+
+Štai ką mato "publisher", tai yra projektų savininkas, kuris gali readaguoti, pridėti naujus projektus, trinti:
+
+
+![image](https://github.com/user-attachments/assets/66ba2c87-fdce-4f74-a8b8-76712b8a8fa0)
+
+
+Paspaudęs Create Campaign gali pridėti naują projektą:
+
+![image](https://github.com/user-attachments/assets/51a862cf-0cb7-4c05-a736-2b27721237b2)
+
+Paspaudęs View Campaign, gali pašalinti, pakeisti, pridėti naujų lygių, redaguoti projektą:
+
+
+
+Remėjai skyriuje Campaigns gali paspausti view camaigns ir pagal siūlomus lygius ir pasirinktą projektą, gali jį paremti:
+
+
+
+
+
+
+# Etherscan
+
+Kadangi depolyinau ir publishinau sutartis ir projektus su thirdweb pagalba, o kaip testinį tinklą naudojau Sepolia, chrome iškart galėjau pereiti į puslapį su transaction logs.
+Po kiekvienos transakcijos galėjau peržiūrėti logus čia : https://sepolia.etherscan.io/tx/0xc0d599b76de24523d2c14ab810aa16dee9c23e7811793a226506a2510c45ccb1
+
+
 
 
