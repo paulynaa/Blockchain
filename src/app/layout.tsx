@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
-import Navbar from "./components/Navbar"
+import Navbar from "./components/Navbar";
+import type { AppProps } from "next/app";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

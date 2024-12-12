@@ -1,7 +1,7 @@
 'use client';
 import { useReadContract } from "thirdweb/react";
 import { client } from "./client";
-import { localhost } from "thirdweb/chains";
+import { sepolia } from "thirdweb/chains";
 import { getContract } from "thirdweb";
 import { CampaignCard } from "./components/CampaignCard";
 import { CROWDFUNDING_FACTORY } from "./constants/contracts";
@@ -10,7 +10,7 @@ export default function Home() {
   // Get CrowdfundingFactory contract
   const contract = getContract({
     client: client,
-    chain: localhost,
+    chain: sepolia,
     address: CROWDFUNDING_FACTORY,
   });
 
