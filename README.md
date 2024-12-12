@@ -50,14 +50,11 @@ https://metamask.io/
 Hardhat is a development environment for Ethereum software. It consists of different components for editing, compiling, debugging and deploying your smart contracts and dApps, all of which work together to create a complete development environment.
 
 
-## Goerli
-
-
 
 # Case Study
 
 Išmaniosios sutarties pagalba realizavau Crowdfunding (minios finansavimas) projektą, kuriame gali dalyvauti daug žmonių (remėjų), norinčių pafinansuoti tam tikrą projektą. 
-? Savininkas iškelia savo projektą su nustatyta suma, kurią jis tikisi pasiekti per tam tikrą laiko atkarpą. Žmonės, susidomėję projektu, gali jį pafinansuoti, pervedant norimą pinigų sumą (ETH). Projektas yra sėkmingas tada, kai pasiekiama nustatyta pinigų suma, jam nepasibaigus. Savininkas gali išsiimti pinigus tik tuo atveju, kai pasiekiamas limitas. Jeigu projektas buvo nesėkmingas ir nustatytam laikui pasibaigus, pinigai yra grąžinami visiems remėjams.
+ Savininkas iškelia savo projektą su nustatyta suma, kurią jis tikisi pasiekti per tam tikrą laiko atkarpą. Žmonės, susidomėję projektu, gali jį pafinansuoti, pervedant norimą pinigų sumą (ETH). Projektas yra sėkmingas tada, kai pasiekiama nustatyta pinigų suma, jam nepasibaigus. Savininkas gali išsiimti pinigus tik tuo atveju, kai pasiekiamas limitas. Jeigu projektas buvo nesėkmingas ir nustatytam laikui pasibaigus, pinigai yra grąžinami visiems remėjams.
 Remėjai, priklausant nuo projekto tipo, gali gauti kažkokį finansinį arba materialų atlygį, tačiau mano mintis buvo padaryti aukojimo tipo crowdfunding'ą (pavaizduota diagramoje žemiau).
 
 <img src="https://github.com/user-attachments/assets/46fd660d-d907-465d-bd69-5ee6b3af38e6" width="700" height="200">
@@ -102,8 +99,6 @@ Tradicinės platformos reikalauja trečiosiosios šalies įsikišimo lėšų val
 - Rėmėjai yra tikri, kad jų lėšos bus arba perduotos kūrėjui, arba grąžintos, priklausomai nuo sutarties sąlygų.
 - Kūrėjas turi garantiją, kad lėšos bus automatiškai pervestos, kai pasieks tikslą.
 
-(kodėl išmanioji sutartis garantuoja patikimumą?)
-
 
 Išmaniosios sutartys automatizuoja visą procesą:
 
@@ -116,7 +111,7 @@ Išmaniosios sutartys automatizuoja visą procesą:
 
 https://remix.ethereum.org/#lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.26+commit.8a97fa7a.js
 
-Parašius kodą, galime jį sukompiliuoti per Solidity compiler:
+Atidarome Remix IDE. Parašius kodą, galime jį sukompiliuoti per Solidity compiler:
 
 ![image](https://github.com/user-attachments/assets/5b0f5ae9-5454-42cf-b2a9-64529d94a2d3)
 
@@ -174,19 +169,21 @@ Po ko projekto balansas bus 0:
 ![image](https://github.com/user-attachments/assets/bd97a87a-40ba-40bb-9e30-ed02e1a295a6)
 
 
-# Thirdweb deploy ir publish
 
-install thirdweb
+# Thirdweb deploy ir publish / Front-End
 
-npx thirdweb create
+Thirdweb yra platforma, kuri leidžia kūrėjams greitai ir paprastai kurti bei valdyti decentralizuotas aplikacijas (dApps) bei išmanias sutartis.
+Thirdweb siūlo jau paruoštas funkcijas, todėl nereikia kurti visko nuo nulio.
+Į terminalą pradžioj suvedame: install thirdweb
+Tada vedame: npx thirdweb create
 
 ![image](https://github.com/user-attachments/assets/e95e06f6-a605-4c42-9bf8-ca28afd313db)
 
-Visual Studio Code, čia atidarome aplankalą, kuriame guli mūsų sutartis, ir sukuriame *.sol failus. Perkeliame iš Remixo kodus į VScode.
+Įjungiame Visual Studio Code, čia atidarome aplankalą, kuriame guli mūsų sutartis, ir sukuriame *.sol failus. Perkeliame iš Remixo kodus į VScode.
 
-Turime susikurti ThirdWeb paskyrą, ir sukurti projektą, po ko gausime projekto PrivateKey. 
+Pereiname į naršyklę, čia turime susikurti ThirdWeb paskyrą, ir sukurti Project, po ko gausime projekto PrivateKey. 
 
-Po ko grįžtame į VScode ir atidarome terminalą, ten suvedame: npx thirdweb deploy -k (+PrivateKey).
+Grįžtame į VScode ir atidarome terminalą, ten suvedame: npx thirdweb deploy -k (+PrivateKey).
 
 ![image](https://github.com/user-attachments/assets/639d9764-201c-47e9-a9e4-a23bb1c65f89)
 
@@ -194,7 +191,7 @@ Sekame nuorodą ir atsiduriame čia:
 
 ![image](https://github.com/user-attachments/assets/3ad64a3b-a374-4c83-b646-c382f1f4cc60)
 
-Pasirenkame testinį tinklą Localhost.
+Pasirenkame testinį tinklą Localhost. (vėliau tas pačias instrukcijas reikės atlikti su Sepolia tinklu)
 
 Nustatymuose pakeičiam RPC URL iš Ganache.
 Prieš tai atsidarę Ganache, išsaugom tinklą, paimam Index 1 accounto PrivateKey ir importuojam jį į MetaMask, sukurdami naują Accountą:
@@ -212,7 +209,7 @@ Galime iškart tikrinti Ganache, ar sutartis susikūrė:
 
 ![image](https://github.com/user-attachments/assets/2c210299-1917-48d2-9db7-d726e08ef5d8)
 
-Toliau einame į VScode ir terminale suvedam npx thirdweb publish -k ir pridedame PrivateKey
+Toliau einame į VScode ir terminale suvedam npx thirdweb publish -k (pridedame PrivateKey)
 
 Gauname tokį outputą ir pereiname per pateiktą nuorodą: 
 
@@ -240,6 +237,7 @@ Supildome laukus ir spaudžiame Deploy Now:
 ![image](https://github.com/user-attachments/assets/303c5b95-7385-41a0-8a01-e9fda2a37480)
 
 
+Sėkmnigai atlikę šiuos žingsnius galime pereiti prie Front-Endo kūrimo.
 
 Atidarome CMD ir suvedame npx thirdweb create app
 
@@ -249,18 +247,23 @@ Tada įrašome cd (pavadinimas) ir rašome code .
 
 Atsidarys VSCode, kuriame galėsime kurti Front-Endą.
 
+![image](https://github.com/user-attachments/assets/a7e7b1b0-2f9d-43c8-a120-2af0626ddcb0)
+
+
 Toliau atidarome CMD terminalą per VSCode ir suvedame yarn dev, galėsim stebėti kaip keičiasi mūsų tinklapis realiu laiku. 
 
-Svarbu visur išsisaugoti Projekto adresą, Sutarties adresą, Naudojamos piniginės sutarties kūrimui adresą ir t.t.
+Svarbu visur išsisaugoti Projekto adresą, Sutarties adresą, Naudojamos piniginės sutarties kūrimui adresą ir t.t., kurių prireiks procese.
 
 
-# Išmaniosios sutarties testavimas testiniame tinkle Sepolia
+# Išmaniosios sutarties testavimas 
+
+## Testinis tinklas Sepolia
 
 Kad gaučiau nemokamų 0.05 ETH pereinu čia: 
 
 https://cloud.google.com/application/web3/faucet/ethereum/sepolia
 
-Suvedu piniginės adresą, pakeičių tinklą į Sepolia ir gaunu pinigų:
+Suvedu piniginės adresą, pakeičių tinklą į Sepolia ir gaunu 0.05 ETH:
 
 ![image](https://github.com/user-attachments/assets/518347b0-3dfb-4c19-83fe-c09ba9587c04)
 
@@ -274,7 +277,7 @@ Toliau prisijungus prie tinklapio, galime jungtis su įvairiais accountais, kurt
 
 ![image](https://github.com/user-attachments/assets/9421c93b-b46d-446b-af6e-cd5523e79602)
 
-Čia viršuje dešinėje gali keisti accountą:
+Čia viršuje dešinėje galima keisti accountą:
 
 ![image](https://github.com/user-attachments/assets/e4eede48-ff9f-4ac9-8d9c-076aaf8f3a21)
 
@@ -307,6 +310,30 @@ Remėjai skyriuje Campaigns gali paspausti view camaigns ir pagal siūlomus lygi
 
 ![image](https://github.com/user-attachments/assets/20b3efad-ed51-43cb-b016-7d7907924500)
 
+Projektą galima remti, kol jis nepasieks nustatytos sumos arba deadlin'o.
+
+
+## Lokalusis tinklas Ganache
+
+Visų pirmą pareinam į Deploy & run transactions skyrių, pasikeičiame tinklą į Custom ir pakeičiam portą į Ganacho.
+
+![image](https://github.com/user-attachments/assets/0f017f1e-6d1e-487a-acd8-5e543845f7d9)
+
+Ganache matome kad sutartis buvo sukurta.
+
+![image](https://github.com/user-attachments/assets/a034c038-3938-465a-8a45-30ca77acaafb)
+
+
+Kopijuojam contract adresą
+
+![image](https://github.com/user-attachments/assets/de206145-9f04-48b4-84ec-b9e7ab1ef00d)
+
+
+Kuriam pervedimų lygius, pabandom pasinaudoję 2 lygiu pervesti projektui ir matome, kad keičiasi Value.
+
+![image](https://github.com/user-attachments/assets/6c1cfb8b-77ea-493f-b99f-d333de54dab0)
+
+Visi kiti testavimai, kurie yra aprašyti aukščiau, skyriuje Remix buvo sėkmingi.
 
 
 # Etherscan
@@ -334,27 +361,9 @@ Tada buvo kuriami projektai, projektų finansavimo lygiai, todėl Amount visur 0
 ![image](https://github.com/user-attachments/assets/9ed3a7fd-282b-4cc9-bbe3-98f30c7f834b)
 
 
-# Ganache testavimas
+![image](https://github.com/user-attachments/assets/719017cb-45e5-4a4a-bc97-6d1449e51799)
 
-Visų pirmą pareinam į Deploy & run transactions skyrių, pasikeičiame tinklą į Custom ir pakeičiam portą į Ganacho.
-
-![image](https://github.com/user-attachments/assets/0f017f1e-6d1e-487a-acd8-5e543845f7d9)
-
-Ganache matome kad sutartis buvo sukurta.
-
-![image](https://github.com/user-attachments/assets/a034c038-3938-465a-8a45-30ca77acaafb)
-
-
-Kopijuojam contract adresą
-
-![image](https://github.com/user-attachments/assets/de206145-9f04-48b4-84ec-b9e7ab1ef00d)
-
-
-Kuriam pervedimų lygius, pabandom pasinaudoję 2 lygiu pervesti projektui ir matome, kad keičiasi Value.
-
-![image](https://github.com/user-attachments/assets/6c1cfb8b-77ea-493f-b99f-d333de54dab0)
-
-Visi kiti testavimai, kurie yra aprašyti aukščiau, skyriuje Remix buvo sėkmingi.
+![image](https://github.com/user-attachments/assets/d3616932-39a4-40f5-b46e-16691e32d511)
 
 
 
