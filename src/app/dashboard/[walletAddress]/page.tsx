@@ -1,10 +1,10 @@
 'use client';
 import { client } from "@/app/client";
 import { CROWDFUNDING_FACTORY } from "@/app/constants/contracts";
-import { MyCampaignCard } from "@/components/MyCampaignCard";
+import { MyCampaignCard } from "@/app/components/MyCampaignCard";
 import { useState } from "react";
 import { getContract } from "thirdweb";
-import { localhost } from "thirdweb/chains";
+import { sepolia } from "thirdweb/chains";
 import { deployPublishedContract } from "thirdweb/deploys";
 import { useActiveAccount, useReadContract } from "thirdweb/react"
 
@@ -15,7 +15,7 @@ export default function DashboardPage() {
 
     const contract = getContract({
         client: client,
-        chain: localhost,
+        chain: sepolia,
         address: CROWDFUNDING_FACTORY,
     });
 
@@ -24,6 +24,7 @@ export default function DashboardPage() {
         contract: contract,
         method: "function fondaiPagalAdresa(address _user) view returns ((address campaignAddress, address savininkas, string pavadinimas, uint256 sukurimoLaikas)[])",
         params: [account?.address as string]
+        //params: [account?.address || "0x0"], 
     });
     
     return (
@@ -38,8 +39,9 @@ export default function DashboardPage() {
             <p className="text-2xl font-semibold mb-4">My Campaigns:</p>
             <div className="grid grid-cols-3 gap-4">
                 {!isLoadingMyCampaigns && (
-                    myCampaigns && myCampaigns.length > 0 ? (
+                    myCampaigns && myCampaigns.length > 0 ? (                        
                         myCampaigns.map((campaign, index) => (
+                            
                             <MyCampaignCard
                                 key={index}
                                 contractAddress={campaign.campaignAddress}
@@ -83,7 +85,7 @@ const CreateCampaignModal = (
             console.log("Deploying contract...");
             const contractAddress = await deployPublishedContract({
                 client: client,
-                chain: localhost,
+                chain: sepolia,
                 account: account!,
                 contractId: "Crowdfunding",
                 contractParams: [
@@ -92,8 +94,8 @@ const CreateCampaignModal = (
                     campaignGoal,
                     campaignDeadline
                 ],
-                publisher: "0x32f916B8baB88183B8E7A790b8e3610175b68273",
-                version: "1.0.1",
+                publisher: "0xab39076976D32cA3f7F522721a04A15E55E9773e",
+                version: "1.0.0",
             });
             alert("Contract deployed successfully!");
         } catch (error) {
@@ -163,10 +165,10 @@ const CreateCampaignModal = (
                             className="mb-4 px-4 py-2 bg-slate-300 rounded-md"
                         />
                     </div>
-
                     <button
                         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
                         onClick={handleDeployContract}
+                        disabled={isDeployingContract}
                     >{
                         isDeployingContract ? "Creating Campaign..." : "Create Campaign"
                     }</button>
