@@ -290,12 +290,22 @@ Paspaudęs Create Campaign gali pridėti naują projektą:
 
 Paspaudęs View Campaign, gali pašalinti, pakeisti, pridėti naujų lygių, redaguoti projektą:
 
+![image](https://github.com/user-attachments/assets/163a4165-c637-47e6-abd6-1ccba0dbaff7)
+
+![image](https://github.com/user-attachments/assets/af525d8c-7b72-4f73-bd25-6bb496280da1)
+
+![image](https://github.com/user-attachments/assets/95c4d84c-ff62-4a8e-bf3f-897d1d03c4db)
+
+![image](https://github.com/user-attachments/assets/ebcc5d60-0f37-4bbd-9631-d8688e5b3a55)
 
 
 Remėjai skyriuje Campaigns gali paspausti view camaigns ir pagal siūlomus lygius ir pasirinktą projektą, gali jį paremti:
 
 
+![image](https://github.com/user-attachments/assets/5bd98cad-ad28-41eb-8ddf-605b88c049d6)
 
+
+![image](https://github.com/user-attachments/assets/20b3efad-ed51-43cb-b016-7d7907924500)
 
 
 
@@ -306,6 +316,45 @@ Kadangi depolyinau ir publishinau sutartis ir projektus su thirdweb pagalba, o k
 ![image](https://github.com/user-attachments/assets/1cf89eeb-103f-40bb-95a4-3a62e553f97d)
 
 Po kiekvienos transakcijos galėjau peržiūrėti logus čia : https://sepolia.etherscan.io/tx/0xc0d599b76de24523d2c14ab810aa16dee9c23e7811793a226506a2510c45ccb1
+
+
+![image](https://github.com/user-attachments/assets/429532a5-6976-440f-bb5b-eaf9aad1100e)
+
+
+Taip pat galime nukopijuot piniginės adresą, su kuriuo tvirtinome transakcijas ir pagal jį pradėti paiešką:
+
+![image](https://github.com/user-attachments/assets/caaa6120-eda6-4c81-ae94-c856475cfafc)
+
+Čia galime peržiūrėti, kad gavime "IN" į sąskaitą 0.05 ETH, po ko sėkmingai sukūrėme sutartį:
+
+![image](https://github.com/user-attachments/assets/6414d0a9-db24-4314-904c-31da70b94351)
+
+Tada buvo kuriami projektai, projektų finansavimo lygiai, todėl Amount visur 0:
+
+![image](https://github.com/user-attachments/assets/9ed3a7fd-282b-4cc9-bbe3-98f30c7f834b)
+
+
+# Ganache testavimas
+
+Visų pirmą pareinam į Deploy & run transactions skyrių, pasikeičiame tinklą į Custom ir pakeičiam portą į Ganacho.
+
+![image](https://github.com/user-attachments/assets/0f017f1e-6d1e-487a-acd8-5e543845f7d9)
+
+Ganache matome kad sutartis buvo sukurta.
+
+![image](https://github.com/user-attachments/assets/a034c038-3938-465a-8a45-30ca77acaafb)
+
+
+Kopijuojam contract adresą
+
+![image](https://github.com/user-attachments/assets/de206145-9f04-48b4-84ec-b9e7ab1ef00d)
+
+
+Kuriam pervedimų lygius, pabandom pasinaudoję 2 lygiu pervesti projektui ir matome, kad keičiasi Value.
+
+![image](https://github.com/user-attachments/assets/6c1cfb8b-77ea-493f-b99f-d333de54dab0)
+
+Visi kiti testavimai, kurie yra aprašyti aukščiau, skyriuje Remix buvo sėkmingi.
 
 
 
