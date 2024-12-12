@@ -313,6 +313,9 @@ Remėjai skyriuje Campaigns gali paspausti view camaigns ir pagal siūlomus lygi
 Projektą galima remti, kol jis nepasieks nustatytos sumos arba deadlin'o.
 
 
+![image](https://github.com/user-attachments/assets/720a747f-2a32-4cdb-b021-4cdd57a2ba3f)
+
+
 ## Lokalusis tinklas Ganache
 
 Visų pirmą pareinam į Deploy & run transactions skyrių, pasikeičiame tinklą į Custom ir pakeičiam portą į Ganacho.
