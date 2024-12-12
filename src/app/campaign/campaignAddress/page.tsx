@@ -1,10 +1,10 @@
 'use client';
 import { client } from "@/app/client";
 import { useParams } from "next/navigation";
-import { TierCard } from "@/components/TierCard";
+import { TierCard } from "@/app/components/TierCard";
 import { useState } from "react";
 import { getContract, prepareContractCall, ThirdwebContract } from "thirdweb";
-import { localhost } from "thirdweb/chains";
+import { sepolia } from "thirdweb/chains";
 import { lightTheme, TransactionButton, useActiveAccount, useReadContract } from "thirdweb/react";
 
 export default function CampaignPage() {
@@ -15,7 +15,7 @@ export default function CampaignPage() {
 
     const contract = getContract({
         client: client,
-        chain: localhost,
+        chain: sepolia,
         address: campaignAddress as string,
     });
 
@@ -30,7 +30,7 @@ export default function CampaignPage() {
     const { data: description } = useReadContract({ 
         contract, 
         method: "function aprasymas() view returns (string)", 
-        params: [] 
+        params: [], 
       });
 
     // Campaign deadline
@@ -42,7 +42,7 @@ export default function CampaignPage() {
     // Convert deadline to a date
     const deadlineDate = new Date(parseInt(deadline?.toString() as string) * 1000);
     // Check if deadline has passed
-    const hasDeadlinePassed = deadlineDate < new Date();
+    const deadlineDatePassed = deadlineDate < new Date();
 
     // Goal amount of the campaign
     const { data: goal, isLoading: isLoadingGoal } = useReadContract({
@@ -54,7 +54,7 @@ export default function CampaignPage() {
     // Total funded balance of the campaign
     const { data: balance, isLoading: isLoadingBalance } = useReadContract({
         contract: contract,
-        method: "Balansas() view returns (uint256)",
+        method: "function Balansas() view returns (uint256)",
         params: [],
     });
 
@@ -71,7 +71,7 @@ export default function CampaignPage() {
     // Get tiers for the campaign
     const { data: tiers, isLoading: isLoadingTiers } = useReadContract({
         contract: contract,
-        method: "function getTiers() view returns ((string name, uint256 amount, uint256 backers)[])",
+        method: "function getTiers() view returns ((string pavadinimas, uint256 suma, uint256 finansuotojai)[])",
         params: [],
     });
 
@@ -218,7 +218,7 @@ const CreateCampaignModal = (
                     <TransactionButton
                         transaction={() => prepareContractCall({
                             contract: contract,
-                            method: "function pridetiTiera(string _name, uint256 _amount)",
+                            method: "function pridetiTiera(string _pavadinimas, uint256 _suma)",
                             params: [tierName, tierAmount]
                         })}
                         onTransactionConfirmed={async () => {
